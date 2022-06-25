@@ -1,4 +1,6 @@
+import 'package:appwrite/models.dart';
 import 'package:drivebook/models/vehicle.dart';
+import 'package:drivebook/providers/appwrite.dart';
 import 'package:drivebook/providers/vehicle_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,10 +13,21 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: FutureBuilder(
+          future: Provider.of<AppwriteClient>(context).addUser(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.hasData) {
+              User appUser = snapshot.data as User;
+              return Text(appUser.name);
+            } else {
+              return const Text("Some error");
+            }
+          },
+        ),
       ),
       body: FutureBuilder(
-        future: Provider.of<VehicleProvider>(context).getVehicles(),
+        future: Provider.of<VehicleProvider>(context).getTestVehicles(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

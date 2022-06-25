@@ -1,3 +1,4 @@
+import 'package:drivebook/providers/appwrite.dart';
 import 'package:drivebook/providers/log_provider.dart';
 import 'package:drivebook/providers/vehicle_provider.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: VehicleProvider()),
         ChangeNotifierProvider.value(value: LogProvider()),
+        ChangeNotifierProvider.value(value: AppwriteClient()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
