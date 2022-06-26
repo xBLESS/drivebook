@@ -26,6 +26,7 @@ class MyHomePage extends StatelessWidget {
           },
         ),
       ),
+      // TODO Remove Future and use list from Provider. this is just dumb.
       body: FutureBuilder(
         future: Provider.of<VehicleProvider>(context).getVehicles(
           Provider.of<AppwriteClient>(context).getAppwriteClient,
