@@ -27,7 +27,9 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
       body: FutureBuilder(
-        future: Provider.of<VehicleProvider>(context).getTestVehicles(),
+        future: Provider.of<VehicleProvider>(context).getVehicles(
+          Provider.of<AppwriteClient>(context).getAppwriteClient,
+        ),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -58,10 +60,11 @@ class MyHomePage extends StatelessWidget {
         onPressed: () => {
           Provider.of<VehicleProvider>(context, listen: false).addVehicle(
             Vehicle(
-              2,
-              'BMW',
-              'E39',
-              'https://upload.wikimedia.org/wikipedia/commons/4/4f/BMW_E39_front_20081125.jpg',
+              iId: '2',
+              strManufacturer: 'BMW',
+              strModel: 'E39',
+              strImageUrl:
+                  'https://upload.wikimedia.org/wikipedia/commons/4/4f/BMW_E39_front_20081125.jpg',
             ),
           )
         },

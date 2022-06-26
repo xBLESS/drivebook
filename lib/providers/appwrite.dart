@@ -4,6 +4,9 @@ import 'package:flutter/widgets.dart';
 
 class AppwriteClient extends ChangeNotifier {
   Client _client = Client();
+  late User _user;
+
+  static const String vehicleTableId = '62b75495553a2b937482';
 
   AppwriteClient() {
     _client
@@ -13,25 +16,26 @@ class AppwriteClient extends ChangeNotifier {
   }
 
   Client get getAppwriteClient => _client;
+  User get getLoggedInUser => _user;
 
   Future addUser() async {
     Account acc = Account(_client);
 
     try {
-      print('add');
       return await acc.create(
         userId: 'unique()',
-        email: 'tw@appwrite.de',
+        email: 'tw@appwrite.com',
         password: 'password',
-        name: 'Test-User',
+        name: 'Test-User1',
       );
     } on Exception catch (e) {
-      print('get');
-      Session ses = await acc.createSession(
-        email: 'tw@appwrite.de',
+      await acc.createSession(
+        email: 'tw@appwrite.com',
         password: 'password',
       );
-      return await acc.get();
+
+      _user = await acc.get();
+      return _user;
     }
   }
 }
