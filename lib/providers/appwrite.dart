@@ -30,11 +30,12 @@ class AppwriteClient extends ChangeNotifier {
       );
     } on Exception catch (e) {
       await acc.createSession(
-        email: 'tw@appwrite.com',
+        email: 'tw@appwrite.de',
         password: 'password',
       );
 
       _user = await acc.get();
+      notifyListeners();
       return _user;
     }
   }

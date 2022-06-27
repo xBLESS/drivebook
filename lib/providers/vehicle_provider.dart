@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 class VehicleProvider extends ChangeNotifier {
   final List<Vehicle> _vehicles = [];
 
+  List<Vehicle> get getVehicles => _vehicles;
+
   Future<List<Vehicle>> getTestVehicles() async {
     return [
       Vehicle(
@@ -18,26 +20,30 @@ class VehicleProvider extends ChangeNotifier {
     ];
   }
 
-  Future<List<Vehicle>> getVehicles(Client client) async {
+  void loadVehicles(Client client) {
     Database db = Database(client);
     List<Vehicle> vehicles = [];
 
-    DocumentList result = await db.listDocuments(
-      collectionId: AppwriteClient.vehicleTableId,
-    );
+    db
+        .listDocuments(
+          collectionId: AppwriteClient.vehicleTableId,
+        )
+        .then(
+          (value) => () {
+            for (Document doc in value.documents) {
+              vehicles.add(
+                Vehicle(
+                  iId: doc.data['\$id'],
+                  strManufacturer: doc.data['Make'],
+                  strModel: doc.data['Model'],
+                  strImageUrl: '',
+                ),
+              );
+            }
+          },
+        );
 
-    for (Document doc in result.documents) {
-      vehicles.add(
-        Vehicle(
-          iId: doc.data['\$id'],
-          strManufacturer: doc.data['Make'],
-          strModel: doc.data['Model'],
-          strImageUrl: '',
-        ),
-      );
-    }
-
-    return vehicles;
+    notifyListeners();
   }
 
   void addVehicle(Vehicle vehicle) {

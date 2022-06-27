@@ -1,3 +1,4 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:drivebook/models/vehicle.dart';
 import 'package:drivebook/providers/appwrite.dart';
@@ -11,6 +12,10 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Client client = Provider.of<AppwriteClient>(context).getAppwriteClient;
+
+    Provider.of<VehicleProvider>(context).loadVehicles(client);
+
     return Scaffold(
       appBar: AppBar(
         title: FutureBuilder(
@@ -26,36 +31,19 @@ class MyHomePage extends StatelessWidget {
           },
         ),
       ),
-      // TODO Remove Future and use list from Provider. this is just dumb.
-      body: FutureBuilder(
-        future: Provider.of<VehicleProvider>(context).getVehicles(
-          Provider.of<AppwriteClient>(context).getAppwriteClient,
-        ),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: ((context, index) {
-                Vehicle vehicle = snapshot.data[index] as Vehicle;
-                return ListTile(
-                  title: Text(vehicle.strManufacturer),
-                  subtitle: Text(vehicle.strModel),
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(vehicle.strImageUrl),
-                  ),
-                );
-              }),
-            );
-          } else {
-            return const Text("Some error");
-          }
-        },
+      body: ListView.builder(
+        itemCount: Provider.of<VehicleProvider>(context).getVehicles.length,
+        itemBuilder: ((context, index) {
+          Vehicle vehicle =
+              Provider.of<VehicleProvider>(context).getVehicles[index];
+          return ListTile(
+            title: Text(vehicle.strManufacturer),
+            subtitle: Text(vehicle.strModel),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(vehicle.strImageUrl),
+            ),
+          );
+        }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
