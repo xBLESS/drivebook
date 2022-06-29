@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:drivebook/models/vehicle.dart';
@@ -19,16 +21,22 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: FutureBuilder(
-          future: Provider.of<AppwriteClient>(context).addUser(),
+          future: Provider.of<AppwriteClient>(context)
+              .loginUser('tw@appwrite.com', 'password'),
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.hasData) {
-              User appUser = snapshot.data as User;
-              return Text(appUser.name);
+              //User appUser = snapshot.data as User;
+              //return Text(appUser.name);
+              return Text(
+                  Provider.of<AppwriteClient>(context).getLoggedInUser.name);
+            } else if (snapshot.connectionState == ConnectionState.active) {
+              return const Text('Loading');
             } else {
               return const Text("Some error");
             }
           },
+          // title: Text(Provider.of<AppwriteClient>(context).getLoggedInUser.name),
         ),
       ),
       body: ListView.builder(
