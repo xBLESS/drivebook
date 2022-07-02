@@ -3,7 +3,7 @@ import 'package:appwrite/models.dart';
 import 'package:flutter/widgets.dart';
 
 class AppwriteClient extends ChangeNotifier {
-  Client _client = Client();
+  final Client _client = Client();
 
   late User _user;
   late Account _account;

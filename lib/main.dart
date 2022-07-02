@@ -17,9 +17,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: VehicleProvider()),
-        ChangeNotifierProvider.value(value: LogProvider()),
-        ChangeNotifierProvider.value(value: AppwriteClient()),
+        ChangeNotifierProvider<AppwriteClient>(
+          create: (_) => AppwriteClient(),
+        ),
+        ChangeNotifierProvider<VehicleProvider>(
+          create: (_) => VehicleProvider(),
+        ),
+        ChangeNotifierProvider<LogProvider>(
+          create: (_) => LogProvider(),
+        ),
+        // ChangeNotifierProvider.value(value: VehicleProvider()),
+        // ChangeNotifierProvider.value(value: LogProvider()),
+        // ChangeNotifierProvider.value(value: AppwriteClient()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
