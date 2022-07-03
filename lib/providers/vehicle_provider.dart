@@ -1,7 +1,4 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:drivebook/models/vehicle.dart';
-import 'package:drivebook/providers/appwrite.dart';
 import 'package:flutter/material.dart';
 
 class VehicleProvider extends ChangeNotifier {
@@ -20,34 +17,34 @@ class VehicleProvider extends ChangeNotifier {
     ];
   }
 
-  void loadVehicles(Client client) {
-    Database db = Database(client);
-    List<Vehicle> vehicles = [];
+  // void loadVehicles(Client client) {
+  //   Database db = Database(client);
+  //   List<Vehicle> vehicles = [];
 
-    db
-        .listDocuments(
-          collectionId: AppwriteClient.vehicleTableId,
-        )
-        .then(
-          (value) => () {
-            for (Document doc in value.documents) {
-              vehicles.add(
-                Vehicle(
-                  iId: doc.data['\$id'],
-                  strManufacturer: doc.data['Make'],
-                  strModel: doc.data['Model'],
-                  strImageUrl: '',
-                ),
-              );
-            }
-          },
-        );
+  //   db
+  //       .listDocuments(
+  //         collectionId: AppwriteClient.vehicleTableId,
+  //       )
+  //       .then(
+  //         (value) => () {
+  //           for (Document doc in value.documents) {
+  //             vehicles.add(
+  //               Vehicle(
+  //                 iId: doc.data['\$id'],
+  //                 strManufacturer: doc.data['Make'],
+  //                 strModel: doc.data['Model'],
+  //                 strImageUrl: '',
+  //               ),
+  //             );
+  //           }
+  //         },
+  //       );
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
-  void addVehicle(Vehicle vehicle) {
-    _vehicles.add(vehicle);
-    notifyListeners();
-  }
+  // void addVehicle(Vehicle vehicle) {
+  //   _vehicles.add(vehicle);
+  //   notifyListeners();
+  // }
 }

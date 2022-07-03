@@ -1,8 +1,8 @@
-import 'package:drivebook/providers/appwrite.dart';
 import 'package:drivebook/providers/log_provider.dart';
 import 'package:drivebook/providers/vehicle_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'screens/homescreen/homescreen.dart';
 
@@ -17,9 +17,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<AppwriteClient>(
-          create: (_) => AppwriteClient(),
-        ),
         ChangeNotifierProvider<VehicleProvider>(
           create: (_) => VehicleProvider(),
         ),
@@ -35,7 +32,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }
