@@ -6,33 +6,27 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
+  Session? _sess;
 
   final sctr = SupabaseController();
 
+  MyHomePage({Key? key, required this.title}) : super(key: key) {
+    sctr.getSession().then((value) => {_sess = value});
+  }
+
   @override
   Widget build(BuildContext context) {
-    Session? _sess;
-    sctr.getSession().then((val) => _sess = val);
-
     return Scaffold(
       appBar: AppBar(
-        title: FutureBuilder(
-          future: sctr.loginUserComplete('weyerbrock@outlook.de', 'password'),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                snapshot.hasData) {
-              User appUser = snapshot.data as User;
-              //return Text(appUser.name);
-              return Text(appUser.aud);
-            } else if (snapshot.connectionState == ConnectionState.active) {
-              return const Text('Loading');
+        title: Consumer<User>(
+          builder: (context, value, child) {
+            if (value != null) {
+              return Text(value.email as String);
             } else {
-              return const Text("Some error");
+              return const Text('Name is null');
             }
           },
-          // title: Text(Provider.of<AppwriteClient>(context).getLoggedInUser.name),
         ),
       ),
       body: ListView.builder(

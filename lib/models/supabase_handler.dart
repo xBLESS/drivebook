@@ -4,6 +4,8 @@ class SupabaseController {
   final supabase = SupabaseClient('https://nndnsnxtnjzbluwkgblj.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5uZG5zbnh0bmp6Ymx1d2tnYmxqIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTY4NTQ5MzcsImV4cCI6MTk3MjQzMDkzN30.7eHtP8mZkLSQinm8s8gvpagHrQIiKsPSQBwQ8xYoW6g');
 
+  SupabaseClient get getSupabaseClient => supabase;
+
   Session? _session;
   Session? get getCurrentSession => _session;
 
@@ -41,5 +43,9 @@ class SupabaseController {
 
     final error = res.error;
     return res;
+  }
+
+  Future updateUser(String password) async {
+    final res = await supabase.auth.update({password: password});
   }
 }
