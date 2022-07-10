@@ -9,7 +9,7 @@ class VehicleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vehicleData = Provider.of<VehicleProvider>(context);
+    final vehicleData = Provider.of<VehiclesProvider>(context);
     final appwriteClient = Provider.of<AppwriteClient>(context);
     vehicleData.loadVehicles(appwriteClient.getAppwriteClient);
     final vehicles = vehicleData.getVehicles;

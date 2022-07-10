@@ -18,8 +18,8 @@ void main() {
         // ChangeNotifierProvider<VehicleProvider>.value(
         //   value: VehicleProvider(),
         // ),
-        ChangeNotifierProvider<VehicleProvider>(
-          create: (context) => VehicleProvider(),
+        ChangeNotifierProvider<VehiclesProvider>(
+          create: (context) => VehiclesProvider(),
         ),
         ChangeNotifierProvider<LogProvider>(
           create: (context) => LogProvider(),

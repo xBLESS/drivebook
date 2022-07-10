@@ -21,7 +21,7 @@ class MyHomePage extends StatelessWidget {
       body: const VehicleList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
-          Provider.of<VehicleProvider>(context, listen: false).addVehicle(
+          Provider.of<VehiclesProvider>(context, listen: false).addVehicle(
             Vehicle(
               iId: '2',
               strManufacturer: 'BMW',

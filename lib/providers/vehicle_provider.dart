@@ -4,7 +4,7 @@ import 'package:drivebook/models/vehicle.dart';
 import 'package:drivebook/providers/appwrite.dart';
 import 'package:flutter/material.dart';
 
-class VehicleProvider extends ChangeNotifier {
+class VehiclesProvider extends ChangeNotifier {
   final List<Vehicle> _vehicles = [];
 
   List<Vehicle> get getVehicles => _vehicles;
