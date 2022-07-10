@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/log.dart';
 
-class LogProvider extends ChangeNotifier {
+class LogsProvider extends ChangeNotifier {
   List<Log> _logs = [
     Log(1, "Header", "Content"),
   ];
