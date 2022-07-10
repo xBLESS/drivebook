@@ -16,8 +16,8 @@ class AppwriteClient extends ChangeNotifier {
   AppwriteClient() {
     _client
         .setEndpoint('https://api.suffernet.de/v1') // Your Appwrite Endpoint
-        .setProject('62b75477b72f937add68') // Your project ID
-        .setSelfSigned(status: true);
+        .setProject('62b75477b72f937add68'); // Your project ID
+    // .setSelfSigned(status: true);
 
     _account = Account(_client);
   }

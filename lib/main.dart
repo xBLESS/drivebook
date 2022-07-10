@@ -1,13 +1,36 @@
 import 'package:drivebook/providers/appwrite.dart';
 import 'package:drivebook/providers/log_provider.dart';
 import 'package:drivebook/providers/vehicle_provider.dart';
+import 'package:drivebook/screens/loginscreen/loginscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/homescreen/homescreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AppwriteClient>(
+          create: (context) => AppwriteClient(),
+        ),
+        // Tip Value Constructor for Provider which do not need the Buildcontext
+        // ChangeNotifierProvider<VehicleProvider>.value(
+        //   value: VehicleProvider(),
+        // ),
+        ChangeNotifierProvider<VehicleProvider>(
+          create: (context) => VehicleProvider(),
+        ),
+        ChangeNotifierProvider<LogProvider>(
+          create: (context) => LogProvider(),
+        ),
+        // ChangeNotifierProvider.value(value: VehicleProvider()),
+        // ChangeNotifierProvider.value(value: LogProvider()),
+        // ChangeNotifierProvider.value(value: AppwriteClient()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,28 +38,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AppwriteClient>(
-          create: (_) => AppwriteClient(),
-        ),
-        ChangeNotifierProvider<VehicleProvider>(
-          create: (_) => VehicleProvider(),
-        ),
-        ChangeNotifierProvider<LogProvider>(
-          create: (_) => LogProvider(),
-        ),
-        // ChangeNotifierProvider.value(value: VehicleProvider()),
-        // ChangeNotifierProvider.value(value: LogProvider()),
-        // ChangeNotifierProvider.value(value: AppwriteClient()),
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: LoginScreen.routename,
+      routes: {
+        MyHomePage.routename: (context) => const MyHomePage(title: 'Title'),
+        LoginScreen.routename: (context) => LoginScreen(),
+      },
     );
   }
 }
