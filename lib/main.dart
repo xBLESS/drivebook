@@ -1,5 +1,5 @@
 import 'package:drivebook/providers/appwrite.dart';
-import 'package:drivebook/providers/log_provider.dart';
+import 'package:drivebook/providers/logs_provider.dart';
 import 'package:drivebook/providers/vehicles_provider.dart';
 import 'package:drivebook/screens/loginscreen/loginscreen.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +21,8 @@ void main() {
         ChangeNotifierProvider<VehiclesProvider>(
           create: (context) => VehiclesProvider(),
         ),
-        ChangeNotifierProvider<LogProvider>(
-          create: (context) => LogProvider(),
+        ChangeNotifierProvider<LogsProvider>(
+          create: (context) => LogsProvider(),
         ),
         // ChangeNotifierProvider.value(value: VehicleProvider()),
         // ChangeNotifierProvider.value(value: LogProvider()),
