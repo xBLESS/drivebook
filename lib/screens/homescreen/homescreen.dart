@@ -7,8 +7,7 @@ import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
   static const routename = '/';
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class MyHomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(appwriteProv.getLoggedInUser.name),
+        title: Text(appwriteProv.getLoggedInUser?.name ?? 'Loading'),
       ),
       body: const VehicleList(),
       floatingActionButton: FloatingActionButton(

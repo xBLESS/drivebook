@@ -9,8 +9,12 @@ class VehicleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vehicleData = Provider.of<VehiclesProvider>(context);
     final appwriteClient = Provider.of<AppwriteClient>(context);
+    if (appwriteClient.getLoggedInUser == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final vehicleData = Provider.of<VehiclesProvider>(context);
     vehicleData.loadVehicles(appwriteClient.getAppwriteClient);
     final vehicles = vehicleData.getVehicles;
 

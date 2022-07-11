@@ -5,7 +5,7 @@ import 'package:drivebook/providers/appwrite.dart';
 import 'package:flutter/material.dart';
 
 class VehiclesProvider extends ChangeNotifier {
-  final List<Vehicle> _vehicles = [];
+  List<Vehicle> _vehicles = [];
 
   List<Vehicle> get getVehicles => _vehicles;
 
@@ -27,7 +27,7 @@ class VehiclesProvider extends ChangeNotifier {
       collectionId: AppwriteClient.vehicleTableId,
     );
 
-    List<Document> result = docList.documents;
+    // List<Document> result = docList.documents;
 
     for (var doc in docList.documents) {
       _vehicles.add(
