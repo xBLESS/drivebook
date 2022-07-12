@@ -20,7 +20,7 @@ class VehiclesProvider extends ChangeNotifier {
     ];
   }
 
-  void loadVehicles(Client client) async {
+  Future loadVehicles(Client client) async {
     Database db = Database(client);
 
     DocumentList docList = await db.listDocuments(

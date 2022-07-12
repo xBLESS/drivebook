@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
-  static const routename = '/';
+  static const routename = '/homescreen';
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final appwriteProv = Provider.of<AppwriteClient>(context);
-
+    print('MyHomePage build ran');
     return Scaffold(
       appBar: AppBar(
         title: Text(appwriteProv.getLoggedInUser?.name ?? 'Loading'),

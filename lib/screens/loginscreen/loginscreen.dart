@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
-  static const String routename = '/login';
+  static const String routename = '/loginScreen';
 
   final TextEditingController _tecUsername = TextEditingController();
   final TextEditingController _tecPassword = TextEditingController();
@@ -17,6 +17,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<AppwriteClient>(context);
+
+    print('LoginScreen build ran');
 
     return Scaffold(
       body: SafeArea(
@@ -46,6 +48,7 @@ class LoginScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          print('login method ran');
           userProvider.loginUser(_tecUsername.text, _tecPassword.text);
           // ToDo Der benutzer soll nicht vom Hauptbildschirm zum LoginScreen zurückkehren sollen
           Navigator.popAndPushNamed(context, MyHomePage.routename);

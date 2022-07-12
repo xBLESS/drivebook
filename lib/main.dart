@@ -8,29 +8,7 @@ import 'package:provider/provider.dart';
 import 'screens/homescreen/homescreen.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AppwriteClient>(
-          create: (context) => AppwriteClient(),
-        ),
-        // Tip Value Constructor for Provider which do not need the Buildcontext
-        // ChangeNotifierProvider<VehicleProvider>.value(
-        //   value: VehicleProvider(),
-        // ),
-        ChangeNotifierProvider<VehiclesProvider>(
-          create: (context) => VehiclesProvider(),
-        ),
-        ChangeNotifierProvider<LogsProvider>(
-          create: (context) => LogsProvider(),
-        ),
-        // ChangeNotifierProvider.value(value: VehicleProvider()),
-        // ChangeNotifierProvider.value(value: LogProvider()),
-        // ChangeNotifierProvider.value(value: AppwriteClient()),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -38,17 +16,30 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AppwriteClient>(
+          create: (context) => AppwriteClient(),
+        ),
+        ChangeNotifierProvider<VehiclesProvider>.value(
+          value: VehiclesProvider(),
+        ),
+        ChangeNotifierProvider<LogsProvider>(
+          create: (context) => LogsProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: LoginScreen(),
+        // initialRoute: LoginScreen.routename,
+        routes: {
+          MyHomePage.routename: (context) => const MyHomePage(),
+          LoginScreen.routename: (context) => LoginScreen(),
+        },
       ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      initialRoute: LoginScreen.routename,
-      routes: {
-        MyHomePage.routename: (context) => const MyHomePage(),
-        LoginScreen.routename: (context) => LoginScreen(),
-      },
     );
   }
 }

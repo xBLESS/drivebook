@@ -15,8 +15,12 @@ class VehicleList extends StatelessWidget {
     }
 
     final vehicleData = Provider.of<VehiclesProvider>(context);
-    vehicleData.loadVehicles(appwriteClient.getAppwriteClient);
+    vehicleData
+        .loadVehicles(appwriteClient.getAppwriteClient)
+        .then((value) => null);
     final vehicles = vehicleData.getVehicles;
+
+    print('VehicleList build ran');
 
     return ListView.builder(
       itemCount: vehicles.length,
