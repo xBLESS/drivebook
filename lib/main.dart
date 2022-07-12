@@ -32,19 +32,13 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        // home: const MyHomePage(title: 'Flutter Demo Home Page'),
         home: LoginScreen(),
-        // initialRoute: LoginScreen.routename,
         routes: {
-          MyHomePage.routename: (context) => const MyHomePage(),
+          VehicleListScreen.routename: (context) => const VehicleListScreen(),
           LoginScreen.routename: (context) => LoginScreen(),
         },
       ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      initialRoute: LoginScreen.routename,
-      routes: {
-        VehicleListScreen.routename: (context) => const VehicleListScreen(),
-        LoginScreen.routename: (context) => LoginScreen(),
-      },
     );
   }
 }
