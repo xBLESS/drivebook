@@ -1,11 +1,10 @@
-import 'package:drivebook/providers/appwrite.dart';
-import 'package:drivebook/providers/logs_provider.dart';
-import 'package:drivebook/providers/vehicles_provider.dart';
-import 'package:drivebook/screens/loginscreen/loginscreen.dart';
+import 'providers/appwrite.dart';
+import 'providers/logs_provider.dart';
+import 'providers/vehicles_provider.dart';
+import 'screens/homescreen/vehiclelistscreen.dart';
+import 'screens/loginscreen/loginscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'screens/homescreen/homescreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,6 +39,12 @@ class MyApp extends StatelessWidget {
           LoginScreen.routename: (context) => LoginScreen(),
         },
       ),
+      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: LoginScreen.routename,
+      routes: {
+        VehicleListScreen.routename: (context) => const VehicleListScreen(),
+        LoginScreen.routename: (context) => LoginScreen(),
+      },
     );
   }
 }

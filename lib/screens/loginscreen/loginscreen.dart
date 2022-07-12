@@ -1,5 +1,5 @@
-import 'package:drivebook/providers/appwrite.dart';
-import 'package:drivebook/screens/homescreen/homescreen.dart';
+import '../../providers/appwrite.dart';
+import '../homescreen/vehiclelistscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +51,7 @@ class LoginScreen extends StatelessWidget {
           print('login method ran');
           userProvider.loginUser(_tecUsername.text, _tecPassword.text);
           // ToDo Der benutzer soll nicht vom Hauptbildschirm zum LoginScreen zurückkehren sollen
-          Navigator.popAndPushNamed(context, MyHomePage.routename);
+          Navigator.popAndPushNamed(context, VehicleListScreen.routename);
         },
         label: const Text('Login'),
       ),
