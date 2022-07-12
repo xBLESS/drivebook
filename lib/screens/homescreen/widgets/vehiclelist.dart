@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class VehicleList extends StatelessWidget {
-  const VehicleList({Key? key}) : super(key: key);
+  VehicleList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

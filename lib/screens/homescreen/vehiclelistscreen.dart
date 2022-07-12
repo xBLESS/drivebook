@@ -6,20 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class VehicleListScreen extends StatelessWidget {
-  static const routename = '/';
+  static const routename = '/vehicleListScreen';
   const VehicleListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // final appwriteProv = Provider.of<AppwriteClient>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Consumer<AppwriteClient>(
           builder: (context, value, child) => Text(value.getLoggedInUser!.name),
         ),
       ),
-      body: const VehicleList(),
+      body: VehicleList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
           Provider.of<VehiclesProvider>(context, listen: false).addVehicle(
