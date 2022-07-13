@@ -1,8 +1,10 @@
-import 'package:drivebook/models/vehicle.dart';
+import 'package:drivebook/providers/vehicle.dart';
 import 'package:drivebook/providers/appwrite.dart';
 import 'package:drivebook/providers/vehicles_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'vehiclelistitem.dart';
 
 class VehicleList extends StatelessWidget {
   VehicleList({Key? key}) : super(key: key);
@@ -24,16 +26,10 @@ class VehicleList extends StatelessWidget {
 
     return ListView.builder(
       itemCount: vehicles.length,
-      itemBuilder: ((context, index) {
-        Vehicle vehicle = vehicles[index];
-        return ListTile(
-          title: Text(vehicle.strManufacturer),
-          subtitle: Text(vehicle.strModel),
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(vehicle.strImageUrl),
-          ),
-        );
-      }),
+      itemBuilder: (context, index) => ChangeNotifierProvider.value(
+        value: vehicles[index],
+        child: VehicleListItem(),
+      ),
     );
   }
 }

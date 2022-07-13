@@ -1,6 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:drivebook/models/vehicle.dart';
+import 'package:drivebook/providers/vehicle.dart';
 import 'package:drivebook/providers/appwrite.dart';
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,6 @@
-class Vehicle {
+import 'package:flutter/material.dart';
+
+class Vehicle extends ChangeNotifier {
   final String iId;
   final String strManufacturer;
   final String strModel;

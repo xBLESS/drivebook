@@ -1,4 +1,4 @@
-import '../../models/vehicle.dart';
+import '../../providers/vehicle.dart';
 import '../../providers/appwrite.dart';
 import '../../providers/vehicles_provider.dart';
 import 'widgets/vehiclelist.dart';
