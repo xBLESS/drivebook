@@ -27,8 +27,8 @@ class VehiclesProvider extends ChangeNotifier {
       collectionId: AppwriteClient.vehicleTableId,
     );
 
-    // List<Document> result = docList.documents;
-
+    // INFO Muss warum auch immer an dieser stelle stehen, davor ging nicht.
+    _vehicles.clear();
     for (var doc in docList.documents) {
       _vehicles.add(
         Vehicle(
@@ -38,25 +38,6 @@ class VehiclesProvider extends ChangeNotifier {
             strImageUrl: ''),
       );
     }
-
-    // db
-    //     .listDocuments(
-    //       collectionId: AppwriteClient.vehicleTableId,
-    //     )
-    //     .then(
-    //       (value) => () {
-    //         for (Document doc in value.documents) {
-    //           vehicles.add(
-    //             Vehicle(
-    //               iId: doc.data['\$id'],
-    //               strManufacturer: doc.data['Make'],
-    //               strModel: doc.data['Model'],
-    //               strImageUrl: '',
-    //             ),
-    //           );
-    //         }
-    //       },
-    //     );
 
     notifyListeners();
   }

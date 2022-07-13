@@ -8,6 +8,7 @@ import 'vehiclelistitem.dart';
 
 class VehicleList extends StatelessWidget {
   VehicleList({Key? key}) : super(key: key);
+  List<Vehicle> _vehicles = [];
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +21,15 @@ class VehicleList extends StatelessWidget {
     vehicleData
         .loadVehicles(appwriteClient.getAppwriteClient)
         .then((value) => null);
-    final vehicles = vehicleData.getVehicles;
+    // vehicleData.getTestVehicles().then((value) => vehicles = value);
+    _vehicles = vehicleData.getVehicles;
 
     print('VehicleList build ran');
 
     return ListView.builder(
-      itemCount: vehicles.length,
+      itemCount: _vehicles.length,
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
-        value: vehicles[index],
+        value: _vehicles[index],
         child: VehicleListItem(),
       ),
     );

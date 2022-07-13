@@ -10,7 +10,7 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _tecPassword = TextEditingController();
 
   LoginScreen({Key? key}) : super(key: key) {
-    _tecUsername.text = 'tw@appwrite.com';
+    _tecUsername.text = 'tw@appwrite.de';
     _tecPassword.text = 'password';
   }
 
