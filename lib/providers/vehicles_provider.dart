@@ -22,15 +22,13 @@ class VehiclesProvider extends ChangeNotifier {
 
   Future loadVehicles(Client client) async {
     Database db = Database(client);
-
+    List<Vehicle> vehicles = [];
     DocumentList docList = await db.listDocuments(
       collectionId: AppwriteClient.vehicleTableId,
     );
 
-    // INFO Muss warum auch immer an dieser stelle stehen, davor ging nicht.
-    _vehicles.clear();
     for (var doc in docList.documents) {
-      _vehicles.add(
+      vehicles.add(
         Vehicle(
             iId: doc.data['\$id'],
             strManufacturer: doc.data['Make'],
@@ -39,7 +37,10 @@ class VehiclesProvider extends ChangeNotifier {
       );
     }
 
+    _vehicles = vehicles;
+
     notifyListeners();
+    return vehicles;
   }
 
   void addVehicle(Vehicle vehicle) {

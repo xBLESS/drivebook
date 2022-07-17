@@ -25,21 +25,31 @@ class LoginScreen extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              const Spacer(flex: 3),
-              TextField(
-                controller: _tecUsername,
-                decoration: const InputDecoration(
-                  label: Text('Username'),
+              const Spacer(flex: 2),
+              Card(
+                // margin: const EdgeInsetsDirectional.all(5),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: _tecUsername,
+                        decoration: const InputDecoration(
+                          label: Text('Username'),
+                        ),
+                      ),
+                      TextField(
+                        autocorrect: false,
+                        controller: _tecPassword,
+                        decoration: const InputDecoration(
+                          label: Text('Password'),
+                        ),
+                        enableSuggestions: false,
+                        obscureText: true,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              TextField(
-                autocorrect: false,
-                controller: _tecPassword,
-                decoration: const InputDecoration(
-                  label: Text('Password'),
-                ),
-                enableSuggestions: false,
-                obscureText: true,
               ),
               const Spacer(flex: 2),
             ],
