@@ -59,10 +59,13 @@ class LoginScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           // print('login method ran');
-          await userProvider.loginUser(_tecUsername.text, _tecPassword.text);
-          if (userProvider.getLoggedInUser!.email.isNotEmpty) {
-            Navigator.pushNamed(context, VehicleListScreen.routename);
-          }
+          await userProvider
+              .loginUser(_tecUsername.text, _tecPassword.text)
+              .whenComplete(() {
+            if (userProvider.getLoggedInUser!.email.isNotEmpty) {
+              Navigator.pushNamed(context, VehicleListScreen.routename);
+            }
+          });
         },
         label: const Text('Login'),
       ),

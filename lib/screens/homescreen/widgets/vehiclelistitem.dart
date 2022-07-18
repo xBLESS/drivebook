@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/vehicle.dart';
@@ -9,6 +10,9 @@ class VehicleListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Vehicle vehicle = Provider.of<Vehicle>(context);
+    final DateFormat formatter = DateFormat('yy');
+    final NumberFormat odometerFormatter = NumberFormat.decimalPattern();
+
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Row(
@@ -26,11 +30,12 @@ class VehicleListItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${vehicle.strManufacturer} ${vehicle.strModel}'),
+              Text(
+                  '${vehicle.strManufacturer} ${vehicle.strModel} \'${formatter.format(vehicle.dtBuildDate)}'),
               // Text(vehicle.strManufacturer),
               // Text(vehicle.strModel),
               const Text('Benzin'),
-              const Text('243269 km'),
+              Text(odometerFormatter.format(vehicle.iOdometer)),
             ],
           ),
         ],
