@@ -57,11 +57,12 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          print('login method ran');
-          userProvider.loginUser(_tecUsername.text, _tecPassword.text);
-          // ToDo Der benutzer soll nicht vom Hauptbildschirm zum LoginScreen zurückkehren sollen
-          Navigator.popAndPushNamed(context, VehicleListScreen.routename);
+        onPressed: () async {
+          // print('login method ran');
+          await userProvider.loginUser(_tecUsername.text, _tecPassword.text);
+          if (userProvider.getLoggedInUser!.email.isNotEmpty) {
+            Navigator.pushNamed(context, VehicleListScreen.routename);
+          }
         },
         label: const Text('Login'),
       ),
