@@ -1,3 +1,5 @@
+import 'package:drivebook/screens/vehicledetailscreen.dart/vehicledetailscreen.dart';
+
 import 'providers/appwrite.dart';
 import 'providers/logs_provider.dart';
 import 'providers/vehicles_provider.dart';
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
         routes: {
           VehicleListScreen.routename: (context) => const VehicleListScreen(),
           LoginScreen.routename: (context) => LoginScreen(),
+          VehicleDetailScreen.routename: (context) => VehicleDetailScreen(),
         },
       ),
     );

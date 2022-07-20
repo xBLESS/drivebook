@@ -1,3 +1,4 @@
+import 'package:drivebook/screens/vehicledetailscreen.dart/vehicledetailscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -13,32 +14,36 @@ class VehicleListItem extends StatelessWidget {
     final DateFormat formatter = DateFormat('yy');
     final NumberFormat odometerFormatter = NumberFormat.decimalPattern();
 
-    return Card(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: SizedBox(
-              // TODO Bild darf bestimmte breite nicht überschreiten
-              height: 100,
-              child: Image.network(
-                'https://i.auto-bild.de/mdb/extra_large/44/e30-00d.jpg',
+    return GestureDetector(
+      onTap: () =>
+          Navigator.popAndPushNamed(context, VehicleDetailScreen.routename),
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: SizedBox(
+                // TODO Bild darf bestimmte breite nicht überschreiten
+                height: 100,
+                child: Image.network(
+                  'https://i.auto-bild.de/mdb/extra_large/44/e30-00d.jpg',
+                ),
               ),
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                  '${vehicle.strManufacturer} ${vehicle.strModel} \'${formatter.format(vehicle.dtBuildDate)}'),
-              // Text(vehicle.strManufacturer),
-              // Text(vehicle.strModel),
-              const Text('Benzin'),
-              Text(odometerFormatter.format(vehicle.iOdometer)),
-            ],
-          ),
-        ],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    '${vehicle.strManufacturer} ${vehicle.strModel} \'${formatter.format(vehicle.dtBuildDate)}'),
+                // Text(vehicle.strManufacturer),
+                // Text(vehicle.strModel),
+                const Text('Benzin'),
+                Text(odometerFormatter.format(vehicle.iOdometer)),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
