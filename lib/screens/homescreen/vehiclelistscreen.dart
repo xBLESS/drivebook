@@ -1,5 +1,4 @@
 import '../../providers/vehicle.dart';
-import '../../providers/appwrite.dart';
 import '../../providers/vehicles_provider.dart';
 import 'widgets/vehiclelist.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +10,10 @@ class VehicleListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final appwriteProv = Provider.of<AppwriteClient>(context);
     print('vehicleListScreen build ran');
     return Scaffold(
       appBar: AppBar(
-        title: Consumer<AppwriteClient>(
-          builder: (context, value, child) => Text(value.getLoggedInUser!.name),
-        ),
+        title: const Text('Text'),
       ),
       body: VehicleList(),
       floatingActionButton: FloatingActionButton(

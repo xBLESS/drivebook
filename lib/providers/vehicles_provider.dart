@@ -1,7 +1,4 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:drivebook/providers/vehicle.dart';
-import 'package:drivebook/providers/appwrite.dart';
 import 'package:flutter/material.dart';
 
 class VehiclesProvider extends ChangeNotifier {
@@ -20,29 +17,29 @@ class VehiclesProvider extends ChangeNotifier {
   //   ];
   // }
 
-  Future loadVehicles(Client client) async {
-    Database db = Database(client);
-    List<Vehicle> vehicles = [];
-    DocumentList docList = await db.listDocuments(
-      collectionId: AppwriteClient.vehicleTableId,
-    );
+  // // Future loadVehicles(Client client) async {
+  // //   Database db = Database(client);
+  // //   List<Vehicle> vehicles = [];
+  // //   DocumentList docList = await db.listDocuments(
+  // //     collectionId: AppwriteClient.vehicleTableId,
+  // //   );
 
-    for (var doc in docList.documents) {
-      vehicles.add(
-        Vehicle.fromMap(doc.data),
-        //   Vehicle(
-        //       iId: doc.data['\$id'],
-        //       strManufacturer: doc.data['Make'],
-        //       strModel: doc.data['Model'],
-        //       strImageUrl: ''),
-      );
-    }
+  // //   for (var doc in docList.documents) {
+  // //     vehicles.add(
+  // //       Vehicle.fromMap(doc.data),
+  // //       Vehicle(
+  // //           iId: doc.data['\$id'],
+  // //           strManufacturer: doc.data['Make'],
+  // //           strModel: doc.data['Model'],
+  // //           strImageUrl: ''),
+  // //     );
+  // //   }
 
-    _vehicles = vehicles;
+  // //   _vehicles = vehicles;
 
-    notifyListeners();
-    return vehicles;
-  }
+  // //   notifyListeners();
+  // //   return vehicles;
+  // // }
 
   void addVehicle(Vehicle vehicle) {
     _vehicles.add(vehicle);

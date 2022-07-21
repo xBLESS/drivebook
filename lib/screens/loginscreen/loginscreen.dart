@@ -1,4 +1,3 @@
-import '../../providers/appwrite.dart';
 import '../homescreen/vehiclelistscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,9 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<AppwriteClient>(context);
-
-    print('LoginScreen build ran');
+    // print('LoginScreen build ran');
 
     return Scaffold(
       body: SafeArea(
@@ -74,14 +71,13 @@ class _LoginScreenState extends State<LoginScreen> {
           setState(() {
             isLoading = !isLoading;
           });
-          // print('login method ran');
-          await userProvider
-              .loginUser(_tecUsername.text, _tecPassword.text)
-              .whenComplete(() {
-            if (userProvider.getLoggedInUser!.email.isNotEmpty) {
-              Navigator.pushNamed(context, VehicleListScreen.routename);
-            }
-          });
+          // await userProvider
+          //     .loginUser(_tecUsername.text, _tecPassword.text)
+          //     .whenComplete(() {
+          //   if (userProvider.getLoggedInUser!.email.isNotEmpty) {
+          //     Navigator.pushNamed(context, VehicleListScreen.routename);
+          //   }
+          // });
         },
         label: const Text('Login'),
       ),

@@ -1,6 +1,5 @@
 import 'package:drivebook/screens/vehicledetailscreen.dart/vehicledetailscreen.dart';
 
-import 'providers/appwrite.dart';
 import 'providers/logs_provider.dart';
 import 'providers/vehicles_provider.dart';
 import 'screens/homescreen/vehiclelistscreen.dart';
@@ -19,9 +18,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<AppwriteClient>(
-          create: (context) => AppwriteClient(),
-        ),
         ChangeNotifierProvider<VehiclesProvider>.value(
           value: VehiclesProvider(),
         ),
