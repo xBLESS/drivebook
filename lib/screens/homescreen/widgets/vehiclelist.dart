@@ -1,4 +1,4 @@
-import 'package:drivebook/providers/vehicle.dart';
+import 'package:drivebook/models/vehicle.dart';
 import 'package:drivebook/providers/vehicles_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'vehiclelistitem.dart';
 
 class VehicleList extends StatelessWidget {
+  DBController dbc = DBController();
   VehicleList({Key? key}) : super(key: key);
-  List<Vehicle> _vehicles = [];
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +16,24 @@ class VehicleList extends StatelessWidget {
     //     .loadVehicles(appwriteClient.getAppwriteClient)
     //     .then((value) => null);
     // vehicleData.getTestVehicles().then((value) => vehicles = value);
-    _vehicles = vehicleData.getVehicles;
 
     // print('VehicleList build ran');
 
-    return ListView.builder(
-      itemCount: _vehicles.length,
-      itemBuilder: (context, index) => ChangeNotifierProvider.value(
-        value: _vehicles[index],
-        child: VehicleListItem(),
-      ),
+    return FutureBuilder(
+      future: dbc.getAllVehicles,
+      builder: (context, AsyncSnapshot<List<VehicleData>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) => VehicleListItem(),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 }

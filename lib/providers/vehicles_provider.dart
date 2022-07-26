@@ -1,4 +1,4 @@
-import 'package:drivebook/providers/vehicle.dart';
+import 'package:drivebook/models/vehicle.dart';
 import 'package:flutter/material.dart';
 
 class VehiclesProvider extends ChangeNotifier {

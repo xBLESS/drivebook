@@ -1,12 +1,25 @@
-import '../../providers/vehicle.dart';
-import '../../providers/vehicles_provider.dart';
+import 'package:drift/drift.dart';
+import 'package:drivebook/models/vehicle.dart';
+import 'package:drivebook/providers/vehicles_provider.dart';
 import 'widgets/vehiclelist.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class VehicleListScreen extends StatelessWidget {
   static const routename = '/vehicleListScreen';
-  const VehicleListScreen({Key? key}) : super(key: key);
+  DBController dbc = DBController();
+  VehicleListScreen({Key? key}) : super(key: key);
+
+  void _fabAction() {
+    dbc.addTodo(
+      const VehicleCompanion(
+        id: Value(1),
+        manufacturer: Value('BMW'),
+        model: Value('E36'),
+        odometer: Value(123456),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +30,7 @@ class VehicleListScreen extends StatelessWidget {
       ),
       body: VehicleList(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          // Provider.of<VehiclesProvider>(context, listen: false).addVehicle(
-          //   Vehicle(
-          //     iId: '2',
-          //     strManufacturer: 'BMW',
-          //     strModel: 'E39',
-          //     strImageUrl:
-          //         'https://upload.wikimedia.org/wikipedia/commons/4/4f/BMW_E39_front_20081125.jpg',
-          //   ),
-          // )
-        },
+        onPressed: _fabAction,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

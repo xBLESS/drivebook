@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../providers/vehicle.dart';
+import 'package:drivebook/models/vehicle.dart';
 
 class VehicleListItem extends StatelessWidget {
   VehicleListItem({Key? key}) : super(key: key);
 
+  final DBController db = DBController();
+
   @override
   Widget build(BuildContext context) {
-    Vehicle vehicle = Provider.of<Vehicle>(context);
+    Vehicle vehicle = Vehicle();
     final DateFormat formatter = DateFormat('yy');
     final NumberFormat odometerFormatter = NumberFormat.decimalPattern();
 
@@ -35,11 +37,12 @@ class VehicleListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                    '${vehicle.strManufacturer} ${vehicle.strModel} \'${formatter.format(vehicle.dtBuildDate)}'),
+                    // '${vehicle.manufacturer} ${vehicle.model} \'${formatter.format(vehicle.buildDate)}'),
+                    '${vehicle.manufacturer} ${vehicle.model}'),
                 // Text(vehicle.strManufacturer),
                 // Text(vehicle.strModel),
                 const Text('Benzin'),
-                Text(odometerFormatter.format(vehicle.iOdometer)),
+                Text(odometerFormatter.format(vehicle.odometer)),
               ],
             ),
           ],

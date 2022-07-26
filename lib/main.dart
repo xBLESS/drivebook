@@ -32,9 +32,9 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-        home: LoginScreen(),
+        home: VehicleListScreen(),
         routes: {
-          VehicleListScreen.routename: (context) => const VehicleListScreen(),
+          VehicleListScreen.routename: (context) => VehicleListScreen(),
           LoginScreen.routename: (context) => LoginScreen(),
           VehicleDetailScreen.routename: (context) => VehicleDetailScreen(),
         },
