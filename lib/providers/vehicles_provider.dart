@@ -1,48 +1,37 @@
-import 'package:drivebook/models/vehicle.dart';
+import 'package:drift/drift.dart';
+import 'package:drivebook/models/dbcontroller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class VehiclesProvider extends ChangeNotifier {
-  List<Vehicle> _vehicles = [];
+  final BuildContext context;
 
-  List<Vehicle> get getVehicles => _vehicles;
+  VehiclesProvider(this.context);
 
-  // Future<List<Vehicle>> getTestVehicles() async {
-  //   return [
-  //     Vehicle(
-  //       iId: '1',
-  //       strManufacturer: 'BMW',
-  //       strModel: 'E30',
-  //       strImageUrl: 'https://i.auto-bild.de/mdb/extra_large/44/e30-00d.jpg',
-  //     ),
-  //   ];
+  Future<List<VehicleData>> getVehicles() async {
+    DBController dbc = Provider.of<DBController>(context);
+    List<VehicleData> vehicles = await dbc.getAllVehicles;
+    notifyListeners();
+    return vehicles;
+  }
+
+  // void get getVehiclesVoid async {
+  //   // _isLoading = true;
+  //   await dbc.getAllVehicles;
+  //   notifyListeners();
   // }
 
-  // // Future loadVehicles(Client client) async {
-  // //   Database db = Database(client);
-  // //   List<Vehicle> vehicles = [];
-  // //   DocumentList docList = await db.listDocuments(
-  // //     collectionId: AppwriteClient.vehicleTableId,
-  // //   );
-
-  // //   for (var doc in docList.documents) {
-  // //     vehicles.add(
-  // //       Vehicle.fromMap(doc.data),
-  // //       Vehicle(
-  // //           iId: doc.data['\$id'],
-  // //           strManufacturer: doc.data['Make'],
-  // //           strModel: doc.data['Model'],
-  // //           strImageUrl: ''),
-  // //     );
-  // //   }
-
-  // //   _vehicles = vehicles;
-
-  // //   notifyListeners();
-  // //   return vehicles;
-  // // }
-
-  void addVehicle(Vehicle vehicle) {
-    _vehicles.add(vehicle);
+  void addVehicle(VehicleData vehicle) async {
+    DBController dbc = Provider.of<DBController>(context);
+    await dbc.addVehicle(
+      VehicleCompanion(
+        id: Value(vehicle.id),
+        manufacturer: Value(vehicle.manufacturer),
+        model: Value(vehicle.model),
+        odometer: Value(vehicle.odometer),
+        buildDate: Value(vehicle.buildDate),
+      ),
+    );
     notifyListeners();
   }
 }

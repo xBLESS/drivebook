@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'vehicle.dart';
+part of 'dbcontroller.dart';
 
 // **************************************************************************
 // MoorGenerator

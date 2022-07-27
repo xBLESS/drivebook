@@ -6,7 +6,7 @@ import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
-part 'vehicle.g.dart';
+part 'dbcontroller.g.dart';
 
 class Vehicle extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -29,13 +29,11 @@ class DBController extends _$DBController {
   @override
   int get schemaVersion => 2;
 
-  Future<int> addTodo(VehicleCompanion entry) => into(vehicle).insert(entry);
+  Future<int> addVehicle(VehicleCompanion entry) => into(vehicle).insert(entry);
 
-  Future<List<VehicleData>> get getAllVehicles => select(vehicle).get();
+  Future<List<VehicleData>> get getAllVehicles async => select(vehicle).get();
 
-  Stream<List<VehicleData>> watchVehicles(Vehicle c) {
-    return (select(vehicle)).watch();
-  }
+  Stream<List<VehicleData>> watchVehicles() => select(vehicle).watch();
 }
 
 LazyDatabase _openConnection() {

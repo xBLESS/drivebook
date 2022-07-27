@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'package:drivebook/models/vehicle.dart';
+import 'package:drivebook/models/dbcontroller.dart';
 
 class VehicleListItem extends StatelessWidget {
-  VehicleListItem({Key? key}) : super(key: key);
+  VehicleListItem({Key? key, required this.vehicle}) : super(key: key);
 
-  final DBController db = DBController();
+  final VehicleData vehicle;
 
   @override
   Widget build(BuildContext context) {
-    Vehicle vehicle = Vehicle();
+    // final DBController dbc = Provider.of<DBController>(context);
+
     final DateFormat formatter = DateFormat('yy');
     final NumberFormat odometerFormatter = NumberFormat.decimalPattern();
 
     return GestureDetector(
-      onTap: () =>
-          Navigator.popAndPushNamed(context, VehicleDetailScreen.routename),
+      onTap: () => Navigator.popAndPushNamed(context, VehicleDetailScreen.routename),
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Row(
@@ -36,9 +36,9 @@ class VehicleListItem extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                vehicle.buildDate != null ? Text(
                     // '${vehicle.manufacturer} ${vehicle.model} \'${formatter.format(vehicle.buildDate)}'),
-                    '${vehicle.manufacturer} ${vehicle.model}'),
+                    '${vehicle.manufacturer} ${vehicle.model} \'${formatter.format(vehicle.buildDate!)}') : Text('${vehicle.manufacturer} ${vehicle.model}'),
                 // Text(vehicle.strManufacturer),
                 // Text(vehicle.strModel),
                 const Text('Benzin'),

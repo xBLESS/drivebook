@@ -1,4 +1,6 @@
+import 'package:drivebook/models/dbcontroller.dart';
 import 'package:drivebook/screens/vehicledetailscreen.dart/vehicledetailscreen.dart';
+import 'package:path/path.dart';
 
 import 'providers/logs_provider.dart';
 import 'providers/vehicles_provider.dart';
@@ -8,7 +10,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<DBController>(
+          create: (context) => DBController(),
+          dispose: (context, db) => db.close(),
+        ),
+        ChangeNotifierProvider<VehiclesProvider>(
+          create: (context) => VehiclesProvider(context),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,29 +31,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<VehiclesProvider>.value(
-          value: VehiclesProvider(),
-        ),
-        ChangeNotifierProvider<LogsProvider>(
-          create: (context) => LogsProvider(),
-        ),
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        debugShowCheckedModeBanner: false,
-        // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-        home: VehicleListScreen(),
-        routes: {
-          VehicleListScreen.routename: (context) => VehicleListScreen(),
-          LoginScreen.routename: (context) => LoginScreen(),
-          VehicleDetailScreen.routename: (context) => VehicleDetailScreen(),
-        },
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
+      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: VehicleListScreen(),
+      routes: {
+        VehicleListScreen.routename: (context) => VehicleListScreen(),
+        LoginScreen.routename: (context) => LoginScreen(),
+        VehicleDetailScreen.routename: (context) => VehicleDetailScreen(),
+      },
     );
   }
 }
