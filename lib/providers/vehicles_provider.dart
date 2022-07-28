@@ -6,13 +6,15 @@ import 'package:provider/provider.dart';
 class VehiclesProvider extends ChangeNotifier {
   final BuildContext context;
 
+  List<VehicleData> _vehicle = [];
+
   VehiclesProvider(this.context);
 
   Future<List<VehicleData>> getVehicles() async {
     DBController dbc = Provider.of<DBController>(context);
-    List<VehicleData> vehicles = await dbc.getAllVehicles;
+    _vehicles = await dbc.getAllVehicles;
     notifyListeners();
-    return vehicles;
+    return _vehicles;
   }
 
   // void get getVehiclesVoid async {
