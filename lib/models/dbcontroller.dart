@@ -33,7 +33,7 @@ class DBController extends _$DBController {
   // you should bump this number whenever you change or add a table definition.
   // Migrations are covered later in the documentation.
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 1;
 
   Future<int> addVehicle(VehicleCompanion entry) => into(vehicle).insert(entry);
 
@@ -49,6 +49,8 @@ LazyDatabase _openConnection() {
     // for your app.
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    // Uncomment to delete db file
+    // file.delete();
     return NativeDatabase(file);
   });
 }

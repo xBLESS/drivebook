@@ -18,7 +18,9 @@ class VehicleListItem extends StatelessWidget {
     final NumberFormat odometerFormatter = NumberFormat.decimalPattern();
 
     return GestureDetector(
-      onTap: () => Navigator.popAndPushNamed(context, VehicleDetailScreen.routename),
+      onTap: () {
+        Navigator.popAndPushNamed(context, VehicleDetailScreen.routename);
+      },
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Row(
