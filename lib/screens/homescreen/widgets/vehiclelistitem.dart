@@ -1,3 +1,4 @@
+import 'package:drivebook/providers/vehicles_provider.dart';
 import 'package:drivebook/screens/vehicledetailscreen.dart/vehicledetailscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,14 +13,15 @@ class VehicleListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final DBController dbc = Provider.of<DBController>(context);
+    // VehicleData vehicle = vehicleProvider.getSelectedVehicle;
 
     final DateFormat formatter = DateFormat('yy');
     final NumberFormat odometerFormatter = NumberFormat.decimalPattern();
 
     return GestureDetector(
       onTap: () {
-        Navigator.popAndPushNamed(context, VehicleDetailScreen.routename);
+        Provider.of<VehiclesProvider>(context, listen: false).setSelectedIndex(vehicle);
+        Navigator.pushNamed(context, VehicleDetailScreen.routename);
       },
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,

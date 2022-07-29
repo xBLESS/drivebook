@@ -49,8 +49,10 @@ LazyDatabase _openConnection() {
     // for your app.
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    // Uncomment to delete db file
+
+    // Datenbankänderung aller art -> Untere zeile auskommentieren und
     // file.delete();
+
     return NativeDatabase(file);
   });
 }
