@@ -19,6 +19,12 @@ class Vehicle extends Table {
   // Set<Column> get primaryKey => {id};
 }
 
+class Todo extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get title => text().withLength(max: 128)();
+  TextColumn get content => text()();
+}
+
 @DriftDatabase(tables: [Vehicle])
 class DBController extends _$DBController {
   // we tell the database where to store the data with this constructor
@@ -27,7 +33,7 @@ class DBController extends _$DBController {
   // you should bump this number whenever you change or add a table definition.
   // Migrations are covered later in the documentation.
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   Future<int> addVehicle(VehicleCompanion entry) => into(vehicle).insert(entry);
 
