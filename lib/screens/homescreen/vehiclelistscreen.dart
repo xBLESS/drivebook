@@ -24,30 +24,21 @@ class VehicleListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('vehicleListScreen build ran');
-    // DBController dbc = Provider.of<DBController>(context);
+    // print('vehicleListScreen build ran');
+    var vehicleProvider = Provider.of<VehiclesProvider>(context);
+    vehicleProvider.loadVehicles();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Text'),
       ),
-      body: FutureBuilder(
-        future: Provider.of<DBController>(context).getAllVehicles,
-        builder: (context, AsyncSnapshot<List<VehicleData>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                VehicleData vehicle = snapshot.data![index];
-                return VehicleListItem(
-                  vehicle: vehicle,
-                );
-              },
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+      body: ListView.builder(
+        itemCount: vehicleProvider.getAllVehicles.length,
+        itemBuilder: (context, index) {
+          VehicleData vehicle = vehicleProvider.getAllVehicles[index];
+          return VehicleListItem(
+            vehicle: vehicle,
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
