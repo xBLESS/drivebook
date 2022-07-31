@@ -1,5 +1,5 @@
 import 'package:drivebook/models/dbcontroller.dart';
-import 'package:drivebook/screens/vehicledetailscreen.dart/vehicledetailscreen.dart';
+import 'package:drivebook/screens/vehicledetailscreen/vehicledetailscreen.dart';
 import 'package:path/path.dart';
 
 import 'providers/logs_provider.dart';

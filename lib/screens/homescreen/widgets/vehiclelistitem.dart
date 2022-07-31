@@ -1,5 +1,5 @@
 import 'package:drivebook/providers/vehicles_provider.dart';
-import 'package:drivebook/screens/vehicledetailscreen.dart/vehicledetailscreen.dart';
+import 'package:drivebook/screens/vehicledetailscreen/vehicledetailscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
