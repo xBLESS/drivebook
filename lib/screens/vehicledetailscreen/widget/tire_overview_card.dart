@@ -7,6 +7,7 @@ class TireOverViewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO Vielleicht sollten die Reifendiagramme als png oder svg erstellt werden
     return Card(
       child: Stack(
         children: [
