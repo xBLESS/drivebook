@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:drivebook/models/dbcontroller.dart';
 import 'package:drivebook/providers/vehicles_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -35,26 +36,71 @@ class VehicleDetailScreen extends StatelessWidget {
               title: Text('${vehicle.manufacturer} ${vehicle.model}'),
             ),
             pinned: false,
+            // bottom: TabBar(
+            //   tabs: [IconButton(onPressed: () {}, icon: Icon(Icons.car_crash_outlined))],
+            // ),
           ),
-          SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 2.0,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return Card(
-                  // generate blues with random shades
-                  color: Colors.amber[Random().nextInt(9) * 100],
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text('Test'),
-                  ),
-                );
-              },
-              childCount: 3,
+          // SliverGrid.count(
+          //   crossAxisCount: 3,
+          //   children: const [
+          //     Card(),
+          //     Card(),
+          //     Card(),
+          //     Card(),
+          //   ],
+          // ),
+          SliverToBoxAdapter(
+            child: StaggeredGrid.count(
+              crossAxisCount: 4,
+              mainAxisSpacing: 4,
+              crossAxisSpacing: 4,
+              children: const [
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 2,
+                  mainAxisCellCount: 2,
+                  child: Card(child: Text('Index 0')),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 2,
+                  mainAxisCellCount: 1,
+                  child: Card(child: Text('Index 1')),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 1,
+                  mainAxisCellCount: 1,
+                  child: Card(child: Text('Index 2')),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 1,
+                  mainAxisCellCount: 1,
+                  child: Card(child: Text('Index 3')),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 4,
+                  mainAxisCellCount: 2,
+                  child: Card(child: Text('Index 4')),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 4,
+                  mainAxisCellCount: 1,
+                  child: Card(child: Text('Index 2')),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 3,
+                  mainAxisCellCount: 2,
+                  child: Card(child: Text('Index 4')),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 4,
+                  mainAxisCellCount: 1,
+                  child: Card(child: Text('Index 2')),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 3,
+                  mainAxisCellCount: 2,
+                  child: Card(child: Text('Index 4')),
+                ),
+              ],
             ),
           ),
         ],
