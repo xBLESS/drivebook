@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class VehicleDetailScreen extends StatelessWidget {
   static String routename = '/vehicledetailscreen';
-  VehicleDetailScreen({Key? key}) : super(key: key);
+  const VehicleDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class VehicleDetailScreen extends StatelessWidget {
               (context, index) {
                 return Card(
                   // generate blues with random shades
-                  color: Colors.amber[100],
+                  color: Colors.amber[Random().nextInt(9) * 100],
                   child: Container(
                     alignment: Alignment.center,
                     child: Text('Test'),
