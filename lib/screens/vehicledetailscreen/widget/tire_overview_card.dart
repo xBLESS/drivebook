@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TireLayout extends StatelessWidget {
-  const TireLayout({
+class TireOverViewCard extends StatelessWidget {
+  const TireOverViewCard({
     Key? key,
   }) : super(key: key);
 

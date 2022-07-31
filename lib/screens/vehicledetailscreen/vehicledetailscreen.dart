@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:drivebook/models/dbcontroller.dart';
 import 'package:drivebook/providers/vehicles_provider.dart';
-import 'package:drivebook/screens/vehicledetailscreen/widget/TireLayout.dart';
+import 'package:drivebook/screens/vehicledetailscreen/widget/tire_overview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -62,11 +62,15 @@ class VehicleDetailScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Text('Tachostand', style: currentTheme.textTheme.titleSmall),
-                          Text(odometerFormatter.format(vehicle.odometer), style: currentTheme.textTheme.titleMedium),
+                          Text('Tachostand',
+                              style: currentTheme.textTheme.titleSmall),
+                          Text(odometerFormatter.format(vehicle.odometer),
+                              style: currentTheme.textTheme.titleMedium),
                           const Spacer(),
-                          Text('Fahrleistung', style: currentTheme.textTheme.titleSmall),
-                          Text(odometerFormatter.format(vehicle.odometer), style: currentTheme.textTheme.titleMedium),
+                          Text('Fahrleistung',
+                              style: currentTheme.textTheme.titleSmall),
+                          Text(odometerFormatter.format(vehicle.odometer),
+                              style: currentTheme.textTheme.titleMedium),
                         ],
                       ),
                     ),
@@ -90,7 +94,7 @@ class VehicleDetailScreen extends StatelessWidget {
                 StaggeredGridTile.count(
                   crossAxisCellCount: 2,
                   mainAxisCellCount: 2,
-                  child: TireLayout(),
+                  child: TireOverViewCard(),
                 ),
                 StaggeredGridTile.count(
                   crossAxisCellCount: 3,
