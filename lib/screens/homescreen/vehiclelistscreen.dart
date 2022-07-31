@@ -24,7 +24,7 @@ class VehicleListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print('vehicleListScreen build ran');
+    print('vehicleListScreen build ran');
     var vehicleProvider = Provider.of<VehiclesProvider>(context);
     vehicleProvider.loadVehicles();
 
