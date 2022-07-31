@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:drivebook/models/dbcontroller.dart';
 import 'package:drivebook/providers/vehicles_provider.dart';
 import 'package:flutter/material.dart';
@@ -6,12 +8,13 @@ import 'package:provider/provider.dart';
 
 class VehicleDetailScreen extends StatelessWidget {
   static String routename = '/vehicledetailscreen';
-  const VehicleDetailScreen({Key? key}) : super(key: key);
+  VehicleDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var vehicleProvider = Provider.of<VehiclesProvider>(context);
+    VehiclesProvider vehicleProvider = Provider.of<VehiclesProvider>(context);
     VehicleData vehicle = vehicleProvider.getSelectedVehicle;
+    print('detailscreen build ran');
 
     return Scaffold(
       body: CustomScrollView(
@@ -34,13 +37,24 @@ class VehicleDetailScreen extends StatelessWidget {
             pinned: false,
           ),
           SliverGrid(
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 3),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 2.0,
+            ),
             delegate: SliverChildBuilderDelegate(
-              ((context, index) {
-                return GridTile(
-                  child: Text('Test'),
+              (context, index) {
+                return Card(
+                  // generate blues with random shades
+                  color: Colors.amber[100],
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text('Test'),
+                  ),
                 );
-              }),
+              },
+              childCount: 3,
             ),
           ),
         ],
