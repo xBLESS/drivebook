@@ -8,8 +8,9 @@ import 'widgets/vehiclelistitem.dart';
 
 class VehicleListScreen extends StatelessWidget {
   static const routename = '/vehicleListScreen';
+  bool loadData = true;
 
-  const VehicleListScreen({Key? key}) : super(key: key);
+  VehicleListScreen({Key? key}) : super(key: key);
 
   void _fabAction(BuildContext context) {
     Provider.of<DBController>(context, listen: false).addVehicle(
@@ -26,7 +27,7 @@ class VehicleListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     print('vehicleListScreen build ran');
     var vehicleProvider = Provider.of<VehiclesProvider>(context);
-    vehicleProvider.loadVehicles();
+    vehicleProvider.getAllVehicles;
 
     return Scaffold(
       appBar: AppBar(

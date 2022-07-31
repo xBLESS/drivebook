@@ -31,6 +31,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Load initial data
+    Provider.of<VehiclesProvider>(context, listen: false).loadVehicles();
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
