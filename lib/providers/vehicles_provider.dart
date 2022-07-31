@@ -29,7 +29,7 @@ class VehiclesProvider extends ChangeNotifier {
   }
 
   Future<List<VehicleData>> loadVehicles() async {
-    DBController dbc = Provider.of<DBController>(context);
+    DBController dbc = Provider.of<DBController>(context, listen: false);
     _vehicles = await dbc.getAllVehicles;
     notifyListeners();
     return _vehicles;
@@ -41,17 +41,18 @@ class VehiclesProvider extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void addVehicle(VehicleData vehicle) async {
-    DBController dbc = Provider.of<DBController>(context);
-    await dbc.addVehicle(
+  void addVehicle(VehicleCompanion vehicle) async {
+    await Provider.of<DBController>(context, listen: false).addVehicle(
       VehicleCompanion(
-        id: Value(vehicle.id),
-        manufacturer: Value(vehicle.manufacturer),
-        model: Value(vehicle.model),
-        odometer: Value(vehicle.odometer),
-        buildDate: Value(vehicle.buildDate),
+        id: vehicle.id,
+        manufacturer: vehicle.manufacturer,
+        model: vehicle.model,
+        odometer: vehicle.odometer,
+        buildDate: vehicle.buildDate,
       ),
     );
-    notifyListeners();
+
+    loadVehicles();
+    // notifyListeners();
   }
 }

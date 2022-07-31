@@ -13,7 +13,7 @@ class VehicleListScreen extends StatelessWidget {
   VehicleListScreen({Key? key}) : super(key: key);
 
   void _fabAction(BuildContext context) {
-    Provider.of<DBController>(context, listen: false).addVehicle(
+    Provider.of<VehiclesProvider>(context, listen: false).addVehicle(
       const VehicleCompanion(
         // id: Value(2),
         manufacturer: Value('BMW'),
