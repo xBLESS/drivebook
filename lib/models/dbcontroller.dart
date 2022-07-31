@@ -8,21 +8,66 @@ import 'package:path/path.dart' as p;
 
 part 'dbcontroller.g.dart';
 
+class FuelType extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get fuel => text().withLength(max: 32)();
+}
+
+class LogType extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get type => text()();
+  TextColumn get color => text()();
+}
+
 class Vehicle extends Table {
+  //Update Database
+  //dbcontroller.g.dart vorher löschen und dann flutter pub run build_runner build
+
+  //Fahrzeug
   IntColumn get id => integer().autoIncrement()();
   TextColumn get manufacturer => text().withLength(max: 64)();
   TextColumn get model => text().withLength(max: 64)();
+  TextColumn get generation => text().nullable().withLength(max: 64)();
   DateTimeColumn get buildDate => dateTime().nullable()();
-  IntColumn get odometer => integer().withDefault(const Constant(0))();
+  IntColumn get odometer => integer()();
+  TextColumn get licensePlate =>
+      text().withLength(max: 16).withDefault(const Constant(''))();
+  TextColumn get notes =>
+      text().withLength(max: 512).withDefault(const Constant(''))();
+
+  //Primary Tank
+  IntColumn get primaryFuelTypeId => integer().references(FuelType, #id)();
+  RealColumn get primaryFuelCapacity => real()();
+
+  //Secondary Tank
+  IntColumn get secondaryFuelTypeId =>
+      integer().nullable().references(FuelType, #id)();
+  RealColumn get secondaryFuelCapacity => real().nullable()();
+
+  // Kauf
+  IntColumn get buyOdometer => integer().nullable()();
+  DateTimeColumn get buyDateTime => dateTime().nullable()();
+  RealColumn get buyPrice => real().nullable()();
+
+  // Verkauf
+  IntColumn get sellOdometer => integer().nullable()();
+  DateTimeColumn get sellDateTime => dateTime().nullable()();
+  RealColumn get sellPrice => real().nullable()();
 
   // @override // already the PK because of the autoincrement
   // Set<Column> get primaryKey => {id};
+
+  //Todo Datenbankmigration schreiben, ist für Entwiklung aber unwichtig
 }
 
-class Todo extends Table {
+class Log extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get title => text().withLength(max: 128)();
   TextColumn get content => text()();
+
+  IntColumn get logTypeId => integer().references(LogType, #id)();
+  IntColumn get odometer => integer()();
+  DateTimeColumn get logTimestamp => dateTime()();
 }
 
 @DriftDatabase(tables: [Vehicle])

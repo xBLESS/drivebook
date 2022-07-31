@@ -79,7 +79,17 @@ class VehicleDetailScreen extends StatelessWidget {
                 StaggeredGridTile.count(
                   crossAxisCellCount: 1,
                   mainAxisCellCount: 1,
-                  child: Card(child: Text('Index 2')),
+                  child: Card(
+                      child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text('Vehicle ID',
+                            style: currentTheme.textTheme.titleMedium),
+                        Text('${vehicle.id}'),
+                      ],
+                    ),
+                  )),
                 ),
                 StaggeredGridTile.count(
                   crossAxisCellCount: 1,
