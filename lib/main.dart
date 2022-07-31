@@ -5,7 +5,6 @@ import 'package:path/path.dart';
 import 'providers/logs_provider.dart';
 import 'providers/vehicles_provider.dart';
 import 'screens/homescreen/vehiclelistscreen.dart';
-import 'screens/loginscreen/loginscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +43,6 @@ class MyApp extends StatelessWidget {
       home: VehicleListScreen(),
       routes: {
         VehicleListScreen.routename: (context) => VehicleListScreen(),
-        LoginScreen.routename: (context) => LoginScreen(),
         VehicleDetailScreen.routename: (context) => VehicleDetailScreen(),
       },
     );

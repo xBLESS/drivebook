@@ -17,7 +17,7 @@ class VehicleListScreen extends StatelessWidget {
       const VehicleCompanion(
         // id: Value(2),
         manufacturer: Value('BMW'),
-        model: Value('E36'),
+        model: Value('E30'),
         odometer: Value(123456),
       ),
     );
