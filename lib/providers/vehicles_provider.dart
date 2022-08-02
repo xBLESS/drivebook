@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart';
 import 'package:drivebook/models/dbcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,8 +46,21 @@ class VehiclesProvider extends ChangeNotifier {
         id: vehicle.id,
         manufacturer: vehicle.manufacturer,
         model: vehicle.model,
+        generation: vehicle.generation,
         mileage: vehicle.mileage,
         buildDate: vehicle.buildDate,
+        licensePlate: vehicle.licensePlate,
+        notes: vehicle.notes,
+        primaryFuelCapacity: vehicle.primaryFuelCapacity,
+        primaryFuelTypeId: vehicle.primaryFuelTypeId,
+        secondaryFuelCapacity: vehicle.secondaryFuelCapacity,
+        secondaryFuelTypeId: vehicle.secondaryFuelTypeId,
+        buyDateTime: vehicle.buyDateTime,
+        buyMileage: vehicle.buyMileage,
+        buyPrice: vehicle.buyPrice,
+        sellDateTime: vehicle.sellDateTime,
+        sellMileage: vehicle.sellMileage,
+        sellPrice: vehicle.sellPrice,
       ),
     );
 

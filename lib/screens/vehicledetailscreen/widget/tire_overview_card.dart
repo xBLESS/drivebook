@@ -47,7 +47,7 @@ class TireOverViewCard extends StatelessWidget {
             left: 10,
             child: Column(
               children: [
-                const Text('VL'),
+                const Text('HL'),
                 Container(
                   height: 40,
                   width: 20,
@@ -62,7 +62,7 @@ class TireOverViewCard extends StatelessWidget {
             right: 10,
             child: Column(
               children: [
-                const Text('VL'),
+                const Text('HR'),
                 Container(
                   height: 40,
                   width: 20,

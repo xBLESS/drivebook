@@ -66,7 +66,7 @@ class VehicleDetailScreen extends StatelessWidget {
                           Text(odometerFormatter.format(vehicle.mileage), style: currentTheme.textTheme.titleMedium),
                           const Spacer(),
                           Text('Fahrleistung', style: currentTheme.textTheme.titleSmall),
-                          Text(odometerFormatter.format(vehicle.mileage), style: currentTheme.textTheme.titleMedium),
+                          Text(odometerFormatter.format(vehicle.mileage - vehicle.buyMileage!), style: currentTheme.textTheme.titleMedium),
                         ],
                       ),
                     ),

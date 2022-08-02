@@ -14,11 +14,19 @@ class VehicleListScreen extends StatelessWidget {
 
   void _fabAction(BuildContext context) {
     Provider.of<VehiclesProvider>(context, listen: false).addVehicle(
-      const VehicleCompanion(
+      VehicleCompanion(
         // id: Value(2),
         manufacturer: Value('BMW'),
-        model: Value('E30'),
+        model: Value('320i'),
+        generation: Value('E30'),
         mileage: Value(123456),
+        buildDate: Value(DateTime(1987, 1, 1, 1, 1)),
+        licensePlate: Value('VIE TW 69'),
+        primaryFuelCapacity: Value(50),
+        primaryFuelTypeId: Value(0),
+        buyDateTime: Value(DateTime(2021, 1, 2, 0, 0, 0)),
+        buyMileage: Value(70500),
+        buyPrice: Value(0),
       ),
     );
   }
