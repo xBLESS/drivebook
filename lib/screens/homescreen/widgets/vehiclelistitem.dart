@@ -46,7 +46,7 @@ class VehicleListItem extends StatelessWidget {
                 // Text(vehicle.strManufacturer),
                 // Text(vehicle.strModel),
                 const Text('Benzin'),
-                Text(odometerFormatter.format(vehicle.odometer)),
+                Text(odometerFormatter.format(vehicle.mileage)),
               ],
             ),
           ],

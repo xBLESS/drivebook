@@ -18,7 +18,7 @@ class VehicleListScreen extends StatelessWidget {
         // id: Value(2),
         manufacturer: Value('BMW'),
         model: Value('E30'),
-        odometer: Value(123456),
+        mileage: Value(123456),
       ),
     );
   }

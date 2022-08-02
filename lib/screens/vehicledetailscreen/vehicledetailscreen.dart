@@ -62,15 +62,11 @@ class VehicleDetailScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Text('Tachostand',
-                              style: currentTheme.textTheme.titleSmall),
-                          Text(odometerFormatter.format(vehicle.odometer),
-                              style: currentTheme.textTheme.titleMedium),
+                          Text('Tachostand', style: currentTheme.textTheme.titleSmall),
+                          Text(odometerFormatter.format(vehicle.mileage), style: currentTheme.textTheme.titleMedium),
                           const Spacer(),
-                          Text('Fahrleistung',
-                              style: currentTheme.textTheme.titleSmall),
-                          Text(odometerFormatter.format(vehicle.odometer),
-                              style: currentTheme.textTheme.titleMedium),
+                          Text('Fahrleistung', style: currentTheme.textTheme.titleSmall),
+                          Text(odometerFormatter.format(vehicle.mileage), style: currentTheme.textTheme.titleMedium),
                         ],
                       ),
                     ),
@@ -84,8 +80,7 @@ class VehicleDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        Text('Vehicle ID',
-                            style: currentTheme.textTheme.titleMedium),
+                        Text('Vehicle ID', style: currentTheme.textTheme.titleMedium),
                         Text('${vehicle.id}'),
                       ],
                     ),

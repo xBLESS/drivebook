@@ -13,17 +13,17 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
   final String model;
   final String? generation;
   final DateTime? buildDate;
-  final int odometer;
+  final int mileage;
   final String licensePlate;
   final String notes;
   final int primaryFuelTypeId;
   final double primaryFuelCapacity;
   final int? secondaryFuelTypeId;
   final double? secondaryFuelCapacity;
-  final int? buyOdometer;
+  final int? buyMileage;
   final DateTime? buyDateTime;
   final double? buyPrice;
-  final int? sellOdometer;
+  final int? sellMileage;
   final DateTime? sellDateTime;
   final double? sellPrice;
   VehicleData(
@@ -32,17 +32,17 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       required this.model,
       this.generation,
       this.buildDate,
-      required this.odometer,
+      required this.mileage,
       required this.licensePlate,
       required this.notes,
       required this.primaryFuelTypeId,
       required this.primaryFuelCapacity,
       this.secondaryFuelTypeId,
       this.secondaryFuelCapacity,
-      this.buyOdometer,
+      this.buyMileage,
       this.buyDateTime,
       this.buyPrice,
-      this.sellOdometer,
+      this.sellMileage,
       this.sellDateTime,
       this.sellPrice});
   factory VehicleData.fromData(Map<String, dynamic> data, {String? prefix}) {
@@ -58,8 +58,8 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}generation']),
       buildDate: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}build_date']),
-      odometer: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}odometer'])!,
+      mileage: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}mileage'])!,
       licensePlate: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}license_plate'])!,
       notes: const StringType()
@@ -72,14 +72,14 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           data['${effectivePrefix}secondary_fuel_type_id']),
       secondaryFuelCapacity: const RealType().mapFromDatabaseResponse(
           data['${effectivePrefix}secondary_fuel_capacity']),
-      buyOdometer: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}buy_odometer']),
+      buyMileage: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}buy_mileage']),
       buyDateTime: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}buy_date_time']),
       buyPrice: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}buy_price']),
-      sellOdometer: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}sell_odometer']),
+      sellMileage: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}sell_mileage']),
       sellDateTime: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}sell_date_time']),
       sellPrice: const RealType()
@@ -98,7 +98,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
     if (!nullToAbsent || buildDate != null) {
       map['build_date'] = Variable<DateTime?>(buildDate);
     }
-    map['odometer'] = Variable<int>(odometer);
+    map['mileage'] = Variable<int>(mileage);
     map['license_plate'] = Variable<String>(licensePlate);
     map['notes'] = Variable<String>(notes);
     map['primary_fuel_type_id'] = Variable<int>(primaryFuelTypeId);
@@ -109,8 +109,8 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
     if (!nullToAbsent || secondaryFuelCapacity != null) {
       map['secondary_fuel_capacity'] = Variable<double?>(secondaryFuelCapacity);
     }
-    if (!nullToAbsent || buyOdometer != null) {
-      map['buy_odometer'] = Variable<int?>(buyOdometer);
+    if (!nullToAbsent || buyMileage != null) {
+      map['buy_mileage'] = Variable<int?>(buyMileage);
     }
     if (!nullToAbsent || buyDateTime != null) {
       map['buy_date_time'] = Variable<DateTime?>(buyDateTime);
@@ -118,8 +118,8 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
     if (!nullToAbsent || buyPrice != null) {
       map['buy_price'] = Variable<double?>(buyPrice);
     }
-    if (!nullToAbsent || sellOdometer != null) {
-      map['sell_odometer'] = Variable<int?>(sellOdometer);
+    if (!nullToAbsent || sellMileage != null) {
+      map['sell_mileage'] = Variable<int?>(sellMileage);
     }
     if (!nullToAbsent || sellDateTime != null) {
       map['sell_date_time'] = Variable<DateTime?>(sellDateTime);
@@ -141,7 +141,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       buildDate: buildDate == null && nullToAbsent
           ? const Value.absent()
           : Value(buildDate),
-      odometer: Value(odometer),
+      mileage: Value(mileage),
       licensePlate: Value(licensePlate),
       notes: Value(notes),
       primaryFuelTypeId: Value(primaryFuelTypeId),
@@ -152,18 +152,18 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       secondaryFuelCapacity: secondaryFuelCapacity == null && nullToAbsent
           ? const Value.absent()
           : Value(secondaryFuelCapacity),
-      buyOdometer: buyOdometer == null && nullToAbsent
+      buyMileage: buyMileage == null && nullToAbsent
           ? const Value.absent()
-          : Value(buyOdometer),
+          : Value(buyMileage),
       buyDateTime: buyDateTime == null && nullToAbsent
           ? const Value.absent()
           : Value(buyDateTime),
       buyPrice: buyPrice == null && nullToAbsent
           ? const Value.absent()
           : Value(buyPrice),
-      sellOdometer: sellOdometer == null && nullToAbsent
+      sellMileage: sellMileage == null && nullToAbsent
           ? const Value.absent()
-          : Value(sellOdometer),
+          : Value(sellMileage),
       sellDateTime: sellDateTime == null && nullToAbsent
           ? const Value.absent()
           : Value(sellDateTime),
@@ -182,7 +182,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       model: serializer.fromJson<String>(json['model']),
       generation: serializer.fromJson<String?>(json['generation']),
       buildDate: serializer.fromJson<DateTime?>(json['buildDate']),
-      odometer: serializer.fromJson<int>(json['odometer']),
+      mileage: serializer.fromJson<int>(json['mileage']),
       licensePlate: serializer.fromJson<String>(json['licensePlate']),
       notes: serializer.fromJson<String>(json['notes']),
       primaryFuelTypeId: serializer.fromJson<int>(json['primaryFuelTypeId']),
@@ -192,10 +192,10 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           serializer.fromJson<int?>(json['secondaryFuelTypeId']),
       secondaryFuelCapacity:
           serializer.fromJson<double?>(json['secondaryFuelCapacity']),
-      buyOdometer: serializer.fromJson<int?>(json['buyOdometer']),
+      buyMileage: serializer.fromJson<int?>(json['buyMileage']),
       buyDateTime: serializer.fromJson<DateTime?>(json['buyDateTime']),
       buyPrice: serializer.fromJson<double?>(json['buyPrice']),
-      sellOdometer: serializer.fromJson<int?>(json['sellOdometer']),
+      sellMileage: serializer.fromJson<int?>(json['sellMileage']),
       sellDateTime: serializer.fromJson<DateTime?>(json['sellDateTime']),
       sellPrice: serializer.fromJson<double?>(json['sellPrice']),
     );
@@ -209,7 +209,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       'model': serializer.toJson<String>(model),
       'generation': serializer.toJson<String?>(generation),
       'buildDate': serializer.toJson<DateTime?>(buildDate),
-      'odometer': serializer.toJson<int>(odometer),
+      'mileage': serializer.toJson<int>(mileage),
       'licensePlate': serializer.toJson<String>(licensePlate),
       'notes': serializer.toJson<String>(notes),
       'primaryFuelTypeId': serializer.toJson<int>(primaryFuelTypeId),
@@ -217,10 +217,10 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       'secondaryFuelTypeId': serializer.toJson<int?>(secondaryFuelTypeId),
       'secondaryFuelCapacity':
           serializer.toJson<double?>(secondaryFuelCapacity),
-      'buyOdometer': serializer.toJson<int?>(buyOdometer),
+      'buyMileage': serializer.toJson<int?>(buyMileage),
       'buyDateTime': serializer.toJson<DateTime?>(buyDateTime),
       'buyPrice': serializer.toJson<double?>(buyPrice),
-      'sellOdometer': serializer.toJson<int?>(sellOdometer),
+      'sellMileage': serializer.toJson<int?>(sellMileage),
       'sellDateTime': serializer.toJson<DateTime?>(sellDateTime),
       'sellPrice': serializer.toJson<double?>(sellPrice),
     };
@@ -232,17 +232,17 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           String? model,
           String? generation,
           DateTime? buildDate,
-          int? odometer,
+          int? mileage,
           String? licensePlate,
           String? notes,
           int? primaryFuelTypeId,
           double? primaryFuelCapacity,
           int? secondaryFuelTypeId,
           double? secondaryFuelCapacity,
-          int? buyOdometer,
+          int? buyMileage,
           DateTime? buyDateTime,
           double? buyPrice,
-          int? sellOdometer,
+          int? sellMileage,
           DateTime? sellDateTime,
           double? sellPrice}) =>
       VehicleData(
@@ -251,7 +251,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
         model: model ?? this.model,
         generation: generation ?? this.generation,
         buildDate: buildDate ?? this.buildDate,
-        odometer: odometer ?? this.odometer,
+        mileage: mileage ?? this.mileage,
         licensePlate: licensePlate ?? this.licensePlate,
         notes: notes ?? this.notes,
         primaryFuelTypeId: primaryFuelTypeId ?? this.primaryFuelTypeId,
@@ -259,10 +259,10 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
         secondaryFuelTypeId: secondaryFuelTypeId ?? this.secondaryFuelTypeId,
         secondaryFuelCapacity:
             secondaryFuelCapacity ?? this.secondaryFuelCapacity,
-        buyOdometer: buyOdometer ?? this.buyOdometer,
+        buyMileage: buyMileage ?? this.buyMileage,
         buyDateTime: buyDateTime ?? this.buyDateTime,
         buyPrice: buyPrice ?? this.buyPrice,
-        sellOdometer: sellOdometer ?? this.sellOdometer,
+        sellMileage: sellMileage ?? this.sellMileage,
         sellDateTime: sellDateTime ?? this.sellDateTime,
         sellPrice: sellPrice ?? this.sellPrice,
       );
@@ -274,17 +274,17 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           ..write('model: $model, ')
           ..write('generation: $generation, ')
           ..write('buildDate: $buildDate, ')
-          ..write('odometer: $odometer, ')
+          ..write('mileage: $mileage, ')
           ..write('licensePlate: $licensePlate, ')
           ..write('notes: $notes, ')
           ..write('primaryFuelTypeId: $primaryFuelTypeId, ')
           ..write('primaryFuelCapacity: $primaryFuelCapacity, ')
           ..write('secondaryFuelTypeId: $secondaryFuelTypeId, ')
           ..write('secondaryFuelCapacity: $secondaryFuelCapacity, ')
-          ..write('buyOdometer: $buyOdometer, ')
+          ..write('buyMileage: $buyMileage, ')
           ..write('buyDateTime: $buyDateTime, ')
           ..write('buyPrice: $buyPrice, ')
-          ..write('sellOdometer: $sellOdometer, ')
+          ..write('sellMileage: $sellMileage, ')
           ..write('sellDateTime: $sellDateTime, ')
           ..write('sellPrice: $sellPrice')
           ..write(')'))
@@ -298,17 +298,17 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       model,
       generation,
       buildDate,
-      odometer,
+      mileage,
       licensePlate,
       notes,
       primaryFuelTypeId,
       primaryFuelCapacity,
       secondaryFuelTypeId,
       secondaryFuelCapacity,
-      buyOdometer,
+      buyMileage,
       buyDateTime,
       buyPrice,
-      sellOdometer,
+      sellMileage,
       sellDateTime,
       sellPrice);
   @override
@@ -320,17 +320,17 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           other.model == this.model &&
           other.generation == this.generation &&
           other.buildDate == this.buildDate &&
-          other.odometer == this.odometer &&
+          other.mileage == this.mileage &&
           other.licensePlate == this.licensePlate &&
           other.notes == this.notes &&
           other.primaryFuelTypeId == this.primaryFuelTypeId &&
           other.primaryFuelCapacity == this.primaryFuelCapacity &&
           other.secondaryFuelTypeId == this.secondaryFuelTypeId &&
           other.secondaryFuelCapacity == this.secondaryFuelCapacity &&
-          other.buyOdometer == this.buyOdometer &&
+          other.buyMileage == this.buyMileage &&
           other.buyDateTime == this.buyDateTime &&
           other.buyPrice == this.buyPrice &&
-          other.sellOdometer == this.sellOdometer &&
+          other.sellMileage == this.sellMileage &&
           other.sellDateTime == this.sellDateTime &&
           other.sellPrice == this.sellPrice);
 }
@@ -341,17 +341,17 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
   final Value<String> model;
   final Value<String?> generation;
   final Value<DateTime?> buildDate;
-  final Value<int> odometer;
+  final Value<int> mileage;
   final Value<String> licensePlate;
   final Value<String> notes;
   final Value<int> primaryFuelTypeId;
   final Value<double> primaryFuelCapacity;
   final Value<int?> secondaryFuelTypeId;
   final Value<double?> secondaryFuelCapacity;
-  final Value<int?> buyOdometer;
+  final Value<int?> buyMileage;
   final Value<DateTime?> buyDateTime;
   final Value<double?> buyPrice;
-  final Value<int?> sellOdometer;
+  final Value<int?> sellMileage;
   final Value<DateTime?> sellDateTime;
   final Value<double?> sellPrice;
   const VehicleCompanion({
@@ -360,17 +360,17 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     this.model = const Value.absent(),
     this.generation = const Value.absent(),
     this.buildDate = const Value.absent(),
-    this.odometer = const Value.absent(),
+    this.mileage = const Value.absent(),
     this.licensePlate = const Value.absent(),
     this.notes = const Value.absent(),
     this.primaryFuelTypeId = const Value.absent(),
     this.primaryFuelCapacity = const Value.absent(),
     this.secondaryFuelTypeId = const Value.absent(),
     this.secondaryFuelCapacity = const Value.absent(),
-    this.buyOdometer = const Value.absent(),
+    this.buyMileage = const Value.absent(),
     this.buyDateTime = const Value.absent(),
     this.buyPrice = const Value.absent(),
-    this.sellOdometer = const Value.absent(),
+    this.sellMileage = const Value.absent(),
     this.sellDateTime = const Value.absent(),
     this.sellPrice = const Value.absent(),
   });
@@ -380,22 +380,22 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     required String model,
     this.generation = const Value.absent(),
     this.buildDate = const Value.absent(),
-    required int odometer,
+    required int mileage,
     this.licensePlate = const Value.absent(),
     this.notes = const Value.absent(),
     required int primaryFuelTypeId,
     required double primaryFuelCapacity,
     this.secondaryFuelTypeId = const Value.absent(),
     this.secondaryFuelCapacity = const Value.absent(),
-    this.buyOdometer = const Value.absent(),
+    this.buyMileage = const Value.absent(),
     this.buyDateTime = const Value.absent(),
     this.buyPrice = const Value.absent(),
-    this.sellOdometer = const Value.absent(),
+    this.sellMileage = const Value.absent(),
     this.sellDateTime = const Value.absent(),
     this.sellPrice = const Value.absent(),
   })  : manufacturer = Value(manufacturer),
         model = Value(model),
-        odometer = Value(odometer),
+        mileage = Value(mileage),
         primaryFuelTypeId = Value(primaryFuelTypeId),
         primaryFuelCapacity = Value(primaryFuelCapacity);
   static Insertable<VehicleData> custom({
@@ -404,17 +404,17 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     Expression<String>? model,
     Expression<String?>? generation,
     Expression<DateTime?>? buildDate,
-    Expression<int>? odometer,
+    Expression<int>? mileage,
     Expression<String>? licensePlate,
     Expression<String>? notes,
     Expression<int>? primaryFuelTypeId,
     Expression<double>? primaryFuelCapacity,
     Expression<int?>? secondaryFuelTypeId,
     Expression<double?>? secondaryFuelCapacity,
-    Expression<int?>? buyOdometer,
+    Expression<int?>? buyMileage,
     Expression<DateTime?>? buyDateTime,
     Expression<double?>? buyPrice,
-    Expression<int?>? sellOdometer,
+    Expression<int?>? sellMileage,
     Expression<DateTime?>? sellDateTime,
     Expression<double?>? sellPrice,
   }) {
@@ -424,7 +424,7 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       if (model != null) 'model': model,
       if (generation != null) 'generation': generation,
       if (buildDate != null) 'build_date': buildDate,
-      if (odometer != null) 'odometer': odometer,
+      if (mileage != null) 'mileage': mileage,
       if (licensePlate != null) 'license_plate': licensePlate,
       if (notes != null) 'notes': notes,
       if (primaryFuelTypeId != null) 'primary_fuel_type_id': primaryFuelTypeId,
@@ -434,10 +434,10 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
         'secondary_fuel_type_id': secondaryFuelTypeId,
       if (secondaryFuelCapacity != null)
         'secondary_fuel_capacity': secondaryFuelCapacity,
-      if (buyOdometer != null) 'buy_odometer': buyOdometer,
+      if (buyMileage != null) 'buy_mileage': buyMileage,
       if (buyDateTime != null) 'buy_date_time': buyDateTime,
       if (buyPrice != null) 'buy_price': buyPrice,
-      if (sellOdometer != null) 'sell_odometer': sellOdometer,
+      if (sellMileage != null) 'sell_mileage': sellMileage,
       if (sellDateTime != null) 'sell_date_time': sellDateTime,
       if (sellPrice != null) 'sell_price': sellPrice,
     });
@@ -449,17 +449,17 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       Value<String>? model,
       Value<String?>? generation,
       Value<DateTime?>? buildDate,
-      Value<int>? odometer,
+      Value<int>? mileage,
       Value<String>? licensePlate,
       Value<String>? notes,
       Value<int>? primaryFuelTypeId,
       Value<double>? primaryFuelCapacity,
       Value<int?>? secondaryFuelTypeId,
       Value<double?>? secondaryFuelCapacity,
-      Value<int?>? buyOdometer,
+      Value<int?>? buyMileage,
       Value<DateTime?>? buyDateTime,
       Value<double?>? buyPrice,
-      Value<int?>? sellOdometer,
+      Value<int?>? sellMileage,
       Value<DateTime?>? sellDateTime,
       Value<double?>? sellPrice}) {
     return VehicleCompanion(
@@ -468,7 +468,7 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       model: model ?? this.model,
       generation: generation ?? this.generation,
       buildDate: buildDate ?? this.buildDate,
-      odometer: odometer ?? this.odometer,
+      mileage: mileage ?? this.mileage,
       licensePlate: licensePlate ?? this.licensePlate,
       notes: notes ?? this.notes,
       primaryFuelTypeId: primaryFuelTypeId ?? this.primaryFuelTypeId,
@@ -476,10 +476,10 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       secondaryFuelTypeId: secondaryFuelTypeId ?? this.secondaryFuelTypeId,
       secondaryFuelCapacity:
           secondaryFuelCapacity ?? this.secondaryFuelCapacity,
-      buyOdometer: buyOdometer ?? this.buyOdometer,
+      buyMileage: buyMileage ?? this.buyMileage,
       buyDateTime: buyDateTime ?? this.buyDateTime,
       buyPrice: buyPrice ?? this.buyPrice,
-      sellOdometer: sellOdometer ?? this.sellOdometer,
+      sellMileage: sellMileage ?? this.sellMileage,
       sellDateTime: sellDateTime ?? this.sellDateTime,
       sellPrice: sellPrice ?? this.sellPrice,
     );
@@ -503,8 +503,8 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     if (buildDate.present) {
       map['build_date'] = Variable<DateTime?>(buildDate.value);
     }
-    if (odometer.present) {
-      map['odometer'] = Variable<int>(odometer.value);
+    if (mileage.present) {
+      map['mileage'] = Variable<int>(mileage.value);
     }
     if (licensePlate.present) {
       map['license_plate'] = Variable<String>(licensePlate.value);
@@ -526,8 +526,8 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       map['secondary_fuel_capacity'] =
           Variable<double?>(secondaryFuelCapacity.value);
     }
-    if (buyOdometer.present) {
-      map['buy_odometer'] = Variable<int?>(buyOdometer.value);
+    if (buyMileage.present) {
+      map['buy_mileage'] = Variable<int?>(buyMileage.value);
     }
     if (buyDateTime.present) {
       map['buy_date_time'] = Variable<DateTime?>(buyDateTime.value);
@@ -535,8 +535,8 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     if (buyPrice.present) {
       map['buy_price'] = Variable<double?>(buyPrice.value);
     }
-    if (sellOdometer.present) {
-      map['sell_odometer'] = Variable<int?>(sellOdometer.value);
+    if (sellMileage.present) {
+      map['sell_mileage'] = Variable<int?>(sellMileage.value);
     }
     if (sellDateTime.present) {
       map['sell_date_time'] = Variable<DateTime?>(sellDateTime.value);
@@ -555,17 +555,17 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
           ..write('model: $model, ')
           ..write('generation: $generation, ')
           ..write('buildDate: $buildDate, ')
-          ..write('odometer: $odometer, ')
+          ..write('mileage: $mileage, ')
           ..write('licensePlate: $licensePlate, ')
           ..write('notes: $notes, ')
           ..write('primaryFuelTypeId: $primaryFuelTypeId, ')
           ..write('primaryFuelCapacity: $primaryFuelCapacity, ')
           ..write('secondaryFuelTypeId: $secondaryFuelTypeId, ')
           ..write('secondaryFuelCapacity: $secondaryFuelCapacity, ')
-          ..write('buyOdometer: $buyOdometer, ')
+          ..write('buyMileage: $buyMileage, ')
           ..write('buyDateTime: $buyDateTime, ')
           ..write('buyPrice: $buyPrice, ')
-          ..write('sellOdometer: $sellOdometer, ')
+          ..write('sellMileage: $sellMileage, ')
           ..write('sellDateTime: $sellDateTime, ')
           ..write('sellPrice: $sellPrice')
           ..write(')'))
@@ -612,10 +612,10 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
   late final GeneratedColumn<DateTime?> buildDate = GeneratedColumn<DateTime?>(
       'build_date', aliasedName, true,
       type: const IntType(), requiredDuringInsert: false);
-  final VerificationMeta _odometerMeta = const VerificationMeta('odometer');
+  final VerificationMeta _mileageMeta = const VerificationMeta('mileage');
   @override
-  late final GeneratedColumn<int?> odometer = GeneratedColumn<int?>(
-      'odometer', aliasedName, false,
+  late final GeneratedColumn<int?> mileage = GeneratedColumn<int?>(
+      'mileage', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _licensePlateMeta =
       const VerificationMeta('licensePlate');
@@ -658,11 +658,10 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
   late final GeneratedColumn<double?> secondaryFuelCapacity =
       GeneratedColumn<double?>('secondary_fuel_capacity', aliasedName, true,
           type: const RealType(), requiredDuringInsert: false);
-  final VerificationMeta _buyOdometerMeta =
-      const VerificationMeta('buyOdometer');
+  final VerificationMeta _buyMileageMeta = const VerificationMeta('buyMileage');
   @override
-  late final GeneratedColumn<int?> buyOdometer = GeneratedColumn<int?>(
-      'buy_odometer', aliasedName, true,
+  late final GeneratedColumn<int?> buyMileage = GeneratedColumn<int?>(
+      'buy_mileage', aliasedName, true,
       type: const IntType(), requiredDuringInsert: false);
   final VerificationMeta _buyDateTimeMeta =
       const VerificationMeta('buyDateTime');
@@ -675,11 +674,11 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
   late final GeneratedColumn<double?> buyPrice = GeneratedColumn<double?>(
       'buy_price', aliasedName, true,
       type: const RealType(), requiredDuringInsert: false);
-  final VerificationMeta _sellOdometerMeta =
-      const VerificationMeta('sellOdometer');
+  final VerificationMeta _sellMileageMeta =
+      const VerificationMeta('sellMileage');
   @override
-  late final GeneratedColumn<int?> sellOdometer = GeneratedColumn<int?>(
-      'sell_odometer', aliasedName, true,
+  late final GeneratedColumn<int?> sellMileage = GeneratedColumn<int?>(
+      'sell_mileage', aliasedName, true,
       type: const IntType(), requiredDuringInsert: false);
   final VerificationMeta _sellDateTimeMeta =
       const VerificationMeta('sellDateTime');
@@ -699,17 +698,17 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
         model,
         generation,
         buildDate,
-        odometer,
+        mileage,
         licensePlate,
         notes,
         primaryFuelTypeId,
         primaryFuelCapacity,
         secondaryFuelTypeId,
         secondaryFuelCapacity,
-        buyOdometer,
+        buyMileage,
         buyDateTime,
         buyPrice,
-        sellOdometer,
+        sellMileage,
         sellDateTime,
         sellPrice
       ];
@@ -749,11 +748,11 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
       context.handle(_buildDateMeta,
           buildDate.isAcceptableOrUnknown(data['build_date']!, _buildDateMeta));
     }
-    if (data.containsKey('odometer')) {
-      context.handle(_odometerMeta,
-          odometer.isAcceptableOrUnknown(data['odometer']!, _odometerMeta));
+    if (data.containsKey('mileage')) {
+      context.handle(_mileageMeta,
+          mileage.isAcceptableOrUnknown(data['mileage']!, _mileageMeta));
     } else if (isInserting) {
-      context.missing(_odometerMeta);
+      context.missing(_mileageMeta);
     }
     if (data.containsKey('license_plate')) {
       context.handle(
@@ -793,11 +792,11 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
           secondaryFuelCapacity.isAcceptableOrUnknown(
               data['secondary_fuel_capacity']!, _secondaryFuelCapacityMeta));
     }
-    if (data.containsKey('buy_odometer')) {
+    if (data.containsKey('buy_mileage')) {
       context.handle(
-          _buyOdometerMeta,
-          buyOdometer.isAcceptableOrUnknown(
-              data['buy_odometer']!, _buyOdometerMeta));
+          _buyMileageMeta,
+          buyMileage.isAcceptableOrUnknown(
+              data['buy_mileage']!, _buyMileageMeta));
     }
     if (data.containsKey('buy_date_time')) {
       context.handle(
@@ -809,11 +808,11 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
       context.handle(_buyPriceMeta,
           buyPrice.isAcceptableOrUnknown(data['buy_price']!, _buyPriceMeta));
     }
-    if (data.containsKey('sell_odometer')) {
+    if (data.containsKey('sell_mileage')) {
       context.handle(
-          _sellOdometerMeta,
-          sellOdometer.isAcceptableOrUnknown(
-              data['sell_odometer']!, _sellOdometerMeta));
+          _sellMileageMeta,
+          sellMileage.isAcceptableOrUnknown(
+              data['sell_mileage']!, _sellMileageMeta));
     }
     if (data.containsKey('sell_date_time')) {
       context.handle(

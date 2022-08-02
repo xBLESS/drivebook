@@ -47,7 +47,7 @@ class VehiclesProvider extends ChangeNotifier {
         id: vehicle.id,
         manufacturer: vehicle.manufacturer,
         model: vehicle.model,
-        odometer: vehicle.odometer,
+        mileage: vehicle.mileage,
         buildDate: vehicle.buildDate,
       ),
     );
