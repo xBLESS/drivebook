@@ -39,15 +39,18 @@ class Vehicle extends Table {
   TextColumn get generation => text().nullable().withLength(max: 64)();
   DateTimeColumn get buildDate => dateTime().nullable()();
   IntColumn get mileage => integer()();
-  TextColumn get licensePlate => text().withLength(max: 16).withDefault(const Constant(''))();
-  TextColumn get notes => text().withLength(max: 512).withDefault(const Constant(''))();
+  TextColumn get licensePlate =>
+      text().withLength(max: 16).withDefault(const Constant(''))();
+  TextColumn get notes =>
+      text().withLength(max: 512).withDefault(const Constant(''))();
 
   //Primary Tank
   IntColumn get primaryFuelTypeId => integer().references(FuelType, #id)();
   RealColumn get primaryFuelCapacity => real()();
 
   //Secondary Tank
-  IntColumn get secondaryFuelTypeId => integer().nullable().references(FuelType, #id)();
+  IntColumn get secondaryFuelTypeId =>
+      integer().nullable().references(FuelType, #id)();
   RealColumn get secondaryFuelCapacity => real().nullable()();
 
   // Kauf
@@ -79,7 +82,32 @@ class Log extends Table {
   RealColumn get costPerUnit => real().nullable()();
   RealColumn get refillAmount => real().nullable()();
   RealColumn get approxRefillPercentOfTank => real().nullable()();
-  IntColumn get gasStationId => integer().references(GasStations, #id).nullable()();
+  IntColumn get gasStationId =>
+      integer().references(GasStations, #id).nullable()();
+
+  // Tirechange
+  IntColumn get tireSetupGroupId =>
+      integer().nullable().references(TireSetup, #groupId)();
+}
+
+class Tire extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get vehicleId => integer().references(Vehicle, #id)();
+
+  IntColumn get width => integer()();
+  IntColumn get tireWall => integer()();
+  IntColumn get wheelDiameter => integer()();
+
+  TextColumn get manufacturer => text()();
+  DateTimeColumn get dot => dateTime().nullable()();
+}
+
+class TireSetup extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get groupId => integer()();
+  IntColumn get vehicleId => integer().references(Vehicle, #id)();
+  IntColumn get tireId => integer().references(Tire, #id)();
+  TextColumn get positionEnum => text()();
 }
 
 @DriftDatabase(tables: [Vehicle])
