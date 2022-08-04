@@ -63,6 +63,9 @@ class Vehicle extends Table {
   DateTimeColumn get sellDateTime => dateTime().nullable()();
   RealColumn get sellPrice => real().nullable()();
 
+  IntColumn get currentTireGroupId =>
+      integer().nullable().references(TireSetup, #id)();
+
   // @override // already the PK because of the autoincrement
   // Set<Column> get primaryKey => {id};
 }

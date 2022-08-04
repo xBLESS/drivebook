@@ -26,6 +26,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
   final int? sellMileage;
   final DateTime? sellDateTime;
   final double? sellPrice;
+  final int? currentTireGroupId;
   VehicleData(
       {required this.id,
       required this.manufacturer,
@@ -44,7 +45,8 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       this.buyPrice,
       this.sellMileage,
       this.sellDateTime,
-      this.sellPrice});
+      this.sellPrice,
+      this.currentTireGroupId});
   factory VehicleData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return VehicleData(
@@ -84,6 +86,8 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}sell_date_time']),
       sellPrice: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}sell_price']),
+      currentTireGroupId: const IntType().mapFromDatabaseResponse(
+          data['${effectivePrefix}current_tire_group_id']),
     );
   }
   @override
@@ -126,6 +130,9 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
     }
     if (!nullToAbsent || sellPrice != null) {
       map['sell_price'] = Variable<double?>(sellPrice);
+    }
+    if (!nullToAbsent || currentTireGroupId != null) {
+      map['current_tire_group_id'] = Variable<int?>(currentTireGroupId);
     }
     return map;
   }
@@ -170,6 +177,9 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       sellPrice: sellPrice == null && nullToAbsent
           ? const Value.absent()
           : Value(sellPrice),
+      currentTireGroupId: currentTireGroupId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(currentTireGroupId),
     );
   }
 
@@ -198,6 +208,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       sellMileage: serializer.fromJson<int?>(json['sellMileage']),
       sellDateTime: serializer.fromJson<DateTime?>(json['sellDateTime']),
       sellPrice: serializer.fromJson<double?>(json['sellPrice']),
+      currentTireGroupId: serializer.fromJson<int?>(json['currentTireGroupId']),
     );
   }
   @override
@@ -223,6 +234,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       'sellMileage': serializer.toJson<int?>(sellMileage),
       'sellDateTime': serializer.toJson<DateTime?>(sellDateTime),
       'sellPrice': serializer.toJson<double?>(sellPrice),
+      'currentTireGroupId': serializer.toJson<int?>(currentTireGroupId),
     };
   }
 
@@ -244,7 +256,8 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           double? buyPrice,
           int? sellMileage,
           DateTime? sellDateTime,
-          double? sellPrice}) =>
+          double? sellPrice,
+          int? currentTireGroupId}) =>
       VehicleData(
         id: id ?? this.id,
         manufacturer: manufacturer ?? this.manufacturer,
@@ -265,6 +278,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
         sellMileage: sellMileage ?? this.sellMileage,
         sellDateTime: sellDateTime ?? this.sellDateTime,
         sellPrice: sellPrice ?? this.sellPrice,
+        currentTireGroupId: currentTireGroupId ?? this.currentTireGroupId,
       );
   @override
   String toString() {
@@ -286,7 +300,8 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           ..write('buyPrice: $buyPrice, ')
           ..write('sellMileage: $sellMileage, ')
           ..write('sellDateTime: $sellDateTime, ')
-          ..write('sellPrice: $sellPrice')
+          ..write('sellPrice: $sellPrice, ')
+          ..write('currentTireGroupId: $currentTireGroupId')
           ..write(')'))
         .toString();
   }
@@ -310,7 +325,8 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       buyPrice,
       sellMileage,
       sellDateTime,
-      sellPrice);
+      sellPrice,
+      currentTireGroupId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -332,7 +348,8 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           other.buyPrice == this.buyPrice &&
           other.sellMileage == this.sellMileage &&
           other.sellDateTime == this.sellDateTime &&
-          other.sellPrice == this.sellPrice);
+          other.sellPrice == this.sellPrice &&
+          other.currentTireGroupId == this.currentTireGroupId);
 }
 
 class VehicleCompanion extends UpdateCompanion<VehicleData> {
@@ -354,6 +371,7 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
   final Value<int?> sellMileage;
   final Value<DateTime?> sellDateTime;
   final Value<double?> sellPrice;
+  final Value<int?> currentTireGroupId;
   const VehicleCompanion({
     this.id = const Value.absent(),
     this.manufacturer = const Value.absent(),
@@ -373,6 +391,7 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     this.sellMileage = const Value.absent(),
     this.sellDateTime = const Value.absent(),
     this.sellPrice = const Value.absent(),
+    this.currentTireGroupId = const Value.absent(),
   });
   VehicleCompanion.insert({
     this.id = const Value.absent(),
@@ -393,6 +412,7 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     this.sellMileage = const Value.absent(),
     this.sellDateTime = const Value.absent(),
     this.sellPrice = const Value.absent(),
+    this.currentTireGroupId = const Value.absent(),
   })  : manufacturer = Value(manufacturer),
         model = Value(model),
         mileage = Value(mileage),
@@ -417,6 +437,7 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     Expression<int?>? sellMileage,
     Expression<DateTime?>? sellDateTime,
     Expression<double?>? sellPrice,
+    Expression<int?>? currentTireGroupId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -440,6 +461,8 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       if (sellMileage != null) 'sell_mileage': sellMileage,
       if (sellDateTime != null) 'sell_date_time': sellDateTime,
       if (sellPrice != null) 'sell_price': sellPrice,
+      if (currentTireGroupId != null)
+        'current_tire_group_id': currentTireGroupId,
     });
   }
 
@@ -461,7 +484,8 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       Value<double?>? buyPrice,
       Value<int?>? sellMileage,
       Value<DateTime?>? sellDateTime,
-      Value<double?>? sellPrice}) {
+      Value<double?>? sellPrice,
+      Value<int?>? currentTireGroupId}) {
     return VehicleCompanion(
       id: id ?? this.id,
       manufacturer: manufacturer ?? this.manufacturer,
@@ -482,6 +506,7 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       sellMileage: sellMileage ?? this.sellMileage,
       sellDateTime: sellDateTime ?? this.sellDateTime,
       sellPrice: sellPrice ?? this.sellPrice,
+      currentTireGroupId: currentTireGroupId ?? this.currentTireGroupId,
     );
   }
 
@@ -544,6 +569,9 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     if (sellPrice.present) {
       map['sell_price'] = Variable<double?>(sellPrice.value);
     }
+    if (currentTireGroupId.present) {
+      map['current_tire_group_id'] = Variable<int?>(currentTireGroupId.value);
+    }
     return map;
   }
 
@@ -567,7 +595,8 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
           ..write('buyPrice: $buyPrice, ')
           ..write('sellMileage: $sellMileage, ')
           ..write('sellDateTime: $sellDateTime, ')
-          ..write('sellPrice: $sellPrice')
+          ..write('sellPrice: $sellPrice, ')
+          ..write('currentTireGroupId: $currentTireGroupId')
           ..write(')'))
         .toString();
   }
@@ -691,6 +720,12 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
   late final GeneratedColumn<double?> sellPrice = GeneratedColumn<double?>(
       'sell_price', aliasedName, true,
       type: const RealType(), requiredDuringInsert: false);
+  final VerificationMeta _currentTireGroupIdMeta =
+      const VerificationMeta('currentTireGroupId');
+  @override
+  late final GeneratedColumn<int?> currentTireGroupId = GeneratedColumn<int?>(
+      'current_tire_group_id', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -710,7 +745,8 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
         buyPrice,
         sellMileage,
         sellDateTime,
-        sellPrice
+        sellPrice,
+        currentTireGroupId
       ];
   @override
   String get aliasedName => _alias ?? 'vehicle';
@@ -823,6 +859,12 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
     if (data.containsKey('sell_price')) {
       context.handle(_sellPriceMeta,
           sellPrice.isAcceptableOrUnknown(data['sell_price']!, _sellPriceMeta));
+    }
+    if (data.containsKey('current_tire_group_id')) {
+      context.handle(
+          _currentTireGroupIdMeta,
+          currentTireGroupId.isAcceptableOrUnknown(
+              data['current_tire_group_id']!, _currentTireGroupIdMeta));
     }
     return context;
   }
