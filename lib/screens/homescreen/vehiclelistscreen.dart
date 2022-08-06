@@ -1,6 +1,6 @@
-import 'package:drift/drift.dart';
 import 'package:drivebook/models/dbcontroller.dart';
 import 'package:drivebook/providers/vehicles_provider.dart';
+import 'package:drivebook/screens/settings_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,22 +13,22 @@ class VehicleListScreen extends StatelessWidget {
   VehicleListScreen({Key? key}) : super(key: key);
 
   void _fabAction(BuildContext context) {
-    Provider.of<VehiclesProvider>(context, listen: false).addVehicle(
-      VehicleCompanion(
-        // id: Value(2),
-        manufacturer: Value('BMW'),
-        model: Value('320i'),
-        generation: Value('E30'),
-        mileage: Value(123456),
-        buildDate: Value(DateTime(1987, 1, 1, 1, 1)),
-        licensePlate: Value('VIE TW 69'),
-        primaryFuelCapacity: Value(50),
-        primaryFuelTypeId: Value(0),
-        buyDateTime: Value(DateTime(2021, 1, 2, 0, 0, 0)),
-        buyMileage: Value(70500),
-        buyPrice: Value(0),
-      ),
-    );
+    // Provider.of<VehiclesProvider>(context, listen: false).addVehicle(
+    //   VehicleCompanion(
+    //     // id: Value(2),
+    //     manufacturer: Value('BMW'),
+    //     model: Value('320i'),
+    //     generation: Value('E30'),
+    //     mileage: Value(123456),
+    //     buildDate: Value(DateTime(1987, 1, 1, 1, 1)),
+    //     licensePlate: Value('VIE TW 69'),
+    //     primaryFuelCapacity: Value(50),
+    //     primaryFuelTypeId: Value(0),
+    //     buyDateTime: Value(DateTime(2021, 1, 2, 0, 0, 0)),
+    //     buyMileage: Value(70500),
+    //     buyPrice: Value(0),
+    //   ),
+    // );
   }
 
   @override
@@ -49,6 +49,19 @@ class VehicleListScreen extends StatelessWidget {
             vehicle: vehicle,
           );
         },
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () {
+                Navigator.pushNamed(context, SettingsScreen.routename);
+              },
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _fabAction(context),

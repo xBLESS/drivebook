@@ -1,4 +1,5 @@
 import 'package:drivebook/models/dbcontroller.dart';
+import 'package:drivebook/screens/settings_screen/settings_screen.dart';
 import 'package:drivebook/screens/vehicledetailscreen/vehicledetailscreen.dart';
 import 'package:path/path.dart';
 
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
       routes: {
         VehicleListScreen.routename: (context) => VehicleListScreen(),
         VehicleDetailScreen.routename: (context) => VehicleDetailScreen(),
+        SettingsScreen.routename: (context) => const SettingsScreen(),
       },
     );
   }
