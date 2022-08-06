@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:drivebook/models/dbcontroller.dart';
 import 'package:drivebook/providers/vehicles_provider.dart';
 import 'package:drivebook/screens/vehicledetailscreen/widget/tire_overview_card.dart';
@@ -66,7 +64,7 @@ class VehicleDetailScreen extends StatelessWidget {
                           Text(odometerFormatter.format(vehicle.mileage), style: currentTheme.textTheme.titleMedium),
                           const Spacer(),
                           Text('Fahrleistung', style: currentTheme.textTheme.titleSmall),
-                          Text(odometerFormatter.format(vehicle.mileage - vehicle.buyMileage!), style: currentTheme.textTheme.titleMedium),
+                          Text(odometerFormatter.format(vehicle.mileage - (vehicle.buyMileage ?? 0)), style: currentTheme.textTheme.titleMedium),
                         ],
                       ),
                     ),
