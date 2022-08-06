@@ -115,10 +115,12 @@ class TireSetup extends Table {
   TextColumn get positionEnum => text()();
 }
 
-@DriftDatabase(tables: [Vehicle])
+@DriftDatabase(tables: [Vehicle, Settings, Tire, TireSetup, Log, GasStations, FuelType, LogType])
 class DBController extends _$DBController {
   // we tell the database where to store the data with this constructor
-  DBController() : super(_openConnection());
+  // DBController() : super(_openConnection());
+  // Memorydatabase erstellen
+  DBController() : super(NativeDatabase.memory());
 
   // you should bump this number whenever you change or add a table definition.
   // Migrations are covered later in the documentation.
