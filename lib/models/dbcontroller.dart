@@ -103,6 +103,8 @@ class Tire extends Table {
 
   TextColumn get manufacturer => text()();
   DateTimeColumn get dot => dateTime().nullable()();
+
+  RealColumn get profileDepth => real().nullable()();
 }
 
 class TireSetup extends Table {
