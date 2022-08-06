@@ -20,8 +20,7 @@ class VehicleListItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Provider.of<VehiclesProvider>(context, listen: false)
-            .setSelectedIndex(vehicle);
+        Provider.of<VehiclesProvider>(context, listen: false).setSelectedIndex(vehicle);
         Navigator.pushNamed(context, VehicleDetailScreen.routename);
       },
       child: Card(
@@ -42,12 +41,8 @@ class VehicleListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 vehicle.buildDate != null
-                    ? Text(
-                        // '${vehicle.manufacturer} ${vehicle.model} \'${formatter.format(vehicle.buildDate)}'),
-                        '${vehicle.manufacturer} ${vehicle.generation ?? ' '}${vehicle.generation != null ? ' ' : ''}${vehicle.model} \'${formatter.format(vehicle.buildDate!)}',
-                      )
-                    : Text(
-                        '${vehicle.manufacturer} ${vehicle.generation} ${vehicle.model}'),
+                    ? Text('${vehicle.manufacturer} ${vehicle.generation ?? ' '}${vehicle.generation != null ? ' ' : ''}${vehicle.model} \'${formatter.format(vehicle.buildDate!)}')
+                    : Text('${vehicle.manufacturer} ${vehicle.generation} ${vehicle.model}'),
                 const Text('Benzin'),
                 Text(odometerFormatter.format(vehicle.mileage)),
               ],
