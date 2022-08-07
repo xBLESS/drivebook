@@ -1,4 +1,5 @@
 import 'package:drivebook/models/dbcontroller.dart';
+import 'package:drivebook/providers/settings_provider.dart';
 import 'package:drivebook/screens/settings_screen/settings_screen.dart';
 import 'package:drivebook/screens/vehicledetailscreen/vehicledetailscreen.dart';
 import 'package:path/path.dart';
@@ -17,9 +18,8 @@ void main() {
           create: (context) => DBController(),
           dispose: (context, db) => db.close(),
         ),
-        ChangeNotifierProvider<VehiclesProvider>(
-          create: (context) => VehiclesProvider(context),
-        ),
+        ChangeNotifierProvider<VehiclesProvider>(create: (context) => VehiclesProvider(context)),
+        ChangeNotifierProvider<SettingsProvider>(create: (context) => SettingsProvider(context)),
       ],
       child: const MyApp(),
     ),
@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Load initial data
     Provider.of<VehiclesProvider>(context, listen: false).loadVehicles();
+    Provider.of<SettingsProvider>(context, listen: false).loadSettings();
 
     return MaterialApp(
       title: 'Flutter Demo',

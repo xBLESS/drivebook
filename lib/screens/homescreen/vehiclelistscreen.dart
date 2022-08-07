@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:drivebook/models/dbcontroller.dart';
 import 'package:drivebook/providers/vehicles_provider.dart';
 import 'package:drivebook/screens/settings_screen/settings_screen.dart';
@@ -13,43 +14,24 @@ class VehicleListScreen extends StatelessWidget {
   VehicleListScreen({Key? key}) : super(key: key);
 
   void _fabAction(BuildContext context) {
-<<<<<<< HEAD
     Provider.of<VehiclesProvider>(context, listen: false).addVehicle(
       VehicleCompanion(
         // id: Value(2),
-        manufacturer: Value('BMW'),
-        model: Value('320i'),
-        generation: Value('E30'),
-        mileage: Value(123456),
-        buildDate: Value(DateTime(1987, 1, 1, 1, 1)),
-        licensePlate: Value('VIE TW 69'),
+        manufacturer: drift.Value('BMW'),
+        model: drift.Value('320i'),
+        generation: drift.Value('E30'),
+        mileage: drift.Value(123456),
+        buildDate: drift.Value(DateTime(1987, 1, 1, 1, 1)),
+        licensePlate: drift.Value('VIE TW 69'),
         // Fuel
-        primaryFuelCapacity: Value(50),
-        primaryFuelTypeId: Value(0),
+        primaryFuelCapacity: drift.Value(50.0),
+        primaryFuelTypeId: drift.Value(0),
         // Buy
-        buyDateTime: Value(DateTime(2021, 1, 2, 0, 0, 0)),
-        buyMileage: Value(70500),
-        buyPrice: Value(0),
+        buyDateTime: drift.Value(DateTime(2021, 1, 2, 0, 0, 0)),
+        buyMileage: drift.Value(70500),
+        buyPrice: drift.Value(0),
       ),
     );
-=======
-    // Provider.of<VehiclesProvider>(context, listen: false).addVehicle(
-    //   VehicleCompanion(
-    //     // id: Value(2),
-    //     manufacturer: Value('BMW'),
-    //     model: Value('320i'),
-    //     generation: Value('E30'),
-    //     mileage: Value(123456),
-    //     buildDate: Value(DateTime(1987, 1, 1, 1, 1)),
-    //     licensePlate: Value('VIE TW 69'),
-    //     primaryFuelCapacity: Value(50),
-    //     primaryFuelTypeId: Value(0),
-    //     buyDateTime: Value(DateTime(2021, 1, 2, 0, 0, 0)),
-    //     buyMileage: Value(70500),
-    //     buyPrice: Value(0),
-    //   ),
-    // );
->>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
   }
 
   @override
@@ -72,16 +54,18 @@ class VehicleListScreen extends StatelessWidget {
         },
       ),
       drawer: Drawer(
-        child: Column(
-          children: [
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-              onTap: () {
-                Navigator.pushNamed(context, SettingsScreen.routename);
-              },
-            ),
-          ],
+        child: SafeArea(
+          child: Column(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Settings'),
+                onTap: () {
+                  Navigator.pushNamed(context, SettingsScreen.routename);
+                },
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
