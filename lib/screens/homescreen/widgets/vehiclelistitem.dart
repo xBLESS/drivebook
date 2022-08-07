@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:drivebook/providers/vehicles_provider.dart';
 import 'package:drivebook/screens/vehicledetailscreen/vehicledetailscreen.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +30,9 @@ class VehicleListItem extends StatelessWidget {
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
@@ -37,15 +44,42 @@ class VehicleListItem extends StatelessWidget {
                 ),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                vehicle.buildDate != null
-                    ? Text('${vehicle.manufacturer} ${vehicle.generation ?? ' '}${vehicle.generation != null ? ' ' : ''}${vehicle.model} \'${formatter.format(vehicle.buildDate!)}')
-                    : Text('${vehicle.manufacturer} ${vehicle.generation} ${vehicle.model}'),
-                const Text('Benzin'),
-                Text(odometerFormatter.format(vehicle.mileage)),
-              ],
+            Flexible(
+              child: Container(
+                color: Colors.grey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    vehicle.buildDate != null
+                        ? Text('${vehicle.manufacturer} ${vehicle.generation ?? ' '}${vehicle.generation != null ? ' ' : ''}${vehicle.model} \'${formatter.format(vehicle.buildDate!)}')
+                        : Text('${vehicle.manufacturer} ${vehicle.generation} ${vehicle.model}'),
+                    Text('Benzin'),
+                    Text(odometerFormatter.format(vehicle.mileage)),
+                    Center(
+                      child: SliderTheme(
+                        data: const SliderThemeData(
+                          overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
+                          trackHeight: 6.0,
+                          showValueIndicator: ShowValueIndicator.always,
+                          rangeThumbShape: RoundRangeSliderThumbShape(disabledThumbRadius: 0.0, enabledThumbRadius: 0.1, elevation: 0.0, pressedElevation: 0.0),
+                          rangeTrackShape: RoundedRectRangeSliderTrackShape(),
+                          rangeTickMarkShape: RoundRangeSliderTickMarkShape(),
+                        ),
+                        child: RangeSlider(
+                          values: RangeValues(vehicle.seasonalLicenseBeginMonth.toDouble(), vehicle.seasonalLicenseEndMonth.toDouble()),
+                          min: 1.0,
+                          max: 12.0,
+                          divisions: 12,
+                          semanticFormatterCallback: (value) => '${value}',
+                          onChanged: (value) {},
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
