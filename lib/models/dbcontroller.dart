@@ -45,7 +45,11 @@ class Vehicle extends Table {
   TextColumn get generation => text().nullable().withLength(max: 64)();
   DateTimeColumn get buildDate => dateTime().nullable()();
   IntColumn get mileage => integer()();
+
   TextColumn get licensePlate => text().withLength(max: 16).withDefault(const Constant(''))();
+  IntColumn get seasonalLicenseBeginMonth => integer().withDefault(const Constant(1))();
+  IntColumn get seasonalLicenseEndMonth => integer().withDefault(const Constant(12))();
+
   TextColumn get notes => text().withLength(max: 512).withDefault(const Constant(''))();
 
   //Primary Tank
