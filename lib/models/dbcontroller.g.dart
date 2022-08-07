@@ -983,6 +983,7 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
   }
 }
 
+<<<<<<< HEAD
 class Setting extends DataClass implements Insertable<Setting> {
   final String settingName;
   final String settingType;
@@ -1000,11 +1001,28 @@ class Setting extends DataClass implements Insertable<Setting> {
           .mapFromDatabaseResponse(data['${effectivePrefix}setting_type'])!,
       settingValue: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}setting_value'])!,
+=======
+class SettingData extends DataClass implements Insertable<SettingData> {
+  final String name;
+  final String type;
+  final String value;
+  SettingData({required this.name, required this.type, required this.value});
+  factory SettingData.fromData(Map<String, dynamic> data, {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return SettingData(
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      type: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
+      value: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}value'])!,
+>>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+<<<<<<< HEAD
     map['setting_name'] = Variable<String>(settingName);
     map['setting_type'] = Variable<String>(settingType);
     map['setting_value'] = Variable<String>(settingValue);
@@ -1026,12 +1044,36 @@ class Setting extends DataClass implements Insertable<Setting> {
       settingName: serializer.fromJson<String>(json['settingName']),
       settingType: serializer.fromJson<String>(json['settingType']),
       settingValue: serializer.fromJson<String>(json['settingValue']),
+=======
+    map['name'] = Variable<String>(name);
+    map['type'] = Variable<String>(type);
+    map['value'] = Variable<String>(value);
+    return map;
+  }
+
+  SettingCompanion toCompanion(bool nullToAbsent) {
+    return SettingCompanion(
+      name: Value(name),
+      type: Value(type),
+      value: Value(value),
+    );
+  }
+
+  factory SettingData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SettingData(
+      name: serializer.fromJson<String>(json['name']),
+      type: serializer.fromJson<String>(json['type']),
+      value: serializer.fromJson<String>(json['value']),
+>>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+<<<<<<< HEAD
       'settingName': serializer.toJson<String>(settingName),
       'settingType': serializer.toJson<String>(settingType),
       'settingValue': serializer.toJson<String>(settingValue),
@@ -1051,11 +1093,32 @@ class Setting extends DataClass implements Insertable<Setting> {
           ..write('settingName: $settingName, ')
           ..write('settingType: $settingType, ')
           ..write('settingValue: $settingValue')
+=======
+      'name': serializer.toJson<String>(name),
+      'type': serializer.toJson<String>(type),
+      'value': serializer.toJson<String>(value),
+    };
+  }
+
+  SettingData copyWith({String? name, String? type, String? value}) =>
+      SettingData(
+        name: name ?? this.name,
+        type: type ?? this.type,
+        value: value ?? this.value,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SettingData(')
+          ..write('name: $name, ')
+          ..write('type: $type, ')
+          ..write('value: $value')
+>>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
           ..write(')'))
         .toString();
   }
 
   @override
+<<<<<<< HEAD
   int get hashCode => Object.hash(settingName, settingType, settingValue);
   @override
   bool operator ==(Object other) =>
@@ -1102,12 +1165,59 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       settingName: settingName ?? this.settingName,
       settingType: settingType ?? this.settingType,
       settingValue: settingValue ?? this.settingValue,
+=======
+  int get hashCode => Object.hash(name, type, value);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SettingData &&
+          other.name == this.name &&
+          other.type == this.type &&
+          other.value == this.value);
+}
+
+class SettingCompanion extends UpdateCompanion<SettingData> {
+  final Value<String> name;
+  final Value<String> type;
+  final Value<String> value;
+  const SettingCompanion({
+    this.name = const Value.absent(),
+    this.type = const Value.absent(),
+    this.value = const Value.absent(),
+  });
+  SettingCompanion.insert({
+    required String name,
+    required String type,
+    required String value,
+  })  : name = Value(name),
+        type = Value(type),
+        value = Value(value);
+  static Insertable<SettingData> custom({
+    Expression<String>? name,
+    Expression<String>? type,
+    Expression<String>? value,
+  }) {
+    return RawValuesInsertable({
+      if (name != null) 'name': name,
+      if (type != null) 'type': type,
+      if (value != null) 'value': value,
+    });
+  }
+
+  SettingCompanion copyWith(
+      {Value<String>? name, Value<String>? type, Value<String>? value}) {
+    return SettingCompanion(
+      name: name ?? this.name,
+      type: type ?? this.type,
+      value: value ?? this.value,
+>>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+<<<<<<< HEAD
     if (settingName.present) {
       map['setting_name'] = Variable<String>(settingName.value);
     }
@@ -1116,21 +1226,39 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     }
     if (settingValue.present) {
       map['setting_value'] = Variable<String>(settingValue.value);
+=======
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (value.present) {
+      map['value'] = Variable<String>(value.value);
+>>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
     }
     return map;
   }
 
   @override
   String toString() {
+<<<<<<< HEAD
     return (StringBuffer('SettingsCompanion(')
           ..write('settingName: $settingName, ')
           ..write('settingType: $settingType, ')
           ..write('settingValue: $settingValue')
+=======
+    return (StringBuffer('SettingCompanion(')
+          ..write('name: $name, ')
+          ..write('type: $type, ')
+          ..write('value: $value')
+>>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
           ..write(')'))
         .toString();
   }
 }
 
+<<<<<<< HEAD
 class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -1191,6 +1319,58 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
               data['setting_value']!, _settingValueMeta));
     } else if (isInserting) {
       context.missing(_settingValueMeta);
+=======
+class $SettingTable extends Setting with TableInfo<$SettingTable, SettingData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SettingTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      defaultConstraints: 'UNIQUE');
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+      'type', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _valueMeta = const VerificationMeta('value');
+  @override
+  late final GeneratedColumn<String?> value = GeneratedColumn<String?>(
+      'value', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [name, type, value];
+  @override
+  String get aliasedName => _alias ?? 'setting';
+  @override
+  String get actualTableName => 'setting';
+  @override
+  VerificationContext validateIntegrity(Insertable<SettingData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('value')) {
+      context.handle(
+          _valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
+    } else if (isInserting) {
+      context.missing(_valueMeta);
+>>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
     }
     return context;
   }
@@ -1198,14 +1378,24 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   @override
   Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
+<<<<<<< HEAD
   Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
     return Setting.fromData(data,
+=======
+  SettingData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return SettingData.fromData(data,
+>>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
+<<<<<<< HEAD
   $SettingsTable createAlias(String alias) {
     return $SettingsTable(attachedDatabase, alias);
+=======
+  $SettingTable createAlias(String alias) {
+    return $SettingTable(attachedDatabase, alias);
+>>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
   }
 }
 
@@ -3107,7 +3297,11 @@ class $LogTypeTable extends LogType with TableInfo<$LogTypeTable, LogTypeData> {
 abstract class _$DBController extends GeneratedDatabase {
   _$DBController(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $VehicleTable vehicle = $VehicleTable(this);
+<<<<<<< HEAD
   late final $SettingsTable settings = $SettingsTable(this);
+=======
+  late final $SettingTable setting = $SettingTable(this);
+>>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
   late final $TireTable tire = $TireTable(this);
   late final $TireSetupTable tireSetup = $TireSetupTable(this);
   late final $LogTable log = $LogTable(this);
@@ -3118,5 +3312,9 @@ abstract class _$DBController extends GeneratedDatabase {
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
+<<<<<<< HEAD
       [vehicle, settings, tire, tireSetup, log, gasStations, fuelType, logType];
+=======
+      [vehicle, setting, tire, tireSetup, log, gasStations, fuelType, logType];
+>>>>>>> 76bb282adde9b55a7a9c45da73a6c0623ebf00bd
 }
