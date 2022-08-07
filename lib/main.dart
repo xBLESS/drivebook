@@ -18,8 +18,10 @@ void main() {
           create: (context) => DBController(),
           dispose: (context, db) => db.close(),
         ),
-        ChangeNotifierProvider<VehiclesProvider>(create: (context) => VehiclesProvider(context)),
-        ChangeNotifierProvider<SettingsProvider>(create: (context) => SettingsProvider(context)),
+        ChangeNotifierProvider<VehiclesProvider>(
+            create: (context) => VehiclesProvider(context)),
+        ChangeNotifierProvider<SettingsProvider>(
+            create: (context) => SettingsProvider(context)),
       ],
       child: const MyApp(),
     ),
@@ -34,6 +36,14 @@ class MyApp extends StatelessWidget {
     // Load initial data
     Provider.of<VehiclesProvider>(context, listen: false).loadVehicles();
     Provider.of<SettingsProvider>(context, listen: false).loadSettings();
+
+    Provider.of<SettingsProvider>(context, listen: false).addSetting(
+      SettingData(
+        name: 'Show new Vehicle Detail Screen',
+        type: 'bool',
+        value: 'false',
+      ),
+    );
 
     return MaterialApp(
       title: 'Flutter Demo',

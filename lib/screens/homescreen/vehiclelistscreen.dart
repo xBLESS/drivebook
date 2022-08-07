@@ -61,7 +61,7 @@ class VehicleListScreen extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Settings'),
                 onTap: () {
-                  Navigator.pushNamed(context, SettingsScreen.routename);
+                  Navigator.popAndPushNamed(context, SettingsScreen.routename);
                 },
               ),
             ],
