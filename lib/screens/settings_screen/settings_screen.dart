@@ -10,6 +10,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('settingsscreen build ran');
     return Scaffold(
       appBar: AppBar(
         title: Text('Einstellungen'),
@@ -27,11 +28,7 @@ class SettingsScreen extends StatelessWidget {
                     value: bool.fromEnvironment(data[index].value),
                     onChanged: (value) {
                       Provider.of<SettingsProvider>(context, listen: false).updateSetting(
-                        SettingData(
-                          name: data[index].name,
-                          type: data[index].type,
-                          value: data[index].value,
-                        ),
+                        data[index],
                         value.toString(),
                       );
                     },

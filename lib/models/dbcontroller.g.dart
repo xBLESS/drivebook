@@ -1180,7 +1180,7 @@ class $SettingTable extends Setting with TableInfo<$SettingTable, SettingData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {name};
   @override
   SettingData map(Map<String, dynamic> data, {String? tablePrefix}) {
     return SettingData.fromData(data,

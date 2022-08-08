@@ -12,6 +12,8 @@ class Setting extends Table {
   TextColumn get name => text().unique()();
   TextColumn get type => text()();
   TextColumn get value => text()();
+
+  Set<Column> get primaryKey => {name};
 }
 
 class FuelType extends Table {
@@ -162,6 +164,7 @@ class DBController extends _$DBController {
             (e) => e.name.like(entry.name),
           ))
         .write(SettingCompanion(value: Value(value)));
+    // return update(setting).replace(SettingData(name: entry.name, type: entry.type, value: value));
   }
 
   //Todo Datenbankmigration schreiben, ist für Entwiklung aber unwichtig

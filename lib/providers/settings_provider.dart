@@ -38,8 +38,11 @@ class SettingsProvider extends ChangeNotifier {
 
   Future<int> updateSetting(SettingData entry, String value) async {
     // DBController dbc = Provider.of<DBController>(context, listen: false);
+    print('${entry.name}, ${entry.value}');
     var res = await dbc.updateSetting(entry, value);
-    notifyListeners();
-    return res;
+    loadSettings();
+    print('${entry.name}, ${entry.value}');
+    // notifyListeners();
+    return 1;
   }
 }
