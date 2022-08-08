@@ -46,23 +46,18 @@ class Vehicle extends Table {
   DateTimeColumn get buildDate => dateTime().nullable()();
   IntColumn get mileage => integer()();
 
-  TextColumn get licensePlate =>
-      text().withLength(max: 16).withDefault(const Constant(''))();
-  IntColumn get seasonalLicenseBeginMonth =>
-      integer().withDefault(const Constant(1))();
-  IntColumn get seasonalLicenseEndMonth =>
-      integer().withDefault(const Constant(12))();
+  TextColumn get licensePlate => text().withLength(max: 16).withDefault(const Constant(''))();
+  IntColumn get seasonalLicenseBeginMonth => integer().withDefault(const Constant(1))();
+  IntColumn get seasonalLicenseEndMonth => integer().withDefault(const Constant(12))();
 
-  TextColumn get notes =>
-      text().withLength(max: 512).withDefault(const Constant(''))();
+  TextColumn get notes => text().withLength(max: 512).withDefault(const Constant(''))();
 
   //Primary Tank
   IntColumn get primaryFuelTypeId => integer().references(FuelType, #id)();
   RealColumn get primaryFuelCapacity => real()();
 
   //Secondary Tank
-  IntColumn get secondaryFuelTypeId =>
-      integer().nullable().references(FuelType, #id)();
+  IntColumn get secondaryFuelTypeId => integer().nullable().references(FuelType, #id)();
   RealColumn get secondaryFuelCapacity => real().nullable()();
 
   // Kauf
@@ -75,8 +70,7 @@ class Vehicle extends Table {
   DateTimeColumn get sellDateTime => dateTime().nullable()();
   RealColumn get sellPrice => real().nullable()();
 
-  IntColumn get currentTireGroupId =>
-      integer().nullable().references(TireSetup, #id)();
+  IntColumn get currentTireGroupId => integer().nullable().references(TireSetup, #id)();
 
   // @override // already the PK because of the autoincrement
   // Set<Column> get primaryKey => {id};
@@ -97,12 +91,10 @@ class Log extends Table {
   RealColumn get costPerUnit => real().nullable()();
   RealColumn get refillAmount => real().nullable()();
   RealColumn get approxRefillPercentOfTank => real().nullable()();
-  IntColumn get gasStationId =>
-      integer().references(GasStations, #id).nullable()();
+  IntColumn get gasStationId => integer().references(GasStations, #id).nullable()();
 
   // Tirechange
-  IntColumn get tireSetupGroupId =>
-      integer().nullable().references(TireSetup, #groupId)();
+  IntColumn get tireSetupGroupId => integer().nullable().references(TireSetup, #groupId)();
 }
 
 class Tire extends Table {

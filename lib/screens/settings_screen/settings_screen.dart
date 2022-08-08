@@ -26,8 +26,7 @@ class SettingsScreen extends StatelessWidget {
                     title: Text(data[index].name),
                     value: bool.fromEnvironment(data[index].value),
                     onChanged: (value) {
-                      Provider.of<SettingsProvider>(context, listen: false)
-                          .updateSetting(
+                      Provider.of<SettingsProvider>(context, listen: false).updateSetting(
                         SettingData(
                           name: data[index].name,
                           type: data[index].type,

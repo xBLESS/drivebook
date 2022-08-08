@@ -18,10 +18,8 @@ void main() {
           create: (context) => DBController(),
           dispose: (context, db) => db.close(),
         ),
-        ChangeNotifierProvider<VehiclesProvider>(
-            create: (context) => VehiclesProvider(context)),
-        ChangeNotifierProvider<SettingsProvider>(
-            create: (context) => SettingsProvider(context)),
+        ChangeNotifierProvider<VehiclesProvider>(create: (context) => VehiclesProvider(context)),
+        ChangeNotifierProvider<SettingsProvider>(create: (context) => SettingsProvider(context)),
       ],
       child: const MyApp(),
     ),
