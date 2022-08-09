@@ -156,11 +156,20 @@ class DBController extends _$DBController {
   //Settings
   Future<int> addSetting(SettingCompanion entry) => into(setting).insert(entry);
 
+  Future addSettings(List<SettingData> entries) async {
+    transaction(() async {
+      for (var element in entries) {
+        into(setting).insert(element);
+      }
+    });
+  }
+
   Future<List<SettingData>> get getAllSettings async => select(setting).get();
 
   Stream<List<SettingData>> watchSettings() => select(setting).watch();
 
   Future<int> updateSetting(SettingData entry, String value) async {
+    // print('updateSetting value: $value');
     return (update(setting)
           ..where(
             (e) => e.name.like(entry.name),
