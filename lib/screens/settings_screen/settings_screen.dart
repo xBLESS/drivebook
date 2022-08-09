@@ -3,6 +3,7 @@ import 'package:drivebook/models/dbcontroller.dart';
 import 'package:drivebook/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:drivebook/extensions/extensions.dart';
 
 class SettingsScreen extends StatelessWidget {
   static const routename = '/settingsScreen';
@@ -10,10 +11,10 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('settingsscreen build ran');
+    // print('settingsscreen build ran');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Einstellungen'),
+        title: const Text('Einstellungen'),
       ),
       body: Consumer<SettingsProvider>(
         builder: (context, value, _) {
@@ -25,13 +26,17 @@ class SettingsScreen extends StatelessWidget {
                 case 'bool':
                   return SwitchListTile(
                     title: Text(data[index].name),
-                    value: bool.fromEnvironment(data[index].value),
+                    value: data[index].value.parseBool(),
                     onChanged: (value) {
-                      Provider.of<SettingsProvider>(context, listen: false).updateSetting(
-                        data[index],
-                        value.toString(),
-                      );
+                      Provider.of<SettingsProvider>(context, listen: false).updateSetting(data[index], value.toString());
                     },
+                  );
+                case 'integer':
+                  return RadioListTile(
+                    title: Text(data[index].name),
+                    value: 'value',
+                    groupValue: 0,
+                    onChanged: (val) {},
                   );
                 default:
                   return const ListTile(

@@ -15,18 +15,22 @@ class SettingsProvider extends ChangeNotifier {
   List<SettingData> get getSettings => _settings;
 
   Future addSetting(SettingData entry) async {
-    int res = await dbc.addSetting(
-      SettingCompanion(
-        name: Value(entry.name),
-        type: Value(entry.type),
-        value: Value(entry.value),
-      ),
-    );
-    if (res <= 0) {
-      print('Setting ID was ${res}');
+    try {
+      int res = await dbc.addSetting(
+        SettingCompanion(
+          name: Value(entry.name),
+          type: Value(entry.type),
+          value: Value(entry.value),
+        ),
+      );
+      if (res <= 0) {
+        print('Setting ID was ${res}');
+      }
+      _settings.add(entry);
+      notifyListeners();
+    } catch (e) {
+      print(e);
     }
-    _settings.add(entry);
-    notifyListeners();
   }
 
   Future<List<SettingData>> loadSettings() async {
