@@ -1196,21 +1196,19 @@ class $SettingTable extends Setting with TableInfo<$SettingTable, SettingData> {
 class TireData extends DataClass implements Insertable<TireData> {
   final int id;
   final int vehicleId;
-  final int width;
-  final int tireWall;
-  final int wheelDiameter;
+  final int? width;
+  final int? tireWall;
+  final int? wheelDiameter;
   final String manufacturer;
   final DateTime? dot;
-  final double? profileDepth;
   TireData(
       {required this.id,
       required this.vehicleId,
-      required this.width,
-      required this.tireWall,
-      required this.wheelDiameter,
+      this.width,
+      this.tireWall,
+      this.wheelDiameter,
       required this.manufacturer,
-      this.dot,
-      this.profileDepth});
+      this.dot});
   factory TireData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return TireData(
@@ -1219,17 +1217,15 @@ class TireData extends DataClass implements Insertable<TireData> {
       vehicleId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}vehicle_id'])!,
       width: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}width'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}width']),
       tireWall: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}tire_wall'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}tire_wall']),
       wheelDiameter: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}wheel_diameter'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}wheel_diameter']),
       manufacturer: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}manufacturer'])!,
       dot: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}dot']),
-      profileDepth: const RealType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}profile_depth']),
     );
   }
   @override
@@ -1237,15 +1233,18 @@ class TireData extends DataClass implements Insertable<TireData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['vehicle_id'] = Variable<int>(vehicleId);
-    map['width'] = Variable<int>(width);
-    map['tire_wall'] = Variable<int>(tireWall);
-    map['wheel_diameter'] = Variable<int>(wheelDiameter);
+    if (!nullToAbsent || width != null) {
+      map['width'] = Variable<int?>(width);
+    }
+    if (!nullToAbsent || tireWall != null) {
+      map['tire_wall'] = Variable<int?>(tireWall);
+    }
+    if (!nullToAbsent || wheelDiameter != null) {
+      map['wheel_diameter'] = Variable<int?>(wheelDiameter);
+    }
     map['manufacturer'] = Variable<String>(manufacturer);
     if (!nullToAbsent || dot != null) {
       map['dot'] = Variable<DateTime?>(dot);
-    }
-    if (!nullToAbsent || profileDepth != null) {
-      map['profile_depth'] = Variable<double?>(profileDepth);
     }
     return map;
   }
@@ -1254,14 +1253,16 @@ class TireData extends DataClass implements Insertable<TireData> {
     return TireCompanion(
       id: Value(id),
       vehicleId: Value(vehicleId),
-      width: Value(width),
-      tireWall: Value(tireWall),
-      wheelDiameter: Value(wheelDiameter),
+      width:
+          width == null && nullToAbsent ? const Value.absent() : Value(width),
+      tireWall: tireWall == null && nullToAbsent
+          ? const Value.absent()
+          : Value(tireWall),
+      wheelDiameter: wheelDiameter == null && nullToAbsent
+          ? const Value.absent()
+          : Value(wheelDiameter),
       manufacturer: Value(manufacturer),
       dot: dot == null && nullToAbsent ? const Value.absent() : Value(dot),
-      profileDepth: profileDepth == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileDepth),
     );
   }
 
@@ -1271,12 +1272,11 @@ class TireData extends DataClass implements Insertable<TireData> {
     return TireData(
       id: serializer.fromJson<int>(json['id']),
       vehicleId: serializer.fromJson<int>(json['vehicleId']),
-      width: serializer.fromJson<int>(json['width']),
-      tireWall: serializer.fromJson<int>(json['tireWall']),
-      wheelDiameter: serializer.fromJson<int>(json['wheelDiameter']),
+      width: serializer.fromJson<int?>(json['width']),
+      tireWall: serializer.fromJson<int?>(json['tireWall']),
+      wheelDiameter: serializer.fromJson<int?>(json['wheelDiameter']),
       manufacturer: serializer.fromJson<String>(json['manufacturer']),
       dot: serializer.fromJson<DateTime?>(json['dot']),
-      profileDepth: serializer.fromJson<double?>(json['profileDepth']),
     );
   }
   @override
@@ -1285,12 +1285,11 @@ class TireData extends DataClass implements Insertable<TireData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'vehicleId': serializer.toJson<int>(vehicleId),
-      'width': serializer.toJson<int>(width),
-      'tireWall': serializer.toJson<int>(tireWall),
-      'wheelDiameter': serializer.toJson<int>(wheelDiameter),
+      'width': serializer.toJson<int?>(width),
+      'tireWall': serializer.toJson<int?>(tireWall),
+      'wheelDiameter': serializer.toJson<int?>(wheelDiameter),
       'manufacturer': serializer.toJson<String>(manufacturer),
       'dot': serializer.toJson<DateTime?>(dot),
-      'profileDepth': serializer.toJson<double?>(profileDepth),
     };
   }
 
@@ -1301,8 +1300,7 @@ class TireData extends DataClass implements Insertable<TireData> {
           int? tireWall,
           int? wheelDiameter,
           String? manufacturer,
-          DateTime? dot,
-          double? profileDepth}) =>
+          DateTime? dot}) =>
       TireData(
         id: id ?? this.id,
         vehicleId: vehicleId ?? this.vehicleId,
@@ -1311,7 +1309,6 @@ class TireData extends DataClass implements Insertable<TireData> {
         wheelDiameter: wheelDiameter ?? this.wheelDiameter,
         manufacturer: manufacturer ?? this.manufacturer,
         dot: dot ?? this.dot,
-        profileDepth: profileDepth ?? this.profileDepth,
       );
   @override
   String toString() {
@@ -1322,15 +1319,14 @@ class TireData extends DataClass implements Insertable<TireData> {
           ..write('tireWall: $tireWall, ')
           ..write('wheelDiameter: $wheelDiameter, ')
           ..write('manufacturer: $manufacturer, ')
-          ..write('dot: $dot, ')
-          ..write('profileDepth: $profileDepth')
+          ..write('dot: $dot')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, vehicleId, width, tireWall, wheelDiameter,
-      manufacturer, dot, profileDepth);
+  int get hashCode => Object.hash(
+      id, vehicleId, width, tireWall, wheelDiameter, manufacturer, dot);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1341,19 +1337,17 @@ class TireData extends DataClass implements Insertable<TireData> {
           other.tireWall == this.tireWall &&
           other.wheelDiameter == this.wheelDiameter &&
           other.manufacturer == this.manufacturer &&
-          other.dot == this.dot &&
-          other.profileDepth == this.profileDepth);
+          other.dot == this.dot);
 }
 
 class TireCompanion extends UpdateCompanion<TireData> {
   final Value<int> id;
   final Value<int> vehicleId;
-  final Value<int> width;
-  final Value<int> tireWall;
-  final Value<int> wheelDiameter;
+  final Value<int?> width;
+  final Value<int?> tireWall;
+  final Value<int?> wheelDiameter;
   final Value<String> manufacturer;
   final Value<DateTime?> dot;
-  final Value<double?> profileDepth;
   const TireCompanion({
     this.id = const Value.absent(),
     this.vehicleId = const Value.absent(),
@@ -1362,31 +1356,25 @@ class TireCompanion extends UpdateCompanion<TireData> {
     this.wheelDiameter = const Value.absent(),
     this.manufacturer = const Value.absent(),
     this.dot = const Value.absent(),
-    this.profileDepth = const Value.absent(),
   });
   TireCompanion.insert({
     this.id = const Value.absent(),
     required int vehicleId,
-    required int width,
-    required int tireWall,
-    required int wheelDiameter,
+    this.width = const Value.absent(),
+    this.tireWall = const Value.absent(),
+    this.wheelDiameter = const Value.absent(),
     required String manufacturer,
     this.dot = const Value.absent(),
-    this.profileDepth = const Value.absent(),
   })  : vehicleId = Value(vehicleId),
-        width = Value(width),
-        tireWall = Value(tireWall),
-        wheelDiameter = Value(wheelDiameter),
         manufacturer = Value(manufacturer);
   static Insertable<TireData> custom({
     Expression<int>? id,
     Expression<int>? vehicleId,
-    Expression<int>? width,
-    Expression<int>? tireWall,
-    Expression<int>? wheelDiameter,
+    Expression<int?>? width,
+    Expression<int?>? tireWall,
+    Expression<int?>? wheelDiameter,
     Expression<String>? manufacturer,
     Expression<DateTime?>? dot,
-    Expression<double?>? profileDepth,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1396,19 +1384,17 @@ class TireCompanion extends UpdateCompanion<TireData> {
       if (wheelDiameter != null) 'wheel_diameter': wheelDiameter,
       if (manufacturer != null) 'manufacturer': manufacturer,
       if (dot != null) 'dot': dot,
-      if (profileDepth != null) 'profile_depth': profileDepth,
     });
   }
 
   TireCompanion copyWith(
       {Value<int>? id,
       Value<int>? vehicleId,
-      Value<int>? width,
-      Value<int>? tireWall,
-      Value<int>? wheelDiameter,
+      Value<int?>? width,
+      Value<int?>? tireWall,
+      Value<int?>? wheelDiameter,
       Value<String>? manufacturer,
-      Value<DateTime?>? dot,
-      Value<double?>? profileDepth}) {
+      Value<DateTime?>? dot}) {
     return TireCompanion(
       id: id ?? this.id,
       vehicleId: vehicleId ?? this.vehicleId,
@@ -1417,7 +1403,6 @@ class TireCompanion extends UpdateCompanion<TireData> {
       wheelDiameter: wheelDiameter ?? this.wheelDiameter,
       manufacturer: manufacturer ?? this.manufacturer,
       dot: dot ?? this.dot,
-      profileDepth: profileDepth ?? this.profileDepth,
     );
   }
 
@@ -1431,22 +1416,19 @@ class TireCompanion extends UpdateCompanion<TireData> {
       map['vehicle_id'] = Variable<int>(vehicleId.value);
     }
     if (width.present) {
-      map['width'] = Variable<int>(width.value);
+      map['width'] = Variable<int?>(width.value);
     }
     if (tireWall.present) {
-      map['tire_wall'] = Variable<int>(tireWall.value);
+      map['tire_wall'] = Variable<int?>(tireWall.value);
     }
     if (wheelDiameter.present) {
-      map['wheel_diameter'] = Variable<int>(wheelDiameter.value);
+      map['wheel_diameter'] = Variable<int?>(wheelDiameter.value);
     }
     if (manufacturer.present) {
       map['manufacturer'] = Variable<String>(manufacturer.value);
     }
     if (dot.present) {
       map['dot'] = Variable<DateTime?>(dot.value);
-    }
-    if (profileDepth.present) {
-      map['profile_depth'] = Variable<double?>(profileDepth.value);
     }
     return map;
   }
@@ -1460,8 +1442,7 @@ class TireCompanion extends UpdateCompanion<TireData> {
           ..write('tireWall: $tireWall, ')
           ..write('wheelDiameter: $wheelDiameter, ')
           ..write('manufacturer: $manufacturer, ')
-          ..write('dot: $dot, ')
-          ..write('profileDepth: $profileDepth')
+          ..write('dot: $dot')
           ..write(')'))
         .toString();
   }
@@ -1489,19 +1470,19 @@ class $TireTable extends Tire with TableInfo<$TireTable, TireData> {
   final VerificationMeta _widthMeta = const VerificationMeta('width');
   @override
   late final GeneratedColumn<int?> width = GeneratedColumn<int?>(
-      'width', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
+      'width', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
   final VerificationMeta _tireWallMeta = const VerificationMeta('tireWall');
   @override
   late final GeneratedColumn<int?> tireWall = GeneratedColumn<int?>(
-      'tire_wall', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
+      'tire_wall', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
   final VerificationMeta _wheelDiameterMeta =
       const VerificationMeta('wheelDiameter');
   @override
   late final GeneratedColumn<int?> wheelDiameter = GeneratedColumn<int?>(
-      'wheel_diameter', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
+      'wheel_diameter', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
   final VerificationMeta _manufacturerMeta =
       const VerificationMeta('manufacturer');
   @override
@@ -1513,23 +1494,9 @@ class $TireTable extends Tire with TableInfo<$TireTable, TireData> {
   late final GeneratedColumn<DateTime?> dot = GeneratedColumn<DateTime?>(
       'dot', aliasedName, true,
       type: const IntType(), requiredDuringInsert: false);
-  final VerificationMeta _profileDepthMeta =
-      const VerificationMeta('profileDepth');
   @override
-  late final GeneratedColumn<double?> profileDepth = GeneratedColumn<double?>(
-      'profile_depth', aliasedName, true,
-      type: const RealType(), requiredDuringInsert: false);
-  @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        vehicleId,
-        width,
-        tireWall,
-        wheelDiameter,
-        manufacturer,
-        dot,
-        profileDepth
-      ];
+  List<GeneratedColumn> get $columns =>
+      [id, vehicleId, width, tireWall, wheelDiameter, manufacturer, dot];
   @override
   String get aliasedName => _alias ?? 'tire';
   @override
@@ -1551,22 +1518,16 @@ class $TireTable extends Tire with TableInfo<$TireTable, TireData> {
     if (data.containsKey('width')) {
       context.handle(
           _widthMeta, width.isAcceptableOrUnknown(data['width']!, _widthMeta));
-    } else if (isInserting) {
-      context.missing(_widthMeta);
     }
     if (data.containsKey('tire_wall')) {
       context.handle(_tireWallMeta,
           tireWall.isAcceptableOrUnknown(data['tire_wall']!, _tireWallMeta));
-    } else if (isInserting) {
-      context.missing(_tireWallMeta);
     }
     if (data.containsKey('wheel_diameter')) {
       context.handle(
           _wheelDiameterMeta,
           wheelDiameter.isAcceptableOrUnknown(
               data['wheel_diameter']!, _wheelDiameterMeta));
-    } else if (isInserting) {
-      context.missing(_wheelDiameterMeta);
     }
     if (data.containsKey('manufacturer')) {
       context.handle(
@@ -1579,12 +1540,6 @@ class $TireTable extends Tire with TableInfo<$TireTable, TireData> {
     if (data.containsKey('dot')) {
       context.handle(
           _dotMeta, dot.isAcceptableOrUnknown(data['dot']!, _dotMeta));
-    }
-    if (data.containsKey('profile_depth')) {
-      context.handle(
-          _profileDepthMeta,
-          profileDepth.isAcceptableOrUnknown(
-              data['profile_depth']!, _profileDepthMeta));
     }
     return context;
   }
@@ -1910,6 +1865,8 @@ class LogData extends DataClass implements Insertable<LogData> {
   final double? approxRefillPercentOfTank;
   final int? gasStationId;
   final int? tireSetupGroupId;
+  final int? tireId;
+  final double? profileDepth;
   LogData(
       {required this.id,
       required this.vehicleId,
@@ -1923,7 +1880,9 @@ class LogData extends DataClass implements Insertable<LogData> {
       this.refillAmount,
       this.approxRefillPercentOfTank,
       this.gasStationId,
-      this.tireSetupGroupId});
+      this.tireSetupGroupId,
+      this.tireId,
+      this.profileDepth});
   factory LogData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return LogData(
@@ -1953,6 +1912,10 @@ class LogData extends DataClass implements Insertable<LogData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}gas_station_id']),
       tireSetupGroupId: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}tire_setup_group_id']),
+      tireId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}tire_id']),
+      profileDepth: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}profile_depth']),
     );
   }
   @override
@@ -1984,6 +1947,12 @@ class LogData extends DataClass implements Insertable<LogData> {
     if (!nullToAbsent || tireSetupGroupId != null) {
       map['tire_setup_group_id'] = Variable<int?>(tireSetupGroupId);
     }
+    if (!nullToAbsent || tireId != null) {
+      map['tire_id'] = Variable<int?>(tireId);
+    }
+    if (!nullToAbsent || profileDepth != null) {
+      map['profile_depth'] = Variable<double?>(profileDepth);
+    }
     return map;
   }
 
@@ -2013,6 +1982,11 @@ class LogData extends DataClass implements Insertable<LogData> {
       tireSetupGroupId: tireSetupGroupId == null && nullToAbsent
           ? const Value.absent()
           : Value(tireSetupGroupId),
+      tireId:
+          tireId == null && nullToAbsent ? const Value.absent() : Value(tireId),
+      profileDepth: profileDepth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileDepth),
     );
   }
 
@@ -2034,6 +2008,8 @@ class LogData extends DataClass implements Insertable<LogData> {
           serializer.fromJson<double?>(json['approxRefillPercentOfTank']),
       gasStationId: serializer.fromJson<int?>(json['gasStationId']),
       tireSetupGroupId: serializer.fromJson<int?>(json['tireSetupGroupId']),
+      tireId: serializer.fromJson<int?>(json['tireId']),
+      profileDepth: serializer.fromJson<double?>(json['profileDepth']),
     );
   }
   @override
@@ -2054,6 +2030,8 @@ class LogData extends DataClass implements Insertable<LogData> {
           serializer.toJson<double?>(approxRefillPercentOfTank),
       'gasStationId': serializer.toJson<int?>(gasStationId),
       'tireSetupGroupId': serializer.toJson<int?>(tireSetupGroupId),
+      'tireId': serializer.toJson<int?>(tireId),
+      'profileDepth': serializer.toJson<double?>(profileDepth),
     };
   }
 
@@ -2070,7 +2048,9 @@ class LogData extends DataClass implements Insertable<LogData> {
           double? refillAmount,
           double? approxRefillPercentOfTank,
           int? gasStationId,
-          int? tireSetupGroupId}) =>
+          int? tireSetupGroupId,
+          int? tireId,
+          double? profileDepth}) =>
       LogData(
         id: id ?? this.id,
         vehicleId: vehicleId ?? this.vehicleId,
@@ -2086,6 +2066,8 @@ class LogData extends DataClass implements Insertable<LogData> {
             approxRefillPercentOfTank ?? this.approxRefillPercentOfTank,
         gasStationId: gasStationId ?? this.gasStationId,
         tireSetupGroupId: tireSetupGroupId ?? this.tireSetupGroupId,
+        tireId: tireId ?? this.tireId,
+        profileDepth: profileDepth ?? this.profileDepth,
       );
   @override
   String toString() {
@@ -2102,7 +2084,9 @@ class LogData extends DataClass implements Insertable<LogData> {
           ..write('refillAmount: $refillAmount, ')
           ..write('approxRefillPercentOfTank: $approxRefillPercentOfTank, ')
           ..write('gasStationId: $gasStationId, ')
-          ..write('tireSetupGroupId: $tireSetupGroupId')
+          ..write('tireSetupGroupId: $tireSetupGroupId, ')
+          ..write('tireId: $tireId, ')
+          ..write('profileDepth: $profileDepth')
           ..write(')'))
         .toString();
   }
@@ -2121,7 +2105,9 @@ class LogData extends DataClass implements Insertable<LogData> {
       refillAmount,
       approxRefillPercentOfTank,
       gasStationId,
-      tireSetupGroupId);
+      tireSetupGroupId,
+      tireId,
+      profileDepth);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2138,7 +2124,9 @@ class LogData extends DataClass implements Insertable<LogData> {
           other.refillAmount == this.refillAmount &&
           other.approxRefillPercentOfTank == this.approxRefillPercentOfTank &&
           other.gasStationId == this.gasStationId &&
-          other.tireSetupGroupId == this.tireSetupGroupId);
+          other.tireSetupGroupId == this.tireSetupGroupId &&
+          other.tireId == this.tireId &&
+          other.profileDepth == this.profileDepth);
 }
 
 class LogCompanion extends UpdateCompanion<LogData> {
@@ -2155,6 +2143,8 @@ class LogCompanion extends UpdateCompanion<LogData> {
   final Value<double?> approxRefillPercentOfTank;
   final Value<int?> gasStationId;
   final Value<int?> tireSetupGroupId;
+  final Value<int?> tireId;
+  final Value<double?> profileDepth;
   const LogCompanion({
     this.id = const Value.absent(),
     this.vehicleId = const Value.absent(),
@@ -2169,6 +2159,8 @@ class LogCompanion extends UpdateCompanion<LogData> {
     this.approxRefillPercentOfTank = const Value.absent(),
     this.gasStationId = const Value.absent(),
     this.tireSetupGroupId = const Value.absent(),
+    this.tireId = const Value.absent(),
+    this.profileDepth = const Value.absent(),
   });
   LogCompanion.insert({
     this.id = const Value.absent(),
@@ -2184,6 +2176,8 @@ class LogCompanion extends UpdateCompanion<LogData> {
     this.approxRefillPercentOfTank = const Value.absent(),
     this.gasStationId = const Value.absent(),
     this.tireSetupGroupId = const Value.absent(),
+    this.tireId = const Value.absent(),
+    this.profileDepth = const Value.absent(),
   })  : vehicleId = Value(vehicleId),
         title = Value(title),
         content = Value(content),
@@ -2204,6 +2198,8 @@ class LogCompanion extends UpdateCompanion<LogData> {
     Expression<double?>? approxRefillPercentOfTank,
     Expression<int?>? gasStationId,
     Expression<int?>? tireSetupGroupId,
+    Expression<int?>? tireId,
+    Expression<double?>? profileDepth,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2220,6 +2216,8 @@ class LogCompanion extends UpdateCompanion<LogData> {
         'approx_refill_percent_of_tank': approxRefillPercentOfTank,
       if (gasStationId != null) 'gas_station_id': gasStationId,
       if (tireSetupGroupId != null) 'tire_setup_group_id': tireSetupGroupId,
+      if (tireId != null) 'tire_id': tireId,
+      if (profileDepth != null) 'profile_depth': profileDepth,
     });
   }
 
@@ -2236,7 +2234,9 @@ class LogCompanion extends UpdateCompanion<LogData> {
       Value<double?>? refillAmount,
       Value<double?>? approxRefillPercentOfTank,
       Value<int?>? gasStationId,
-      Value<int?>? tireSetupGroupId}) {
+      Value<int?>? tireSetupGroupId,
+      Value<int?>? tireId,
+      Value<double?>? profileDepth}) {
     return LogCompanion(
       id: id ?? this.id,
       vehicleId: vehicleId ?? this.vehicleId,
@@ -2252,6 +2252,8 @@ class LogCompanion extends UpdateCompanion<LogData> {
           approxRefillPercentOfTank ?? this.approxRefillPercentOfTank,
       gasStationId: gasStationId ?? this.gasStationId,
       tireSetupGroupId: tireSetupGroupId ?? this.tireSetupGroupId,
+      tireId: tireId ?? this.tireId,
+      profileDepth: profileDepth ?? this.profileDepth,
     );
   }
 
@@ -2298,6 +2300,12 @@ class LogCompanion extends UpdateCompanion<LogData> {
     if (tireSetupGroupId.present) {
       map['tire_setup_group_id'] = Variable<int?>(tireSetupGroupId.value);
     }
+    if (tireId.present) {
+      map['tire_id'] = Variable<int?>(tireId.value);
+    }
+    if (profileDepth.present) {
+      map['profile_depth'] = Variable<double?>(profileDepth.value);
+    }
     return map;
   }
 
@@ -2316,7 +2324,9 @@ class LogCompanion extends UpdateCompanion<LogData> {
           ..write('refillAmount: $refillAmount, ')
           ..write('approxRefillPercentOfTank: $approxRefillPercentOfTank, ')
           ..write('gasStationId: $gasStationId, ')
-          ..write('tireSetupGroupId: $tireSetupGroupId')
+          ..write('tireSetupGroupId: $tireSetupGroupId, ')
+          ..write('tireId: $tireId, ')
+          ..write('profileDepth: $profileDepth')
           ..write(')'))
         .toString();
   }
@@ -2412,6 +2422,19 @@ class $LogTable extends Log with TableInfo<$LogTable, LogData> {
       type: const IntType(),
       requiredDuringInsert: false,
       defaultConstraints: 'REFERENCES tire_setup (group_id)');
+  final VerificationMeta _tireIdMeta = const VerificationMeta('tireId');
+  @override
+  late final GeneratedColumn<int?> tireId = GeneratedColumn<int?>(
+      'tire_id', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'REFERENCES tire (id)');
+  final VerificationMeta _profileDepthMeta =
+      const VerificationMeta('profileDepth');
+  @override
+  late final GeneratedColumn<double?> profileDepth = GeneratedColumn<double?>(
+      'profile_depth', aliasedName, true,
+      type: const RealType(), requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -2426,7 +2449,9 @@ class $LogTable extends Log with TableInfo<$LogTable, LogData> {
         refillAmount,
         approxRefillPercentOfTank,
         gasStationId,
-        tireSetupGroupId
+        tireSetupGroupId,
+        tireId,
+        profileDepth
       ];
   @override
   String get aliasedName => _alias ?? 'log';
@@ -2516,6 +2541,16 @@ class $LogTable extends Log with TableInfo<$LogTable, LogData> {
           _tireSetupGroupIdMeta,
           tireSetupGroupId.isAcceptableOrUnknown(
               data['tire_setup_group_id']!, _tireSetupGroupIdMeta));
+    }
+    if (data.containsKey('tire_id')) {
+      context.handle(_tireIdMeta,
+          tireId.isAcceptableOrUnknown(data['tire_id']!, _tireIdMeta));
+    }
+    if (data.containsKey('profile_depth')) {
+      context.handle(
+          _profileDepthMeta,
+          profileDepth.isAcceptableOrUnknown(
+              data['profile_depth']!, _profileDepthMeta));
     }
     return context;
   }

@@ -97,20 +97,22 @@ class Log extends Table {
 
   // Tirechange
   IntColumn get tireSetupGroupId => integer().nullable().references(TireSetup, #groupId)();
+
+  // TireProfileCheck
+  IntColumn get tireId => integer().nullable().references(Tire, #id)();
+  RealColumn get profileDepth => real().nullable()();
 }
 
 class Tire extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get vehicleId => integer().references(Vehicle, #id)();
 
-  IntColumn get width => integer()();
-  IntColumn get tireWall => integer()();
-  IntColumn get wheelDiameter => integer()();
+  IntColumn get width => integer().nullable()();
+  IntColumn get tireWall => integer().nullable()();
+  IntColumn get wheelDiameter => integer().nullable()();
 
   TextColumn get manufacturer => text()();
   DateTimeColumn get dot => dateTime().nullable()();
-
-  RealColumn get profileDepth => real().nullable()();
 }
 
 class TireSetup extends Table {
