@@ -27,7 +27,7 @@ class VehiclesProvider extends ChangeNotifier {
     return _selectedId;
   }
 
-  Future<List<VehicleData>> loadVehicles() async {
+  Future<List<VehicleData>> loadData() async {
     DBController dbc = Provider.of<DBController>(context, listen: false);
     _vehicles = await dbc.getAllVehicles;
     notifyListeners();
@@ -64,7 +64,7 @@ class VehiclesProvider extends ChangeNotifier {
       ),
     );
 
-    loadVehicles();
+    loadData();
     // notifyListeners();
   }
 }

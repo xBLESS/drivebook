@@ -1,4 +1,5 @@
 import 'package:drivebook/models/dbcontroller.dart';
+import 'package:drivebook/providers/fuel_type_provider.dart';
 import 'package:drivebook/providers/settings_provider.dart';
 import 'package:drivebook/screens/settings_screen/settings_screen.dart';
 import 'package:drivebook/screens/vehicledetailscreen/vehicledetailscreen.dart';
@@ -10,7 +11,7 @@ import 'screens/homescreen/vehiclelistscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   runApp(
     MultiProvider(
       providers: [
@@ -20,6 +21,7 @@ void main() {
         ),
         ChangeNotifierProvider<VehiclesProvider>(create: (context) => VehiclesProvider(context)),
         ChangeNotifierProvider<SettingsProvider>(create: (context) => SettingsProvider(context)),
+        ChangeNotifierProvider<FuelTypeProvider>(create: (context) => FuelTypeProvider(context)),
       ],
       child: const MyApp(),
     ),
@@ -31,17 +33,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Load initial data
-    Provider.of<VehiclesProvider>(context, listen: false).loadVehicles();
-    Provider.of<SettingsProvider>(context, listen: false).loadSettings();
+    Future.wait([
+      // Load initial data
+      Provider.of<VehiclesProvider>(context, listen: false).loadData(),
+      Provider.of<SettingsProvider>(context, listen: false).loadData(),
+      Provider.of<FuelTypeProvider>(context, listen: false).loadData(),
 
-    Provider.of<SettingsProvider>(context, listen: false).addSetting(
-      SettingData(
-        name: 'Show new Vehicle Detail Screen',
-        type: 'bool',
-        value: 'false',
+      Provider.of<SettingsProvider>(context, listen: false).addSetting(
+        SettingData(
+          name: 'Show new Vehicle Detail Screen',
+          type: 'bool',
+          value: 'false',
+        ),
       ),
-    );
+
+      Provider.of<FuelTypeProvider>(context, listen: false).addFuel('Benzin'),
+      Provider.of<FuelTypeProvider>(context, listen: false).addFuel('Diesel'),
+      Provider.of<FuelTypeProvider>(context, listen: false).addFuel('LPG'),
+    ]);
 
     return MaterialApp(
       title: 'Flutter Demo',

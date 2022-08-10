@@ -33,7 +33,7 @@ class SettingsProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<SettingData>> loadSettings() async {
+  Future<List<SettingData>> loadData() async {
     // DBController dbc = Provider.of<DBController>(context, listen: false);
     _settings = await dbc.getAllSettings;
     notifyListeners();
@@ -42,11 +42,11 @@ class SettingsProvider extends ChangeNotifier {
 
   Future<int> updateSetting(SettingData entry, String value) async {
     // DBController dbc = Provider.of<DBController>(context, listen: false);
-    print('${entry.name}, ${entry.value}');
+    // print('${entry.name}, ${entry.value}');
     var res = await dbc.updateSetting(entry, value);
-    loadSettings();
-    print('${entry.name}, ${entry.value}');
+    await loadData();
+    // print('${entry.name}, ${entry.value}');
     // notifyListeners();
-    return 1;
+    return res;
   }
 }

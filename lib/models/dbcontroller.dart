@@ -146,14 +146,7 @@ class DBController extends _$DBController {
   @override
   int get schemaVersion => 1;
 
-  //Vehicle
-  Future<int> addVehicle(VehicleCompanion entry) => into(vehicle).insert(entry);
-
-  Future<List<VehicleData>> get getAllVehicles async => select(vehicle).get();
-
-  Stream<List<VehicleData>> watchVehicles() => select(vehicle).watch();
-
-  //Settings
+  // #region Settings
   Future<int> addSetting(SettingCompanion entry) => into(setting).insert(entry);
 
   Future addSettings(List<SettingData> entries) async {
@@ -177,6 +170,29 @@ class DBController extends _$DBController {
         .write(SettingCompanion(value: Value(value)));
     // return update(setting).replace(SettingData(name: entry.name, type: entry.type, value: value));
   }
+  // #endregion
+
+  // #region Vehicle
+  Future<int> addVehicle(VehicleCompanion entry) => into(vehicle).insert(entry);
+
+  Future<List<VehicleData>> get getAllVehicles async => select(vehicle).get();
+
+  Stream<List<VehicleData>> watchVehicles() => select(vehicle).watch();
+  // #endregion
+
+  // #region FuelType
+  Future<List<FuelTypeData>> get getAllFuelTypes async => select(fuelType).get();
+
+  Future<int> addFuelType(FuelTypeCompanion entry) => into(fuelType).insert(entry);
+  // #endregion
+
+  // #region Logs
+  Future<int> addLog(LogCompanion entry) => into(log).insert(entry);
+
+  Future<List<LogData>> get getAllLogs async => select(log).get();
+
+  Stream<List<LogData>> watchLogs() => select(log).watch();
+  // #endregion
 
   //Todo Datenbankmigration schreiben, ist für Entwiklung aber unwichtig
 }

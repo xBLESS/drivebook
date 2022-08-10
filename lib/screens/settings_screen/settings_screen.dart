@@ -18,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: Consumer<SettingsProvider>(
         builder: (context, value, _) {
-          var data = value.getSettings;
+          List<SettingData> data = value.getSettings;
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
@@ -29,6 +29,7 @@ class SettingsScreen extends StatelessWidget {
                     value: data[index].value.parseBool(),
                     onChanged: (value) {
                       Provider.of<SettingsProvider>(context, listen: false).updateSetting(data[index], value.toString());
+                      // print(value);
                     },
                   );
                 case 'integer':
