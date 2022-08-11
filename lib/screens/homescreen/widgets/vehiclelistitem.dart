@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:drivebook/providers/fuel_type_provider.dart';
 import 'package:drivebook/providers/vehicles_provider.dart';
 import 'package:drivebook/screens/vehicledetailscreen/vehicledetailscreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,13 +12,14 @@ import 'package:provider/provider.dart';
 import 'package:drivebook/models/dbcontroller.dart';
 
 class VehicleListItem extends StatelessWidget {
-  VehicleListItem({Key? key, required this.vehicle}) : super(key: key);
+  const VehicleListItem({Key? key, required this.vehicle}) : super(key: key);
 
   final VehicleData vehicle;
 
   @override
   Widget build(BuildContext context) {
     // VehicleData vehicle = vehicleProvider.getSelectedVehicle;
+    FuelTypeProvider fuelTypeProvider = Provider.of<FuelTypeProvider>(context);
 
     final DateFormat formatter = DateFormat('yy');
     final NumberFormat odometerFormatter = NumberFormat.decimalPattern();
@@ -55,7 +57,7 @@ class VehicleListItem extends StatelessWidget {
                       vehicle.buildDate != null
                           ? Text('${vehicle.manufacturer} ${vehicle.generation ?? ' '}${vehicle.generation != null ? ' ' : ''}${vehicle.model} \'${formatter.format(vehicle.buildDate!)}')
                           : Text('${vehicle.manufacturer} ${vehicle.generation} ${vehicle.model}'),
-                      Text('Benzin'),
+                      Text(fuelTypeProvider.getFuelTypeById(vehicle.primaryFuelTypeId)),
                       Text(odometerFormatter.format(vehicle.mileage)),
                       // Center(
                       //   child: SliderTheme(
