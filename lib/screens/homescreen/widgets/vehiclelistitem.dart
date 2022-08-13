@@ -48,41 +48,38 @@ class VehicleListItem extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  // color: Colors.grey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      vehicle.buildDate != null
-                          ? Text('${vehicle.manufacturer} ${vehicle.generation ?? ' '}${vehicle.generation != null ? ' ' : ''}${vehicle.model} \'${formatter.format(vehicle.buildDate!)}')
-                          : Text('${vehicle.manufacturer} ${vehicle.generation} ${vehicle.model}'),
-                      Text(fuelTypeProvider.getFuelTypeById(vehicle.primaryFuelTypeId)),
-                      Text(odometerFormatter.format(vehicle.mileage)),
-                      // Center(
-                      //   child: SliderTheme(
-                      //     data: const SliderThemeData(
-                      //       overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
-                      //       trackHeight: 6.0,
-                      //       showValueIndicator: ShowValueIndicator.always,
-                      //       rangeThumbShape: RoundRangeSliderThumbShape(disabledThumbRadius: 0.0, enabledThumbRadius: 0.1, elevation: 0.0, pressedElevation: 0.0),
-                      //       rangeTrackShape: RoundedRectRangeSliderTrackShape(),
-                      //       rangeTickMarkShape: RoundRangeSliderTickMarkShape(),
-                      //     ),
-                      //     child: RangeSlider(
-                      //       values: RangeValues(vehicle.seasonalLicenseBeginMonth.toDouble(), vehicle.seasonalLicenseEndMonth.toDouble()),
-                      //       min: 1.0,
-                      //       max: 12.0,
-                      //       divisions: 11,
-                      //       semanticFormatterCallback: (value) => '${value}',
-                      //       onChanged: (value) {},
-                      //     ),
-                      //   ),
-                      // ),
-                      SeasonLicenseBar(vehicle.seasonalLicenseBeginMonth, vehicle.seasonalLicenseEndMonth),
-                    ],
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    vehicle.buildDate != null
+                        ? Text('${vehicle.manufacturer} ${vehicle.generation ?? ' '}${vehicle.generation != null ? ' ' : ''}${vehicle.model} \'${formatter.format(vehicle.buildDate!)}')
+                        : Text('${vehicle.manufacturer} ${vehicle.generation} ${vehicle.model}'),
+                    Text(fuelTypeProvider.getFuelTypeById(vehicle.primaryFuelTypeId)),
+                    Text(odometerFormatter.format(vehicle.mileage)),
+                    // Center(
+                    //   child: SliderTheme(
+                    //     data: const SliderThemeData(
+                    //       overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
+                    //       trackHeight: 6.0,
+                    //       showValueIndicator: ShowValueIndicator.always,
+                    //       rangeThumbShape: RoundRangeSliderThumbShape(disabledThumbRadius: 0.0, enabledThumbRadius: 0.1, elevation: 0.0, pressedElevation: 0.0),
+                    //       rangeTrackShape: RoundedRectRangeSliderTrackShape(),
+                    //       rangeTickMarkShape: RoundRangeSliderTickMarkShape(),
+                    //     ),
+                    //     child: RangeSlider(
+                    //       values: RangeValues(vehicle.seasonalLicenseBeginMonth.toDouble(), vehicle.seasonalLicenseEndMonth.toDouble()),
+                    //       min: 1.0,
+                    //       max: 12.0,
+                    //       divisions: 11,
+                    //       semanticFormatterCallback: (value) => '${value}',
+                    //       onChanged: (value) {},
+                    //     ),
+                    //   ),
+                    // ),
+                    SeasonLicenseBar(vehicle.seasonalLicenseBeginMonth, vehicle.seasonalLicenseEndMonth),
+                  ],
                 ),
               ),
             ),
