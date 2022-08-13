@@ -37,7 +37,7 @@ class VehicleListItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               // TODO Bild darf bestimmte breite nicht überschreiten
               height: 100,
               width: (100 / 9) * 16,
