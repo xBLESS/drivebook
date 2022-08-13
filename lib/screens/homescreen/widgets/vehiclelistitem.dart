@@ -56,7 +56,9 @@ class VehicleListItem extends StatelessWidget {
                     vehicle.buildDate != null
                         ? Text('${vehicle.manufacturer} ${vehicle.generation ?? ' '}${vehicle.generation != null ? ' ' : ''}${vehicle.model} \'${formatter.format(vehicle.buildDate!)}')
                         : Text('${vehicle.manufacturer} ${vehicle.generation} ${vehicle.model}'),
-                    Text(fuelTypeProvider.getFuelTypeById(vehicle.primaryFuelTypeId)),
+                    vehicle.secondaryFuelTypeId != null
+                        ? Text('${fuelTypeProvider.getFuelTypeById(vehicle.primaryFuelTypeId)} | ${fuelTypeProvider.getFuelTypeById(vehicle.secondaryFuelTypeId!)}')
+                        : Text(fuelTypeProvider.getFuelTypeById(vehicle.primaryFuelTypeId)),
                     Text(odometerFormatter.format(vehicle.mileage)),
                     SeasonLicenseBar(vehicle.seasonalLicenseBeginMonth, vehicle.seasonalLicenseEndMonth),
                   ],

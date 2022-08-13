@@ -26,6 +26,9 @@ class VehicleListScreen extends StatelessWidget {
         // Fuel
         primaryFuelCapacity: drift.Value(50.0),
         primaryFuelTypeId: drift.Value(1),
+
+        secondaryFuelCapacity: drift.Value(60.0),
+        secondaryFuelTypeId: drift.Value(3),
         // Buy
         buyDateTime: drift.Value(DateTime(2021, 1, 2, 0, 0, 0)),
         buyMileage: drift.Value(70500),
