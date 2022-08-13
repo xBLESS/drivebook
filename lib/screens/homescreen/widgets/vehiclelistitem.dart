@@ -58,26 +58,6 @@ class VehicleListItem extends StatelessWidget {
                         : Text('${vehicle.manufacturer} ${vehicle.generation} ${vehicle.model}'),
                     Text(fuelTypeProvider.getFuelTypeById(vehicle.primaryFuelTypeId)),
                     Text(odometerFormatter.format(vehicle.mileage)),
-                    // Center(
-                    //   child: SliderTheme(
-                    //     data: const SliderThemeData(
-                    //       overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
-                    //       trackHeight: 6.0,
-                    //       showValueIndicator: ShowValueIndicator.always,
-                    //       rangeThumbShape: RoundRangeSliderThumbShape(disabledThumbRadius: 0.0, enabledThumbRadius: 0.1, elevation: 0.0, pressedElevation: 0.0),
-                    //       rangeTrackShape: RoundedRectRangeSliderTrackShape(),
-                    //       rangeTickMarkShape: RoundRangeSliderTickMarkShape(),
-                    //     ),
-                    //     child: RangeSlider(
-                    //       values: RangeValues(vehicle.seasonalLicenseBeginMonth.toDouble(), vehicle.seasonalLicenseEndMonth.toDouble()),
-                    //       min: 1.0,
-                    //       max: 12.0,
-                    //       divisions: 11,
-                    //       semanticFormatterCallback: (value) => '${value}',
-                    //       onChanged: (value) {},
-                    //     ),
-                    //   ),
-                    // ),
                     SeasonLicenseBar(vehicle.seasonalLicenseBeginMonth, vehicle.seasonalLicenseEndMonth),
                   ],
                 ),
