@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:drivebook/providers/fuel_type_provider.dart';
 import 'package:drivebook/providers/vehicles_provider.dart';
+import 'package:drivebook/screens/homescreen/widgets/season_license_bar.dart';
 import 'package:drivebook/screens/vehicledetailscreen/vehicledetailscreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -86,76 +87,6 @@ class VehicleListItem extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class SeasonLicenseBar extends StatelessWidget {
-  int seasonalLicenseBeginMonth;
-  final int seasonalLicenseEndMonth;
-
-  SeasonLicenseBar(this.seasonalLicenseBeginMonth, this.seasonalLicenseEndMonth, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    List<String> months = [
-      'J',
-      'F',
-      'M',
-      'A',
-      'M',
-      'J',
-      'J',
-      'A',
-      'S',
-      'O',
-      'N',
-      'D',
-    ];
-
-    List<Widget> buildSeasonBar() {
-      List<Widget> widgets = [];
-      seasonalLicenseBeginMonth = 3;
-      for (var i = 0; i < months.length; i++) {
-        if (i + 1 >= seasonalLicenseBeginMonth && i + 1 <= seasonalLicenseEndMonth) {
-          widgets.add(
-            Container(
-              width: 12,
-              height: 7,
-              // child: Center(child: Text(months[i], style: TextStyle(fontSize: 7))),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(2)),
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-          );
-        } else {
-          widgets.add(
-            Container(
-              width: 12,
-              height: 7,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(2)),
-                color: Theme.of(context).errorColor,
-              ),
-            ),
-          );
-        }
-      }
-
-      print('begin: $seasonalLicenseBeginMonth, end $seasonalLicenseEndMonth');
-
-      return widgets;
-    }
-
-    return Center(
-      child: Container(
-        color: Colors.grey,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: buildSeasonBar(),
         ),
       ),
     );
