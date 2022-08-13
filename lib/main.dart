@@ -22,6 +22,7 @@ void main() async {
         ChangeNotifierProvider<VehiclesProvider>(create: (context) => VehiclesProvider(context)),
         ChangeNotifierProvider<SettingsProvider>(create: (context) => SettingsProvider(context)),
         ChangeNotifierProvider<FuelTypeProvider>(create: (context) => FuelTypeProvider(context)),
+        ChangeNotifierProvider<LogsProvider>(create: (context) => LogsProvider()),
       ],
       child: const MyApp(),
     ),
