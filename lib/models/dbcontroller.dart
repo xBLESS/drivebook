@@ -91,7 +91,7 @@ class Log extends Table {
   TextColumn get content => text()();
   IntColumn get logTypeId => integer().references(LogType, #id)();
   IntColumn get currentMileage => integer()();
-  DateTimeColumn get logTimestamp => dateTime()();
+  DateTimeColumn get logTimestamp => dateTime().withDefault(currentDateAndTime)();
   RealColumn get cost => real().nullable()();
 
   // Fuel

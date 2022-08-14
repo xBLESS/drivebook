@@ -14,14 +14,18 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
   final String? generation;
   final DateTime? buildDate;
   final int mileage;
+  final String mileageUnit;
   final String licensePlate;
   final int seasonalLicenseBeginMonth;
   final int seasonalLicenseEndMonth;
   final String notes;
+  final String currency;
   final int primaryFuelTypeId;
   final double primaryFuelCapacity;
+  final String primaryConsumptionUnit;
   final int? secondaryFuelTypeId;
   final double? secondaryFuelCapacity;
+  final String secondaryConsumptionUnit;
   final int? buyMileage;
   final DateTime? buyDateTime;
   final double? buyPrice;
@@ -36,14 +40,18 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       this.generation,
       this.buildDate,
       required this.mileage,
+      required this.mileageUnit,
       required this.licensePlate,
       required this.seasonalLicenseBeginMonth,
       required this.seasonalLicenseEndMonth,
       required this.notes,
+      required this.currency,
       required this.primaryFuelTypeId,
       required this.primaryFuelCapacity,
+      required this.primaryConsumptionUnit,
       this.secondaryFuelTypeId,
       this.secondaryFuelCapacity,
+      required this.secondaryConsumptionUnit,
       this.buyMileage,
       this.buyDateTime,
       this.buyPrice,
@@ -66,6 +74,8 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}build_date']),
       mileage: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}mileage'])!,
+      mileageUnit: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}mileage_unit'])!,
       licensePlate: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}license_plate'])!,
       seasonalLicenseBeginMonth: const IntType().mapFromDatabaseResponse(
@@ -74,14 +84,20 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           data['${effectivePrefix}seasonal_license_end_month'])!,
       notes: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}notes'])!,
+      currency: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}currency'])!,
       primaryFuelTypeId: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}primary_fuel_type_id'])!,
       primaryFuelCapacity: const RealType().mapFromDatabaseResponse(
           data['${effectivePrefix}primary_fuel_capacity'])!,
+      primaryConsumptionUnit: const StringType().mapFromDatabaseResponse(
+          data['${effectivePrefix}primary_consumption_unit'])!,
       secondaryFuelTypeId: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}secondary_fuel_type_id']),
       secondaryFuelCapacity: const RealType().mapFromDatabaseResponse(
           data['${effectivePrefix}secondary_fuel_capacity']),
+      secondaryConsumptionUnit: const StringType().mapFromDatabaseResponse(
+          data['${effectivePrefix}secondary_consumption_unit'])!,
       buyMileage: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}buy_mileage']),
       buyDateTime: const DateTimeType()
@@ -111,19 +127,24 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       map['build_date'] = Variable<DateTime?>(buildDate);
     }
     map['mileage'] = Variable<int>(mileage);
+    map['mileage_unit'] = Variable<String>(mileageUnit);
     map['license_plate'] = Variable<String>(licensePlate);
     map['seasonal_license_begin_month'] =
         Variable<int>(seasonalLicenseBeginMonth);
     map['seasonal_license_end_month'] = Variable<int>(seasonalLicenseEndMonth);
     map['notes'] = Variable<String>(notes);
+    map['currency'] = Variable<String>(currency);
     map['primary_fuel_type_id'] = Variable<int>(primaryFuelTypeId);
     map['primary_fuel_capacity'] = Variable<double>(primaryFuelCapacity);
+    map['primary_consumption_unit'] = Variable<String>(primaryConsumptionUnit);
     if (!nullToAbsent || secondaryFuelTypeId != null) {
       map['secondary_fuel_type_id'] = Variable<int?>(secondaryFuelTypeId);
     }
     if (!nullToAbsent || secondaryFuelCapacity != null) {
       map['secondary_fuel_capacity'] = Variable<double?>(secondaryFuelCapacity);
     }
+    map['secondary_consumption_unit'] =
+        Variable<String>(secondaryConsumptionUnit);
     if (!nullToAbsent || buyMileage != null) {
       map['buy_mileage'] = Variable<int?>(buyMileage);
     }
@@ -160,18 +181,22 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           ? const Value.absent()
           : Value(buildDate),
       mileage: Value(mileage),
+      mileageUnit: Value(mileageUnit),
       licensePlate: Value(licensePlate),
       seasonalLicenseBeginMonth: Value(seasonalLicenseBeginMonth),
       seasonalLicenseEndMonth: Value(seasonalLicenseEndMonth),
       notes: Value(notes),
+      currency: Value(currency),
       primaryFuelTypeId: Value(primaryFuelTypeId),
       primaryFuelCapacity: Value(primaryFuelCapacity),
+      primaryConsumptionUnit: Value(primaryConsumptionUnit),
       secondaryFuelTypeId: secondaryFuelTypeId == null && nullToAbsent
           ? const Value.absent()
           : Value(secondaryFuelTypeId),
       secondaryFuelCapacity: secondaryFuelCapacity == null && nullToAbsent
           ? const Value.absent()
           : Value(secondaryFuelCapacity),
+      secondaryConsumptionUnit: Value(secondaryConsumptionUnit),
       buyMileage: buyMileage == null && nullToAbsent
           ? const Value.absent()
           : Value(buyMileage),
@@ -206,19 +231,25 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       generation: serializer.fromJson<String?>(json['generation']),
       buildDate: serializer.fromJson<DateTime?>(json['buildDate']),
       mileage: serializer.fromJson<int>(json['mileage']),
+      mileageUnit: serializer.fromJson<String>(json['mileageUnit']),
       licensePlate: serializer.fromJson<String>(json['licensePlate']),
       seasonalLicenseBeginMonth:
           serializer.fromJson<int>(json['seasonalLicenseBeginMonth']),
       seasonalLicenseEndMonth:
           serializer.fromJson<int>(json['seasonalLicenseEndMonth']),
       notes: serializer.fromJson<String>(json['notes']),
+      currency: serializer.fromJson<String>(json['currency']),
       primaryFuelTypeId: serializer.fromJson<int>(json['primaryFuelTypeId']),
       primaryFuelCapacity:
           serializer.fromJson<double>(json['primaryFuelCapacity']),
+      primaryConsumptionUnit:
+          serializer.fromJson<String>(json['primaryConsumptionUnit']),
       secondaryFuelTypeId:
           serializer.fromJson<int?>(json['secondaryFuelTypeId']),
       secondaryFuelCapacity:
           serializer.fromJson<double?>(json['secondaryFuelCapacity']),
+      secondaryConsumptionUnit:
+          serializer.fromJson<String>(json['secondaryConsumptionUnit']),
       buyMileage: serializer.fromJson<int?>(json['buyMileage']),
       buyDateTime: serializer.fromJson<DateTime?>(json['buyDateTime']),
       buyPrice: serializer.fromJson<double?>(json['buyPrice']),
@@ -238,17 +269,23 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       'generation': serializer.toJson<String?>(generation),
       'buildDate': serializer.toJson<DateTime?>(buildDate),
       'mileage': serializer.toJson<int>(mileage),
+      'mileageUnit': serializer.toJson<String>(mileageUnit),
       'licensePlate': serializer.toJson<String>(licensePlate),
       'seasonalLicenseBeginMonth':
           serializer.toJson<int>(seasonalLicenseBeginMonth),
       'seasonalLicenseEndMonth':
           serializer.toJson<int>(seasonalLicenseEndMonth),
       'notes': serializer.toJson<String>(notes),
+      'currency': serializer.toJson<String>(currency),
       'primaryFuelTypeId': serializer.toJson<int>(primaryFuelTypeId),
       'primaryFuelCapacity': serializer.toJson<double>(primaryFuelCapacity),
+      'primaryConsumptionUnit':
+          serializer.toJson<String>(primaryConsumptionUnit),
       'secondaryFuelTypeId': serializer.toJson<int?>(secondaryFuelTypeId),
       'secondaryFuelCapacity':
           serializer.toJson<double?>(secondaryFuelCapacity),
+      'secondaryConsumptionUnit':
+          serializer.toJson<String>(secondaryConsumptionUnit),
       'buyMileage': serializer.toJson<int?>(buyMileage),
       'buyDateTime': serializer.toJson<DateTime?>(buyDateTime),
       'buyPrice': serializer.toJson<double?>(buyPrice),
@@ -266,14 +303,18 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           String? generation,
           DateTime? buildDate,
           int? mileage,
+          String? mileageUnit,
           String? licensePlate,
           int? seasonalLicenseBeginMonth,
           int? seasonalLicenseEndMonth,
           String? notes,
+          String? currency,
           int? primaryFuelTypeId,
           double? primaryFuelCapacity,
+          String? primaryConsumptionUnit,
           int? secondaryFuelTypeId,
           double? secondaryFuelCapacity,
+          String? secondaryConsumptionUnit,
           int? buyMileage,
           DateTime? buyDateTime,
           double? buyPrice,
@@ -288,17 +329,23 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
         generation: generation ?? this.generation,
         buildDate: buildDate ?? this.buildDate,
         mileage: mileage ?? this.mileage,
+        mileageUnit: mileageUnit ?? this.mileageUnit,
         licensePlate: licensePlate ?? this.licensePlate,
         seasonalLicenseBeginMonth:
             seasonalLicenseBeginMonth ?? this.seasonalLicenseBeginMonth,
         seasonalLicenseEndMonth:
             seasonalLicenseEndMonth ?? this.seasonalLicenseEndMonth,
         notes: notes ?? this.notes,
+        currency: currency ?? this.currency,
         primaryFuelTypeId: primaryFuelTypeId ?? this.primaryFuelTypeId,
         primaryFuelCapacity: primaryFuelCapacity ?? this.primaryFuelCapacity,
+        primaryConsumptionUnit:
+            primaryConsumptionUnit ?? this.primaryConsumptionUnit,
         secondaryFuelTypeId: secondaryFuelTypeId ?? this.secondaryFuelTypeId,
         secondaryFuelCapacity:
             secondaryFuelCapacity ?? this.secondaryFuelCapacity,
+        secondaryConsumptionUnit:
+            secondaryConsumptionUnit ?? this.secondaryConsumptionUnit,
         buyMileage: buyMileage ?? this.buyMileage,
         buyDateTime: buyDateTime ?? this.buyDateTime,
         buyPrice: buyPrice ?? this.buyPrice,
@@ -316,14 +363,18 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           ..write('generation: $generation, ')
           ..write('buildDate: $buildDate, ')
           ..write('mileage: $mileage, ')
+          ..write('mileageUnit: $mileageUnit, ')
           ..write('licensePlate: $licensePlate, ')
           ..write('seasonalLicenseBeginMonth: $seasonalLicenseBeginMonth, ')
           ..write('seasonalLicenseEndMonth: $seasonalLicenseEndMonth, ')
           ..write('notes: $notes, ')
+          ..write('currency: $currency, ')
           ..write('primaryFuelTypeId: $primaryFuelTypeId, ')
           ..write('primaryFuelCapacity: $primaryFuelCapacity, ')
+          ..write('primaryConsumptionUnit: $primaryConsumptionUnit, ')
           ..write('secondaryFuelTypeId: $secondaryFuelTypeId, ')
           ..write('secondaryFuelCapacity: $secondaryFuelCapacity, ')
+          ..write('secondaryConsumptionUnit: $secondaryConsumptionUnit, ')
           ..write('buyMileage: $buyMileage, ')
           ..write('buyDateTime: $buyDateTime, ')
           ..write('buyPrice: $buyPrice, ')
@@ -343,14 +394,18 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
         generation,
         buildDate,
         mileage,
+        mileageUnit,
         licensePlate,
         seasonalLicenseBeginMonth,
         seasonalLicenseEndMonth,
         notes,
+        currency,
         primaryFuelTypeId,
         primaryFuelCapacity,
+        primaryConsumptionUnit,
         secondaryFuelTypeId,
         secondaryFuelCapacity,
+        secondaryConsumptionUnit,
         buyMileage,
         buyDateTime,
         buyPrice,
@@ -369,14 +424,18 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           other.generation == this.generation &&
           other.buildDate == this.buildDate &&
           other.mileage == this.mileage &&
+          other.mileageUnit == this.mileageUnit &&
           other.licensePlate == this.licensePlate &&
           other.seasonalLicenseBeginMonth == this.seasonalLicenseBeginMonth &&
           other.seasonalLicenseEndMonth == this.seasonalLicenseEndMonth &&
           other.notes == this.notes &&
+          other.currency == this.currency &&
           other.primaryFuelTypeId == this.primaryFuelTypeId &&
           other.primaryFuelCapacity == this.primaryFuelCapacity &&
+          other.primaryConsumptionUnit == this.primaryConsumptionUnit &&
           other.secondaryFuelTypeId == this.secondaryFuelTypeId &&
           other.secondaryFuelCapacity == this.secondaryFuelCapacity &&
+          other.secondaryConsumptionUnit == this.secondaryConsumptionUnit &&
           other.buyMileage == this.buyMileage &&
           other.buyDateTime == this.buyDateTime &&
           other.buyPrice == this.buyPrice &&
@@ -393,14 +452,18 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
   final Value<String?> generation;
   final Value<DateTime?> buildDate;
   final Value<int> mileage;
+  final Value<String> mileageUnit;
   final Value<String> licensePlate;
   final Value<int> seasonalLicenseBeginMonth;
   final Value<int> seasonalLicenseEndMonth;
   final Value<String> notes;
+  final Value<String> currency;
   final Value<int> primaryFuelTypeId;
   final Value<double> primaryFuelCapacity;
+  final Value<String> primaryConsumptionUnit;
   final Value<int?> secondaryFuelTypeId;
   final Value<double?> secondaryFuelCapacity;
+  final Value<String> secondaryConsumptionUnit;
   final Value<int?> buyMileage;
   final Value<DateTime?> buyDateTime;
   final Value<double?> buyPrice;
@@ -415,14 +478,18 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     this.generation = const Value.absent(),
     this.buildDate = const Value.absent(),
     this.mileage = const Value.absent(),
+    this.mileageUnit = const Value.absent(),
     this.licensePlate = const Value.absent(),
     this.seasonalLicenseBeginMonth = const Value.absent(),
     this.seasonalLicenseEndMonth = const Value.absent(),
     this.notes = const Value.absent(),
+    this.currency = const Value.absent(),
     this.primaryFuelTypeId = const Value.absent(),
     this.primaryFuelCapacity = const Value.absent(),
+    this.primaryConsumptionUnit = const Value.absent(),
     this.secondaryFuelTypeId = const Value.absent(),
     this.secondaryFuelCapacity = const Value.absent(),
+    this.secondaryConsumptionUnit = const Value.absent(),
     this.buyMileage = const Value.absent(),
     this.buyDateTime = const Value.absent(),
     this.buyPrice = const Value.absent(),
@@ -438,14 +505,18 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     this.generation = const Value.absent(),
     this.buildDate = const Value.absent(),
     required int mileage,
+    required String mileageUnit,
     this.licensePlate = const Value.absent(),
     this.seasonalLicenseBeginMonth = const Value.absent(),
     this.seasonalLicenseEndMonth = const Value.absent(),
     this.notes = const Value.absent(),
+    required String currency,
     required int primaryFuelTypeId,
     required double primaryFuelCapacity,
+    required String primaryConsumptionUnit,
     this.secondaryFuelTypeId = const Value.absent(),
     this.secondaryFuelCapacity = const Value.absent(),
+    required String secondaryConsumptionUnit,
     this.buyMileage = const Value.absent(),
     this.buyDateTime = const Value.absent(),
     this.buyPrice = const Value.absent(),
@@ -456,8 +527,12 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
   })  : manufacturer = Value(manufacturer),
         model = Value(model),
         mileage = Value(mileage),
+        mileageUnit = Value(mileageUnit),
+        currency = Value(currency),
         primaryFuelTypeId = Value(primaryFuelTypeId),
-        primaryFuelCapacity = Value(primaryFuelCapacity);
+        primaryFuelCapacity = Value(primaryFuelCapacity),
+        primaryConsumptionUnit = Value(primaryConsumptionUnit),
+        secondaryConsumptionUnit = Value(secondaryConsumptionUnit);
   static Insertable<VehicleData> custom({
     Expression<int>? id,
     Expression<String>? manufacturer,
@@ -465,14 +540,18 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     Expression<String?>? generation,
     Expression<DateTime?>? buildDate,
     Expression<int>? mileage,
+    Expression<String>? mileageUnit,
     Expression<String>? licensePlate,
     Expression<int>? seasonalLicenseBeginMonth,
     Expression<int>? seasonalLicenseEndMonth,
     Expression<String>? notes,
+    Expression<String>? currency,
     Expression<int>? primaryFuelTypeId,
     Expression<double>? primaryFuelCapacity,
+    Expression<String>? primaryConsumptionUnit,
     Expression<int?>? secondaryFuelTypeId,
     Expression<double?>? secondaryFuelCapacity,
+    Expression<String>? secondaryConsumptionUnit,
     Expression<int?>? buyMileage,
     Expression<DateTime?>? buyDateTime,
     Expression<double?>? buyPrice,
@@ -488,19 +567,25 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       if (generation != null) 'generation': generation,
       if (buildDate != null) 'build_date': buildDate,
       if (mileage != null) 'mileage': mileage,
+      if (mileageUnit != null) 'mileage_unit': mileageUnit,
       if (licensePlate != null) 'license_plate': licensePlate,
       if (seasonalLicenseBeginMonth != null)
         'seasonal_license_begin_month': seasonalLicenseBeginMonth,
       if (seasonalLicenseEndMonth != null)
         'seasonal_license_end_month': seasonalLicenseEndMonth,
       if (notes != null) 'notes': notes,
+      if (currency != null) 'currency': currency,
       if (primaryFuelTypeId != null) 'primary_fuel_type_id': primaryFuelTypeId,
       if (primaryFuelCapacity != null)
         'primary_fuel_capacity': primaryFuelCapacity,
+      if (primaryConsumptionUnit != null)
+        'primary_consumption_unit': primaryConsumptionUnit,
       if (secondaryFuelTypeId != null)
         'secondary_fuel_type_id': secondaryFuelTypeId,
       if (secondaryFuelCapacity != null)
         'secondary_fuel_capacity': secondaryFuelCapacity,
+      if (secondaryConsumptionUnit != null)
+        'secondary_consumption_unit': secondaryConsumptionUnit,
       if (buyMileage != null) 'buy_mileage': buyMileage,
       if (buyDateTime != null) 'buy_date_time': buyDateTime,
       if (buyPrice != null) 'buy_price': buyPrice,
@@ -519,14 +604,18 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       Value<String?>? generation,
       Value<DateTime?>? buildDate,
       Value<int>? mileage,
+      Value<String>? mileageUnit,
       Value<String>? licensePlate,
       Value<int>? seasonalLicenseBeginMonth,
       Value<int>? seasonalLicenseEndMonth,
       Value<String>? notes,
+      Value<String>? currency,
       Value<int>? primaryFuelTypeId,
       Value<double>? primaryFuelCapacity,
+      Value<String>? primaryConsumptionUnit,
       Value<int?>? secondaryFuelTypeId,
       Value<double?>? secondaryFuelCapacity,
+      Value<String>? secondaryConsumptionUnit,
       Value<int?>? buyMileage,
       Value<DateTime?>? buyDateTime,
       Value<double?>? buyPrice,
@@ -541,17 +630,23 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       generation: generation ?? this.generation,
       buildDate: buildDate ?? this.buildDate,
       mileage: mileage ?? this.mileage,
+      mileageUnit: mileageUnit ?? this.mileageUnit,
       licensePlate: licensePlate ?? this.licensePlate,
       seasonalLicenseBeginMonth:
           seasonalLicenseBeginMonth ?? this.seasonalLicenseBeginMonth,
       seasonalLicenseEndMonth:
           seasonalLicenseEndMonth ?? this.seasonalLicenseEndMonth,
       notes: notes ?? this.notes,
+      currency: currency ?? this.currency,
       primaryFuelTypeId: primaryFuelTypeId ?? this.primaryFuelTypeId,
       primaryFuelCapacity: primaryFuelCapacity ?? this.primaryFuelCapacity,
+      primaryConsumptionUnit:
+          primaryConsumptionUnit ?? this.primaryConsumptionUnit,
       secondaryFuelTypeId: secondaryFuelTypeId ?? this.secondaryFuelTypeId,
       secondaryFuelCapacity:
           secondaryFuelCapacity ?? this.secondaryFuelCapacity,
+      secondaryConsumptionUnit:
+          secondaryConsumptionUnit ?? this.secondaryConsumptionUnit,
       buyMileage: buyMileage ?? this.buyMileage,
       buyDateTime: buyDateTime ?? this.buyDateTime,
       buyPrice: buyPrice ?? this.buyPrice,
@@ -583,6 +678,9 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     if (mileage.present) {
       map['mileage'] = Variable<int>(mileage.value);
     }
+    if (mileageUnit.present) {
+      map['mileage_unit'] = Variable<String>(mileageUnit.value);
+    }
     if (licensePlate.present) {
       map['license_plate'] = Variable<String>(licensePlate.value);
     }
@@ -597,6 +695,9 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
     }
+    if (currency.present) {
+      map['currency'] = Variable<String>(currency.value);
+    }
     if (primaryFuelTypeId.present) {
       map['primary_fuel_type_id'] = Variable<int>(primaryFuelTypeId.value);
     }
@@ -604,12 +705,20 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       map['primary_fuel_capacity'] =
           Variable<double>(primaryFuelCapacity.value);
     }
+    if (primaryConsumptionUnit.present) {
+      map['primary_consumption_unit'] =
+          Variable<String>(primaryConsumptionUnit.value);
+    }
     if (secondaryFuelTypeId.present) {
       map['secondary_fuel_type_id'] = Variable<int?>(secondaryFuelTypeId.value);
     }
     if (secondaryFuelCapacity.present) {
       map['secondary_fuel_capacity'] =
           Variable<double?>(secondaryFuelCapacity.value);
+    }
+    if (secondaryConsumptionUnit.present) {
+      map['secondary_consumption_unit'] =
+          Variable<String>(secondaryConsumptionUnit.value);
     }
     if (buyMileage.present) {
       map['buy_mileage'] = Variable<int?>(buyMileage.value);
@@ -644,14 +753,18 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
           ..write('generation: $generation, ')
           ..write('buildDate: $buildDate, ')
           ..write('mileage: $mileage, ')
+          ..write('mileageUnit: $mileageUnit, ')
           ..write('licensePlate: $licensePlate, ')
           ..write('seasonalLicenseBeginMonth: $seasonalLicenseBeginMonth, ')
           ..write('seasonalLicenseEndMonth: $seasonalLicenseEndMonth, ')
           ..write('notes: $notes, ')
+          ..write('currency: $currency, ')
           ..write('primaryFuelTypeId: $primaryFuelTypeId, ')
           ..write('primaryFuelCapacity: $primaryFuelCapacity, ')
+          ..write('primaryConsumptionUnit: $primaryConsumptionUnit, ')
           ..write('secondaryFuelTypeId: $secondaryFuelTypeId, ')
           ..write('secondaryFuelCapacity: $secondaryFuelCapacity, ')
+          ..write('secondaryConsumptionUnit: $secondaryConsumptionUnit, ')
           ..write('buyMileage: $buyMileage, ')
           ..write('buyDateTime: $buyDateTime, ')
           ..write('buyPrice: $buyPrice, ')
@@ -708,6 +821,12 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
   late final GeneratedColumn<int?> mileage = GeneratedColumn<int?>(
       'mileage', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _mileageUnitMeta =
+      const VerificationMeta('mileageUnit');
+  @override
+  late final GeneratedColumn<String?> mileageUnit = GeneratedColumn<String?>(
+      'mileage_unit', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _licensePlateMeta =
       const VerificationMeta('licensePlate');
   @override
@@ -741,6 +860,11 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
       type: const StringType(),
       requiredDuringInsert: false,
       defaultValue: const Constant(''));
+  final VerificationMeta _currencyMeta = const VerificationMeta('currency');
+  @override
+  late final GeneratedColumn<String?> currency = GeneratedColumn<String?>(
+      'currency', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _primaryFuelTypeIdMeta =
       const VerificationMeta('primaryFuelTypeId');
   @override
@@ -755,6 +879,12 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
   late final GeneratedColumn<double?> primaryFuelCapacity =
       GeneratedColumn<double?>('primary_fuel_capacity', aliasedName, false,
           type: const RealType(), requiredDuringInsert: true);
+  final VerificationMeta _primaryConsumptionUnitMeta =
+      const VerificationMeta('primaryConsumptionUnit');
+  @override
+  late final GeneratedColumn<String?> primaryConsumptionUnit =
+      GeneratedColumn<String?>('primary_consumption_unit', aliasedName, false,
+          type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _secondaryFuelTypeIdMeta =
       const VerificationMeta('secondaryFuelTypeId');
   @override
@@ -769,6 +899,12 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
   late final GeneratedColumn<double?> secondaryFuelCapacity =
       GeneratedColumn<double?>('secondary_fuel_capacity', aliasedName, true,
           type: const RealType(), requiredDuringInsert: false);
+  final VerificationMeta _secondaryConsumptionUnitMeta =
+      const VerificationMeta('secondaryConsumptionUnit');
+  @override
+  late final GeneratedColumn<String?> secondaryConsumptionUnit =
+      GeneratedColumn<String?>('secondary_consumption_unit', aliasedName, false,
+          type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _buyMileageMeta = const VerificationMeta('buyMileage');
   @override
   late final GeneratedColumn<int?> buyMileage = GeneratedColumn<int?>(
@@ -818,14 +954,18 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
         generation,
         buildDate,
         mileage,
+        mileageUnit,
         licensePlate,
         seasonalLicenseBeginMonth,
         seasonalLicenseEndMonth,
         notes,
+        currency,
         primaryFuelTypeId,
         primaryFuelCapacity,
+        primaryConsumptionUnit,
         secondaryFuelTypeId,
         secondaryFuelCapacity,
+        secondaryConsumptionUnit,
         buyMileage,
         buyDateTime,
         buyPrice,
@@ -876,6 +1016,14 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
     } else if (isInserting) {
       context.missing(_mileageMeta);
     }
+    if (data.containsKey('mileage_unit')) {
+      context.handle(
+          _mileageUnitMeta,
+          mileageUnit.isAcceptableOrUnknown(
+              data['mileage_unit']!, _mileageUnitMeta));
+    } else if (isInserting) {
+      context.missing(_mileageUnitMeta);
+    }
     if (data.containsKey('license_plate')) {
       context.handle(
           _licensePlateMeta,
@@ -900,6 +1048,12 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
       context.handle(
           _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
     }
+    if (data.containsKey('currency')) {
+      context.handle(_currencyMeta,
+          currency.isAcceptableOrUnknown(data['currency']!, _currencyMeta));
+    } else if (isInserting) {
+      context.missing(_currencyMeta);
+    }
     if (data.containsKey('primary_fuel_type_id')) {
       context.handle(
           _primaryFuelTypeIdMeta,
@@ -916,6 +1070,14 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
     } else if (isInserting) {
       context.missing(_primaryFuelCapacityMeta);
     }
+    if (data.containsKey('primary_consumption_unit')) {
+      context.handle(
+          _primaryConsumptionUnitMeta,
+          primaryConsumptionUnit.isAcceptableOrUnknown(
+              data['primary_consumption_unit']!, _primaryConsumptionUnitMeta));
+    } else if (isInserting) {
+      context.missing(_primaryConsumptionUnitMeta);
+    }
     if (data.containsKey('secondary_fuel_type_id')) {
       context.handle(
           _secondaryFuelTypeIdMeta,
@@ -927,6 +1089,15 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
           _secondaryFuelCapacityMeta,
           secondaryFuelCapacity.isAcceptableOrUnknown(
               data['secondary_fuel_capacity']!, _secondaryFuelCapacityMeta));
+    }
+    if (data.containsKey('secondary_consumption_unit')) {
+      context.handle(
+          _secondaryConsumptionUnitMeta,
+          secondaryConsumptionUnit.isAcceptableOrUnknown(
+              data['secondary_consumption_unit']!,
+              _secondaryConsumptionUnitMeta));
+    } else if (isInserting) {
+      context.missing(_secondaryConsumptionUnitMeta);
     }
     if (data.containsKey('buy_mileage')) {
       context.handle(
@@ -2169,7 +2340,7 @@ class LogCompanion extends UpdateCompanion<LogData> {
     required String content,
     required int logTypeId,
     required int currentMileage,
-    required DateTime logTimestamp,
+    this.logTimestamp = const Value.absent(),
     this.cost = const Value.absent(),
     this.costPerUnit = const Value.absent(),
     this.refillAmount = const Value.absent(),
@@ -2182,8 +2353,7 @@ class LogCompanion extends UpdateCompanion<LogData> {
         title = Value(title),
         content = Value(content),
         logTypeId = Value(logTypeId),
-        currentMileage = Value(currentMileage),
-        logTimestamp = Value(logTimestamp);
+        currentMileage = Value(currentMileage);
   static Insertable<LogData> custom({
     Expression<int>? id,
     Expression<int>? vehicleId,
@@ -2381,7 +2551,9 @@ class $LogTable extends Log with TableInfo<$LogTable, LogData> {
   @override
   late final GeneratedColumn<DateTime?> logTimestamp =
       GeneratedColumn<DateTime?>('log_timestamp', aliasedName, false,
-          type: const IntType(), requiredDuringInsert: true);
+          type: const IntType(),
+          requiredDuringInsert: false,
+          defaultValue: currentDateAndTime);
   final VerificationMeta _costMeta = const VerificationMeta('cost');
   @override
   late final GeneratedColumn<double?> cost = GeneratedColumn<double?>(
@@ -2504,8 +2676,6 @@ class $LogTable extends Log with TableInfo<$LogTable, LogData> {
           _logTimestampMeta,
           logTimestamp.isAcceptableOrUnknown(
               data['log_timestamp']!, _logTimestampMeta));
-    } else if (isInserting) {
-      context.missing(_logTimestampMeta);
     }
     if (data.containsKey('cost')) {
       context.handle(
