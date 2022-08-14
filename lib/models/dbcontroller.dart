@@ -47,6 +47,7 @@ class Vehicle extends Table {
   TextColumn get generation => text().nullable().withLength(max: 64)();
   DateTimeColumn get buildDate => dateTime().nullable()();
   IntColumn get mileage => integer()();
+  TextColumn get mileageUnit => text()();
 
   TextColumn get licensePlate => text().withLength(max: 16).withDefault(const Constant(''))();
   IntColumn get seasonalLicenseBeginMonth => integer().withDefault(const Constant(1))();
@@ -59,10 +60,12 @@ class Vehicle extends Table {
   //Primary Tank
   IntColumn get primaryFuelTypeId => integer().references(FuelType, #id)();
   RealColumn get primaryFuelCapacity => real()();
+  TextColumn get primaryConsumptionUnit => text()();
 
   //Secondary Tank
   IntColumn get secondaryFuelTypeId => integer().nullable().references(FuelType, #id)();
   RealColumn get secondaryFuelCapacity => real().nullable()();
+  TextColumn get secondaryConsumptionUnit => text()();
 
   // Kauf
   IntColumn get buyMileage => integer().nullable()();
