@@ -7,6 +7,179 @@ part of 'dbcontroller.dart';
 // **************************************************************************
 
 // ignore_for_file: type=lint
+class FuelTypeData extends DataClass implements Insertable<FuelTypeData> {
+  final int id;
+  final String fuel;
+  FuelTypeData({required this.id, required this.fuel});
+  factory FuelTypeData.fromData(Map<String, dynamic> data, {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return FuelTypeData(
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      fuel: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}fuel'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['fuel'] = Variable<String>(fuel);
+    return map;
+  }
+
+  FuelTypeCompanion toCompanion(bool nullToAbsent) {
+    return FuelTypeCompanion(
+      id: Value(id),
+      fuel: Value(fuel),
+    );
+  }
+
+  factory FuelTypeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FuelTypeData(
+      id: serializer.fromJson<int>(json['id']),
+      fuel: serializer.fromJson<String>(json['fuel']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'fuel': serializer.toJson<String>(fuel),
+    };
+  }
+
+  FuelTypeData copyWith({int? id, String? fuel}) => FuelTypeData(
+        id: id ?? this.id,
+        fuel: fuel ?? this.fuel,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('FuelTypeData(')
+          ..write('id: $id, ')
+          ..write('fuel: $fuel')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, fuel);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FuelTypeData && other.id == this.id && other.fuel == this.fuel);
+}
+
+class FuelTypeCompanion extends UpdateCompanion<FuelTypeData> {
+  final Value<int> id;
+  final Value<String> fuel;
+  const FuelTypeCompanion({
+    this.id = const Value.absent(),
+    this.fuel = const Value.absent(),
+  });
+  FuelTypeCompanion.insert({
+    this.id = const Value.absent(),
+    required String fuel,
+  }) : fuel = Value(fuel);
+  static Insertable<FuelTypeData> custom({
+    Expression<int>? id,
+    Expression<String>? fuel,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (fuel != null) 'fuel': fuel,
+    });
+  }
+
+  FuelTypeCompanion copyWith({Value<int>? id, Value<String>? fuel}) {
+    return FuelTypeCompanion(
+      id: id ?? this.id,
+      fuel: fuel ?? this.fuel,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (fuel.present) {
+      map['fuel'] = Variable<String>(fuel.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FuelTypeCompanion(')
+          ..write('id: $id, ')
+          ..write('fuel: $fuel')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FuelTypeTable extends FuelType
+    with TableInfo<$FuelTypeTable, FuelTypeData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FuelTypeTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _fuelMeta = const VerificationMeta('fuel');
+  @override
+  late final GeneratedColumn<String?> fuel = GeneratedColumn<String?>(
+      'fuel', aliasedName, false,
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 32),
+      type: const StringType(),
+      requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, fuel];
+  @override
+  String get aliasedName => _alias ?? 'fuel_type';
+  @override
+  String get actualTableName => 'fuel_type';
+  @override
+  VerificationContext validateIntegrity(Insertable<FuelTypeData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('fuel')) {
+      context.handle(
+          _fuelMeta, fuel.isAcceptableOrUnknown(data['fuel']!, _fuelMeta));
+    } else if (isInserting) {
+      context.missing(_fuelMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FuelTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return FuelTypeData.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $FuelTypeTable createAlias(String alias) {
+    return $FuelTypeTable(attachedDatabase, alias);
+  }
+}
+
 class VehicleData extends DataClass implements Insertable<VehicleData> {
   final int id;
   final String manufacturer;
@@ -32,7 +205,6 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
   final int? sellMileage;
   final DateTime? sellDateTime;
   final double? sellPrice;
-  final int? currentTireGroupId;
   VehicleData(
       {required this.id,
       required this.manufacturer,
@@ -57,8 +229,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       this.buyPrice,
       this.sellMileage,
       this.sellDateTime,
-      this.sellPrice,
-      this.currentTireGroupId});
+      this.sellPrice});
   factory VehicleData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return VehicleData(
@@ -110,8 +281,6 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}sell_date_time']),
       sellPrice: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}sell_price']),
-      currentTireGroupId: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}current_tire_group_id']),
     );
   }
   @override
@@ -163,9 +332,6 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
     if (!nullToAbsent || sellPrice != null) {
       map['sell_price'] = Variable<double?>(sellPrice);
     }
-    if (!nullToAbsent || currentTireGroupId != null) {
-      map['current_tire_group_id'] = Variable<int?>(currentTireGroupId);
-    }
     return map;
   }
 
@@ -215,9 +381,6 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       sellPrice: sellPrice == null && nullToAbsent
           ? const Value.absent()
           : Value(sellPrice),
-      currentTireGroupId: currentTireGroupId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(currentTireGroupId),
     );
   }
 
@@ -256,7 +419,6 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       sellMileage: serializer.fromJson<int?>(json['sellMileage']),
       sellDateTime: serializer.fromJson<DateTime?>(json['sellDateTime']),
       sellPrice: serializer.fromJson<double?>(json['sellPrice']),
-      currentTireGroupId: serializer.fromJson<int?>(json['currentTireGroupId']),
     );
   }
   @override
@@ -292,7 +454,6 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
       'sellMileage': serializer.toJson<int?>(sellMileage),
       'sellDateTime': serializer.toJson<DateTime?>(sellDateTime),
       'sellPrice': serializer.toJson<double?>(sellPrice),
-      'currentTireGroupId': serializer.toJson<int?>(currentTireGroupId),
     };
   }
 
@@ -320,8 +481,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           double? buyPrice,
           int? sellMileage,
           DateTime? sellDateTime,
-          double? sellPrice,
-          int? currentTireGroupId}) =>
+          double? sellPrice}) =>
       VehicleData(
         id: id ?? this.id,
         manufacturer: manufacturer ?? this.manufacturer,
@@ -352,7 +512,6 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
         sellMileage: sellMileage ?? this.sellMileage,
         sellDateTime: sellDateTime ?? this.sellDateTime,
         sellPrice: sellPrice ?? this.sellPrice,
-        currentTireGroupId: currentTireGroupId ?? this.currentTireGroupId,
       );
   @override
   String toString() {
@@ -380,8 +539,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           ..write('buyPrice: $buyPrice, ')
           ..write('sellMileage: $sellMileage, ')
           ..write('sellDateTime: $sellDateTime, ')
-          ..write('sellPrice: $sellPrice, ')
-          ..write('currentTireGroupId: $currentTireGroupId')
+          ..write('sellPrice: $sellPrice')
           ..write(')'))
         .toString();
   }
@@ -411,8 +569,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
         buyPrice,
         sellMileage,
         sellDateTime,
-        sellPrice,
-        currentTireGroupId
+        sellPrice
       ]);
   @override
   bool operator ==(Object other) =>
@@ -441,8 +598,7 @@ class VehicleData extends DataClass implements Insertable<VehicleData> {
           other.buyPrice == this.buyPrice &&
           other.sellMileage == this.sellMileage &&
           other.sellDateTime == this.sellDateTime &&
-          other.sellPrice == this.sellPrice &&
-          other.currentTireGroupId == this.currentTireGroupId);
+          other.sellPrice == this.sellPrice);
 }
 
 class VehicleCompanion extends UpdateCompanion<VehicleData> {
@@ -470,7 +626,6 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
   final Value<int?> sellMileage;
   final Value<DateTime?> sellDateTime;
   final Value<double?> sellPrice;
-  final Value<int?> currentTireGroupId;
   const VehicleCompanion({
     this.id = const Value.absent(),
     this.manufacturer = const Value.absent(),
@@ -496,7 +651,6 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     this.sellMileage = const Value.absent(),
     this.sellDateTime = const Value.absent(),
     this.sellPrice = const Value.absent(),
-    this.currentTireGroupId = const Value.absent(),
   });
   VehicleCompanion.insert({
     this.id = const Value.absent(),
@@ -516,14 +670,13 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     required String primaryConsumptionUnit,
     this.secondaryFuelTypeId = const Value.absent(),
     this.secondaryFuelCapacity = const Value.absent(),
-    required String secondaryConsumptionUnit,
+    this.secondaryConsumptionUnit = const Value.absent(),
     this.buyMileage = const Value.absent(),
     this.buyDateTime = const Value.absent(),
     this.buyPrice = const Value.absent(),
     this.sellMileage = const Value.absent(),
     this.sellDateTime = const Value.absent(),
     this.sellPrice = const Value.absent(),
-    this.currentTireGroupId = const Value.absent(),
   })  : manufacturer = Value(manufacturer),
         model = Value(model),
         mileage = Value(mileage),
@@ -531,8 +684,7 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
         currency = Value(currency),
         primaryFuelTypeId = Value(primaryFuelTypeId),
         primaryFuelCapacity = Value(primaryFuelCapacity),
-        primaryConsumptionUnit = Value(primaryConsumptionUnit),
-        secondaryConsumptionUnit = Value(secondaryConsumptionUnit);
+        primaryConsumptionUnit = Value(primaryConsumptionUnit);
   static Insertable<VehicleData> custom({
     Expression<int>? id,
     Expression<String>? manufacturer,
@@ -558,7 +710,6 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     Expression<int?>? sellMileage,
     Expression<DateTime?>? sellDateTime,
     Expression<double?>? sellPrice,
-    Expression<int?>? currentTireGroupId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -592,8 +743,6 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       if (sellMileage != null) 'sell_mileage': sellMileage,
       if (sellDateTime != null) 'sell_date_time': sellDateTime,
       if (sellPrice != null) 'sell_price': sellPrice,
-      if (currentTireGroupId != null)
-        'current_tire_group_id': currentTireGroupId,
     });
   }
 
@@ -621,8 +770,7 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       Value<double?>? buyPrice,
       Value<int?>? sellMileage,
       Value<DateTime?>? sellDateTime,
-      Value<double?>? sellPrice,
-      Value<int?>? currentTireGroupId}) {
+      Value<double?>? sellPrice}) {
     return VehicleCompanion(
       id: id ?? this.id,
       manufacturer: manufacturer ?? this.manufacturer,
@@ -653,7 +801,6 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
       sellMileage: sellMileage ?? this.sellMileage,
       sellDateTime: sellDateTime ?? this.sellDateTime,
       sellPrice: sellPrice ?? this.sellPrice,
-      currentTireGroupId: currentTireGroupId ?? this.currentTireGroupId,
     );
   }
 
@@ -738,9 +885,6 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
     if (sellPrice.present) {
       map['sell_price'] = Variable<double?>(sellPrice.value);
     }
-    if (currentTireGroupId.present) {
-      map['current_tire_group_id'] = Variable<int?>(currentTireGroupId.value);
-    }
     return map;
   }
 
@@ -770,8 +914,7 @@ class VehicleCompanion extends UpdateCompanion<VehicleData> {
           ..write('buyPrice: $buyPrice, ')
           ..write('sellMileage: $sellMileage, ')
           ..write('sellDateTime: $sellDateTime, ')
-          ..write('sellPrice: $sellPrice, ')
-          ..write('currentTireGroupId: $currentTireGroupId')
+          ..write('sellPrice: $sellPrice')
           ..write(')'))
         .toString();
   }
@@ -904,7 +1047,9 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
   @override
   late final GeneratedColumn<String?> secondaryConsumptionUnit =
       GeneratedColumn<String?>('secondary_consumption_unit', aliasedName, false,
-          type: const StringType(), requiredDuringInsert: true);
+          type: const StringType(),
+          requiredDuringInsert: false,
+          defaultValue: const Constant(''));
   final VerificationMeta _buyMileageMeta = const VerificationMeta('buyMileage');
   @override
   late final GeneratedColumn<int?> buyMileage = GeneratedColumn<int?>(
@@ -938,14 +1083,6 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
   late final GeneratedColumn<double?> sellPrice = GeneratedColumn<double?>(
       'sell_price', aliasedName, true,
       type: const RealType(), requiredDuringInsert: false);
-  final VerificationMeta _currentTireGroupIdMeta =
-      const VerificationMeta('currentTireGroupId');
-  @override
-  late final GeneratedColumn<int?> currentTireGroupId = GeneratedColumn<int?>(
-      'current_tire_group_id', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'REFERENCES tire_setup (id)');
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -971,8 +1108,7 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
         buyPrice,
         sellMileage,
         sellDateTime,
-        sellPrice,
-        currentTireGroupId
+        sellPrice
       ];
   @override
   String get aliasedName => _alias ?? 'vehicle';
@@ -1096,8 +1232,6 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
           secondaryConsumptionUnit.isAcceptableOrUnknown(
               data['secondary_consumption_unit']!,
               _secondaryConsumptionUnitMeta));
-    } else if (isInserting) {
-      context.missing(_secondaryConsumptionUnitMeta);
     }
     if (data.containsKey('buy_mileage')) {
       context.handle(
@@ -1130,12 +1264,6 @@ class $VehicleTable extends Vehicle with TableInfo<$VehicleTable, VehicleData> {
     if (data.containsKey('sell_price')) {
       context.handle(_sellPriceMeta,
           sellPrice.isAcceptableOrUnknown(data['sell_price']!, _sellPriceMeta));
-    }
-    if (data.containsKey('current_tire_group_id')) {
-      context.handle(
-          _currentTireGroupIdMeta,
-          currentTireGroupId.isAcceptableOrUnknown(
-              data['current_tire_group_id']!, _currentTireGroupIdMeta));
     }
     return context;
   }
@@ -1305,9 +1433,7 @@ class $SettingTable extends Setting with TableInfo<$SettingTable, SettingData> {
   @override
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
-      type: const StringType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'UNIQUE');
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
   late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
@@ -2019,6 +2145,387 @@ class $TireSetupTable extends TireSetup
   @override
   $TireSetupTable createAlias(String alias) {
     return $TireSetupTable(attachedDatabase, alias);
+  }
+}
+
+class LogTypeData extends DataClass implements Insertable<LogTypeData> {
+  final int id;
+  final String type;
+  final String color;
+  LogTypeData({required this.id, required this.type, required this.color});
+  factory LogTypeData.fromData(Map<String, dynamic> data, {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return LogTypeData(
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      type: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
+      color: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}color'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['type'] = Variable<String>(type);
+    map['color'] = Variable<String>(color);
+    return map;
+  }
+
+  LogTypeCompanion toCompanion(bool nullToAbsent) {
+    return LogTypeCompanion(
+      id: Value(id),
+      type: Value(type),
+      color: Value(color),
+    );
+  }
+
+  factory LogTypeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LogTypeData(
+      id: serializer.fromJson<int>(json['id']),
+      type: serializer.fromJson<String>(json['type']),
+      color: serializer.fromJson<String>(json['color']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'type': serializer.toJson<String>(type),
+      'color': serializer.toJson<String>(color),
+    };
+  }
+
+  LogTypeData copyWith({int? id, String? type, String? color}) => LogTypeData(
+        id: id ?? this.id,
+        type: type ?? this.type,
+        color: color ?? this.color,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LogTypeData(')
+          ..write('id: $id, ')
+          ..write('type: $type, ')
+          ..write('color: $color')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, type, color);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LogTypeData &&
+          other.id == this.id &&
+          other.type == this.type &&
+          other.color == this.color);
+}
+
+class LogTypeCompanion extends UpdateCompanion<LogTypeData> {
+  final Value<int> id;
+  final Value<String> type;
+  final Value<String> color;
+  const LogTypeCompanion({
+    this.id = const Value.absent(),
+    this.type = const Value.absent(),
+    this.color = const Value.absent(),
+  });
+  LogTypeCompanion.insert({
+    this.id = const Value.absent(),
+    required String type,
+    required String color,
+  })  : type = Value(type),
+        color = Value(color);
+  static Insertable<LogTypeData> custom({
+    Expression<int>? id,
+    Expression<String>? type,
+    Expression<String>? color,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (type != null) 'type': type,
+      if (color != null) 'color': color,
+    });
+  }
+
+  LogTypeCompanion copyWith(
+      {Value<int>? id, Value<String>? type, Value<String>? color}) {
+    return LogTypeCompanion(
+      id: id ?? this.id,
+      type: type ?? this.type,
+      color: color ?? this.color,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (color.present) {
+      map['color'] = Variable<String>(color.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LogTypeCompanion(')
+          ..write('id: $id, ')
+          ..write('type: $type, ')
+          ..write('color: $color')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LogTypeTable extends LogType with TableInfo<$LogTypeTable, LogTypeData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LogTypeTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+      'type', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _colorMeta = const VerificationMeta('color');
+  @override
+  late final GeneratedColumn<String?> color = GeneratedColumn<String?>(
+      'color', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, type, color];
+  @override
+  String get aliasedName => _alias ?? 'log_type';
+  @override
+  String get actualTableName => 'log_type';
+  @override
+  VerificationContext validateIntegrity(Insertable<LogTypeData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('color')) {
+      context.handle(
+          _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+    } else if (isInserting) {
+      context.missing(_colorMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LogTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return LogTypeData.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $LogTypeTable createAlias(String alias) {
+    return $LogTypeTable(attachedDatabase, alias);
+  }
+}
+
+class GasStation extends DataClass implements Insertable<GasStation> {
+  /// TankstellenID
+  final int id;
+
+  /// Tankstellenname
+  final String name;
+  GasStation({required this.id, required this.name});
+  factory GasStation.fromData(Map<String, dynamic> data, {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return GasStation(
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  GasStationsCompanion toCompanion(bool nullToAbsent) {
+    return GasStationsCompanion(
+      id: Value(id),
+      name: Value(name),
+    );
+  }
+
+  factory GasStation.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GasStation(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GasStation copyWith({int? id, String? name}) => GasStation(
+        id: id ?? this.id,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GasStation(')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GasStation && other.id == this.id && other.name == this.name);
+}
+
+class GasStationsCompanion extends UpdateCompanion<GasStation> {
+  final Value<int> id;
+  final Value<String> name;
+  const GasStationsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+  });
+  GasStationsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+  }) : name = Value(name);
+  static Insertable<GasStation> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+    });
+  }
+
+  GasStationsCompanion copyWith({Value<int>? id, Value<String>? name}) {
+    return GasStationsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GasStationsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GasStationsTable extends GasStations
+    with TableInfo<$GasStationsTable, GasStation> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GasStationsTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      defaultConstraints: 'UNIQUE');
+  @override
+  List<GeneratedColumn> get $columns => [id, name];
+  @override
+  String get aliasedName => _alias ?? 'gas_stations';
+  @override
+  String get actualTableName => 'gas_stations';
+  @override
+  VerificationContext validateIntegrity(Insertable<GasStation> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  GasStation map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return GasStation.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $GasStationsTable createAlias(String alias) {
+    return $GasStationsTable(attachedDatabase, alias);
   }
 }
 
@@ -2739,573 +3246,19 @@ class $LogTable extends Log with TableInfo<$LogTable, LogData> {
   }
 }
 
-class GasStation extends DataClass implements Insertable<GasStation> {
-  /// TankstellenID
-  final int id;
-
-  /// Tankstellenname
-  final String name;
-  GasStation({required this.id, required this.name});
-  factory GasStation.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return GasStation(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['name'] = Variable<String>(name);
-    return map;
-  }
-
-  GasStationsCompanion toCompanion(bool nullToAbsent) {
-    return GasStationsCompanion(
-      id: Value(id),
-      name: Value(name),
-    );
-  }
-
-  factory GasStation.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return GasStation(
-      id: serializer.fromJson<int>(json['id']),
-      name: serializer.fromJson<String>(json['name']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'name': serializer.toJson<String>(name),
-    };
-  }
-
-  GasStation copyWith({int? id, String? name}) => GasStation(
-        id: id ?? this.id,
-        name: name ?? this.name,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('GasStation(')
-          ..write('id: $id, ')
-          ..write('name: $name')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, name);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is GasStation && other.id == this.id && other.name == this.name);
-}
-
-class GasStationsCompanion extends UpdateCompanion<GasStation> {
-  final Value<int> id;
-  final Value<String> name;
-  const GasStationsCompanion({
-    this.id = const Value.absent(),
-    this.name = const Value.absent(),
-  });
-  GasStationsCompanion.insert({
-    this.id = const Value.absent(),
-    required String name,
-  }) : name = Value(name);
-  static Insertable<GasStation> custom({
-    Expression<int>? id,
-    Expression<String>? name,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (name != null) 'name': name,
-    });
-  }
-
-  GasStationsCompanion copyWith({Value<int>? id, Value<String>? name}) {
-    return GasStationsCompanion(
-      id: id ?? this.id,
-      name: name ?? this.name,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('GasStationsCompanion(')
-          ..write('id: $id, ')
-          ..write('name: $name')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $GasStationsTable extends GasStations
-    with TableInfo<$GasStationsTable, GasStation> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $GasStationsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
-      'id', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
-  @override
-  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
-      'name', aliasedName, false,
-      type: const StringType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'UNIQUE');
-  @override
-  List<GeneratedColumn> get $columns => [id, name];
-  @override
-  String get aliasedName => _alias ?? 'gas_stations';
-  @override
-  String get actualTableName => 'gas_stations';
-  @override
-  VerificationContext validateIntegrity(Insertable<GasStation> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
-    } else if (isInserting) {
-      context.missing(_nameMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  GasStation map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return GasStation.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  $GasStationsTable createAlias(String alias) {
-    return $GasStationsTable(attachedDatabase, alias);
-  }
-}
-
-class FuelTypeData extends DataClass implements Insertable<FuelTypeData> {
-  final int id;
-  final String fuel;
-  FuelTypeData({required this.id, required this.fuel});
-  factory FuelTypeData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return FuelTypeData(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      fuel: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}fuel'])!,
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['fuel'] = Variable<String>(fuel);
-    return map;
-  }
-
-  FuelTypeCompanion toCompanion(bool nullToAbsent) {
-    return FuelTypeCompanion(
-      id: Value(id),
-      fuel: Value(fuel),
-    );
-  }
-
-  factory FuelTypeData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return FuelTypeData(
-      id: serializer.fromJson<int>(json['id']),
-      fuel: serializer.fromJson<String>(json['fuel']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'fuel': serializer.toJson<String>(fuel),
-    };
-  }
-
-  FuelTypeData copyWith({int? id, String? fuel}) => FuelTypeData(
-        id: id ?? this.id,
-        fuel: fuel ?? this.fuel,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('FuelTypeData(')
-          ..write('id: $id, ')
-          ..write('fuel: $fuel')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, fuel);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is FuelTypeData && other.id == this.id && other.fuel == this.fuel);
-}
-
-class FuelTypeCompanion extends UpdateCompanion<FuelTypeData> {
-  final Value<int> id;
-  final Value<String> fuel;
-  const FuelTypeCompanion({
-    this.id = const Value.absent(),
-    this.fuel = const Value.absent(),
-  });
-  FuelTypeCompanion.insert({
-    this.id = const Value.absent(),
-    required String fuel,
-  }) : fuel = Value(fuel);
-  static Insertable<FuelTypeData> custom({
-    Expression<int>? id,
-    Expression<String>? fuel,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (fuel != null) 'fuel': fuel,
-    });
-  }
-
-  FuelTypeCompanion copyWith({Value<int>? id, Value<String>? fuel}) {
-    return FuelTypeCompanion(
-      id: id ?? this.id,
-      fuel: fuel ?? this.fuel,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (fuel.present) {
-      map['fuel'] = Variable<String>(fuel.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('FuelTypeCompanion(')
-          ..write('id: $id, ')
-          ..write('fuel: $fuel')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $FuelTypeTable extends FuelType
-    with TableInfo<$FuelTypeTable, FuelTypeData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $FuelTypeTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
-      'id', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _fuelMeta = const VerificationMeta('fuel');
-  @override
-  late final GeneratedColumn<String?> fuel = GeneratedColumn<String?>(
-      'fuel', aliasedName, false,
-      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 32),
-      type: const StringType(),
-      requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns => [id, fuel];
-  @override
-  String get aliasedName => _alias ?? 'fuel_type';
-  @override
-  String get actualTableName => 'fuel_type';
-  @override
-  VerificationContext validateIntegrity(Insertable<FuelTypeData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('fuel')) {
-      context.handle(
-          _fuelMeta, fuel.isAcceptableOrUnknown(data['fuel']!, _fuelMeta));
-    } else if (isInserting) {
-      context.missing(_fuelMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  FuelTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return FuelTypeData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  $FuelTypeTable createAlias(String alias) {
-    return $FuelTypeTable(attachedDatabase, alias);
-  }
-}
-
-class LogTypeData extends DataClass implements Insertable<LogTypeData> {
-  final int id;
-  final String type;
-  final String color;
-  LogTypeData({required this.id, required this.type, required this.color});
-  factory LogTypeData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return LogTypeData(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      type: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
-      color: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}color'])!,
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['type'] = Variable<String>(type);
-    map['color'] = Variable<String>(color);
-    return map;
-  }
-
-  LogTypeCompanion toCompanion(bool nullToAbsent) {
-    return LogTypeCompanion(
-      id: Value(id),
-      type: Value(type),
-      color: Value(color),
-    );
-  }
-
-  factory LogTypeData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return LogTypeData(
-      id: serializer.fromJson<int>(json['id']),
-      type: serializer.fromJson<String>(json['type']),
-      color: serializer.fromJson<String>(json['color']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'type': serializer.toJson<String>(type),
-      'color': serializer.toJson<String>(color),
-    };
-  }
-
-  LogTypeData copyWith({int? id, String? type, String? color}) => LogTypeData(
-        id: id ?? this.id,
-        type: type ?? this.type,
-        color: color ?? this.color,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('LogTypeData(')
-          ..write('id: $id, ')
-          ..write('type: $type, ')
-          ..write('color: $color')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, type, color);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is LogTypeData &&
-          other.id == this.id &&
-          other.type == this.type &&
-          other.color == this.color);
-}
-
-class LogTypeCompanion extends UpdateCompanion<LogTypeData> {
-  final Value<int> id;
-  final Value<String> type;
-  final Value<String> color;
-  const LogTypeCompanion({
-    this.id = const Value.absent(),
-    this.type = const Value.absent(),
-    this.color = const Value.absent(),
-  });
-  LogTypeCompanion.insert({
-    this.id = const Value.absent(),
-    required String type,
-    required String color,
-  })  : type = Value(type),
-        color = Value(color);
-  static Insertable<LogTypeData> custom({
-    Expression<int>? id,
-    Expression<String>? type,
-    Expression<String>? color,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (type != null) 'type': type,
-      if (color != null) 'color': color,
-    });
-  }
-
-  LogTypeCompanion copyWith(
-      {Value<int>? id, Value<String>? type, Value<String>? color}) {
-    return LogTypeCompanion(
-      id: id ?? this.id,
-      type: type ?? this.type,
-      color: color ?? this.color,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (type.present) {
-      map['type'] = Variable<String>(type.value);
-    }
-    if (color.present) {
-      map['color'] = Variable<String>(color.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('LogTypeCompanion(')
-          ..write('id: $id, ')
-          ..write('type: $type, ')
-          ..write('color: $color')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $LogTypeTable extends LogType with TableInfo<$LogTypeTable, LogTypeData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $LogTypeTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
-      'id', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _typeMeta = const VerificationMeta('type');
-  @override
-  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
-      'type', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
-  final VerificationMeta _colorMeta = const VerificationMeta('color');
-  @override
-  late final GeneratedColumn<String?> color = GeneratedColumn<String?>(
-      'color', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns => [id, type, color];
-  @override
-  String get aliasedName => _alias ?? 'log_type';
-  @override
-  String get actualTableName => 'log_type';
-  @override
-  VerificationContext validateIntegrity(Insertable<LogTypeData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('type')) {
-      context.handle(
-          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
-    } else if (isInserting) {
-      context.missing(_typeMeta);
-    }
-    if (data.containsKey('color')) {
-      context.handle(
-          _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
-    } else if (isInserting) {
-      context.missing(_colorMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  LogTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return LogTypeData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  $LogTypeTable createAlias(String alias) {
-    return $LogTypeTable(attachedDatabase, alias);
-  }
-}
-
 abstract class _$DBController extends GeneratedDatabase {
   _$DBController(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  late final $FuelTypeTable fuelType = $FuelTypeTable(this);
   late final $VehicleTable vehicle = $VehicleTable(this);
   late final $SettingTable setting = $SettingTable(this);
   late final $TireTable tire = $TireTable(this);
   late final $TireSetupTable tireSetup = $TireSetupTable(this);
-  late final $LogTable log = $LogTable(this);
-  late final $GasStationsTable gasStations = $GasStationsTable(this);
-  late final $FuelTypeTable fuelType = $FuelTypeTable(this);
   late final $LogTypeTable logType = $LogTypeTable(this);
+  late final $GasStationsTable gasStations = $GasStationsTable(this);
+  late final $LogTable log = $LogTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [vehicle, setting, tire, tireSetup, log, gasStations, fuelType, logType];
+      [fuelType, vehicle, setting, tire, tireSetup, logType, gasStations, log];
 }

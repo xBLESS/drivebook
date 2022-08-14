@@ -1,6 +1,7 @@
 import 'package:drivebook/models/dbcontroller.dart';
 import 'package:drivebook/providers/fuel_type_provider.dart';
 import 'package:drivebook/providers/settings_provider.dart';
+import 'package:drivebook/screens/add_vehicle_screen/add_vehicle_screen.dart';
 import 'package:drivebook/screens/settings_screen/settings_screen.dart';
 import 'package:drivebook/screens/vehicledetailscreen/vehicledetailscreen.dart';
 import 'package:path/path.dart';
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
         VehicleListScreen.routename: (context) => VehicleListScreen(),
         VehicleDetailScreen.routename: (context) => VehicleDetailScreen(),
         SettingsScreen.routename: (context) => const SettingsScreen(),
+        AddVehicleScreen.routename: (context) => AddVehicleScreen(),
       },
     );
   }

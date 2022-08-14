@@ -59,7 +59,7 @@ class VehicleListItem extends StatelessWidget {
                     vehicle.secondaryFuelTypeId != null
                         ? Text('${fuelTypeProvider.getFuelTypeById(vehicle.primaryFuelTypeId)} | ${fuelTypeProvider.getFuelTypeById(vehicle.secondaryFuelTypeId!)}')
                         : Text(fuelTypeProvider.getFuelTypeById(vehicle.primaryFuelTypeId)),
-                    Text(odometerFormatter.format(vehicle.mileage)),
+                    Text('${odometerFormatter.format(vehicle.mileage)} ${vehicle.mileageUnit}'),
                     SeasonLicenseBar(vehicle.seasonalLicenseBeginMonth, vehicle.seasonalLicenseEndMonth),
                   ],
                 ),

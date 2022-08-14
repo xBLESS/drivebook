@@ -9,7 +9,7 @@ import 'package:path/path.dart' as p;
 part 'dbcontroller.g.dart';
 
 class Setting extends Table {
-  TextColumn get name => text().unique()();
+  TextColumn get name => text()();
   TextColumn get type => text()();
   TextColumn get value => text()();
 
@@ -65,7 +65,7 @@ class Vehicle extends Table {
   //Secondary Tank
   IntColumn get secondaryFuelTypeId => integer().nullable().references(FuelType, #id)();
   RealColumn get secondaryFuelCapacity => real().nullable()();
-  TextColumn get secondaryConsumptionUnit => text()();
+  TextColumn get secondaryConsumptionUnit => text().withDefault(const Constant(''))();
 
   // Kauf
   IntColumn get buyMileage => integer().nullable()();
@@ -77,7 +77,7 @@ class Vehicle extends Table {
   DateTimeColumn get sellDateTime => dateTime().nullable()();
   RealColumn get sellPrice => real().nullable()();
 
-  IntColumn get currentTireGroupId => integer().nullable().references(TireSetup, #id)();
+  // IntColumn get currentTireGroupId => integer().nullable().references(TireSetup, #id)();
 
   // @override // already the PK because of the autoincrement
   // Set<Column> get primaryKey => {id};
