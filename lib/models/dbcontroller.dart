@@ -54,6 +54,8 @@ class Vehicle extends Table {
 
   TextColumn get notes => text().withLength(max: 512).withDefault(const Constant(''))();
 
+  TextColumn get currency => text()();
+
   //Primary Tank
   IntColumn get primaryFuelTypeId => integer().references(FuelType, #id)();
   RealColumn get primaryFuelCapacity => real()();
