@@ -1,4 +1,7 @@
+import 'package:drivebook/models/dbcontroller.dart';
+import 'package:drivebook/models/enums.dart';
 import 'package:drivebook/providers/fuel_type_provider.dart';
+import 'package:drivebook/screens/add_vehicle_screen/widgets/bi_fuel_tank.dart';
 import 'package:drivebook/screens/homescreen/vehiclelistscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +34,9 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
     'Dezember',
   ];
 
-  final OutlineInputBorder tecBorder = const OutlineInputBorder(borderSide: BorderSide(style: BorderStyle.solid));
+  late List<FuelTypeData> _fuels;
+
+  // final OutlineInputBorder tecBorder = const OutlineInputBorder(borderSide: BorderSide(style: BorderStyle.solid));
 
   final TextEditingController make = TextEditingController();
   final TextEditingController generation = TextEditingController();
@@ -42,6 +47,11 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
   final TextEditingController licenseEndDate = TextEditingController();
 
   RangeValues seasonLicenseRangeValues = const RangeValues(1.0, 12.0);
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _onSaveAction(BuildContext context) {
     // Verify textEditingControllers
@@ -64,6 +74,7 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
   Widget build(BuildContext context) {
     const EdgeInsets tecEdgeInsets = EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0);
     const OutlineInputBorder tecBorder = OutlineInputBorder(borderSide: BorderSide(style: BorderStyle.solid));
+    _fuels = Provider.of<FuelTypeProvider>(context).getFuelType;
 
     return Scaffold(
       appBar: AppBar(
@@ -203,6 +214,7 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
               SwitchListTile(
                 value: isBifuel,
                 title: const Text('Auto ist Bi-fuel'),
+                subtitle: const Text('Fahrzeug hat zwei Treibstofftanks'),
                 onChanged: (value) {
                   setState(() {
                     isBifuel = value;
@@ -210,55 +222,20 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                 },
               ),
               isBifuel
-                  ? Row(
-                      children: [
-                        Column(
-                          children: [
-                            Padding(
-                              padding: tecEdgeInsets,
-                              child: TextField(
-                                controller: notes,
-                                decoration: const InputDecoration(
-                                  label: Text('Notizen'),
-                                  border: tecBorder,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: tecEdgeInsets,
-                              child: TextField(
-                                controller: notes,
-                                decoration: const InputDecoration(
-                                  label: Text('Notizen'),
-                                  border: tecBorder,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                  ? BiFuelTanks(
+                      tecOne: license,
+                      tecTwo: license,
                     )
                   : Column(
                       children: [
                         Padding(
                           padding: tecEdgeInsets,
-                          child: TextField(
-                            controller: notes,
+                          child: DropdownButtonFormField(
                             decoration: const InputDecoration(
-                              label: Text('Notizen'),
+                              label: Text('Treibstoff'),
                               border: tecBorder,
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: tecEdgeInsets,
-                          child: DropdownButton(
-                            items: Provider.of<FuelTypeProvider>(context)
-                                .getFuelType
+                            items: _fuels
                                 .map(
                                   (e) => DropdownMenuItem(
                                     value: e.fuel,
@@ -271,16 +248,52 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                         ),
                         Padding(
                           padding: tecEdgeInsets,
-                          child: TextField(
-                            controller: notes,
+                          child: DropdownButtonFormField(
                             decoration: const InputDecoration(
-                              label: Text('Notizen'),
+                              label: Text('Kraftstoffeinheit'),
                               border: tecBorder,
                             ),
+                            items: FuelUni.values
+                                .map(
+                                  (e) => DropdownMenuItem(
+                                    value: e.name,
+                                    child: Text(e.name),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (value) {},
+                          ),
+                        ),
+                        Padding(
+                          padding: tecEdgeInsets,
+                          child: DropdownButtonFormField(
+                            decoration: const InputDecoration(
+                              label: Text('Verbrauchseinheit'),
+                              border: tecBorder,
+                            ),
+                            items: ConsumptionUnit.values
+                                .map(
+                                  (e) => DropdownMenuItem(
+                                    value: e.name,
+                                    child: Text(e.name),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (value) {},
                           ),
                         ),
                       ],
                     ),
+              Padding(
+                padding: tecEdgeInsets,
+                child: TextField(
+                  controller: notes,
+                  decoration: const InputDecoration(
+                    label: Text('Kapazität'),
+                    border: tecBorder,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
