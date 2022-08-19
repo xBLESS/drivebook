@@ -1,5 +1,7 @@
+import 'package:drivebook/providers/fuel_type_provider.dart';
 import 'package:drivebook/screens/homescreen/vehiclelistscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddVehicleScreen extends StatefulWidget {
   static const String routename = '/add_vehicle_screen';
@@ -11,6 +13,9 @@ class AddVehicleScreen extends StatefulWidget {
 
 class _AddVehicleScreenState extends State<AddVehicleScreen> {
   final EdgeInsets tecEdgeInsets = const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0);
+
+  bool isBifuel = false;
+
   final List<String> months = [
     'Januar',
     'Februar',
@@ -195,6 +200,87 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                   ),
                 ),
               ),
+              SwitchListTile(
+                value: isBifuel,
+                title: const Text('Auto ist Bi-fuel'),
+                onChanged: (value) {
+                  setState(() {
+                    isBifuel = value;
+                  });
+                },
+              ),
+              isBifuel
+                  ? Row(
+                      children: [
+                        Column(
+                          children: [
+                            Padding(
+                              padding: tecEdgeInsets,
+                              child: TextField(
+                                controller: notes,
+                                decoration: const InputDecoration(
+                                  label: Text('Notizen'),
+                                  border: tecBorder,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: tecEdgeInsets,
+                              child: TextField(
+                                controller: notes,
+                                decoration: const InputDecoration(
+                                  label: Text('Notizen'),
+                                  border: tecBorder,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Padding(
+                          padding: tecEdgeInsets,
+                          child: TextField(
+                            controller: notes,
+                            decoration: const InputDecoration(
+                              label: Text('Notizen'),
+                              border: tecBorder,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: tecEdgeInsets,
+                          child: DropdownButton(
+                            items: Provider.of<FuelTypeProvider>(context)
+                                .getFuelType
+                                .map(
+                                  (e) => DropdownMenuItem(
+                                    value: e.fuel,
+                                    child: Text(e.fuel),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (value) {},
+                          ),
+                        ),
+                        Padding(
+                          padding: tecEdgeInsets,
+                          child: TextField(
+                            controller: notes,
+                            decoration: const InputDecoration(
+                              label: Text('Notizen'),
+                              border: tecBorder,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
             ],
           ),
         ),
