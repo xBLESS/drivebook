@@ -85,7 +85,7 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                 child: TextField(
                   controller: make,
                   decoration: const InputDecoration(
-                    label: Text('Generation'),
+                    label: Text('Hersteller'),
                     border: tecBorder,
                   ),
                 ),
