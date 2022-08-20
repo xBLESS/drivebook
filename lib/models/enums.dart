@@ -1,4 +1,4 @@
-enum FuelUni {
+enum FuelUnit {
   liter,
   galloneUk,
   galloneUs,
@@ -12,4 +12,10 @@ enum ConsumptionUnit {
   literPer1000km,
   mpg,
   galPer100,
+}
+
+enum DistanceUnits {
+  kilometer,
+  mile,
+  operatinghours,
 }

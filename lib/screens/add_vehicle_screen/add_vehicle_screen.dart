@@ -1,9 +1,13 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:drivebook/models/dbcontroller.dart';
 import 'package:drivebook/models/enums.dart';
 import 'package:drivebook/providers/fuel_type_provider.dart';
+import 'package:drivebook/providers/vehicle_provider.dart';
+import 'package:drivebook/providers/vehicles_provider.dart';
 import 'package:drivebook/screens/add_vehicle_screen/widgets/bi_fuel_tank.dart';
 import 'package:drivebook/screens/homescreen/vehiclelistscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AddVehicleScreen extends StatefulWidget {
@@ -42,9 +46,20 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
   final TextEditingController generation = TextEditingController();
   final TextEditingController modell = TextEditingController();
   final TextEditingController license = TextEditingController();
+  final TextEditingController vehicleType = TextEditingController();
+  final TextEditingController buildDate = TextEditingController();
+  final TextEditingController engine = TextEditingController();
+  final TextEditingController firstLicense = TextEditingController();
   final TextEditingController notes = TextEditingController();
-  final TextEditingController licenseStartDate = TextEditingController();
-  final TextEditingController licenseEndDate = TextEditingController();
+  final TextEditingController currency = TextEditingController();
+  final TextEditingController primaryCapacity = TextEditingController();
+  final TextEditingController secondaryCapacity = TextEditingController();
+  final TextEditingController vehicleBuyDate = TextEditingController();
+  final TextEditingController vehicleBuyPrice = TextEditingController();
+  final TextEditingController vehicleBuyDistance = TextEditingController();
+  final TextEditingController vehicleSellDate = TextEditingController();
+  final TextEditingController vehicleSellPrice = TextEditingController();
+  final TextEditingController vehicleSellDistance = TextEditingController();
 
   RangeValues seasonLicenseRangeValues = const RangeValues(1.0, 12.0);
 
@@ -55,7 +70,32 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
 
   void _onSaveAction(BuildContext context) {
     // Verify textEditingControllers
+    bool requiredAreSet = true;
 
+    // Important
+    if (make.text.isEmpty) {
+      requiredAreSet = false;
+    }
+    if (modell.text.isEmpty) {
+      requiredAreSet = false;
+    }
+    if (currency.text.isEmpty) {
+      requiredAreSet = false;
+    }
+    if (primaryCapacity.text.isEmpty) {
+      requiredAreSet = false;
+    }
+    if (vehicleBuyDistance.text.isEmpty) {
+      requiredAreSet = false;
+    }
+    // not so important
+
+    Provider.of<VehiclesProvider>(context, listen: false).addVehicle(VehicleCompanion(
+      manufacturer: drift.Value(make.text),
+      model: drift.Value(modell.text),
+      currency: drift.Value(currency.text),
+      primaryFuelCapacity: drift.Value(double.parse(primaryCapacity.text)),
+    ));
     Navigator.popAndPushNamed(context, VehicleListScreen.routename);
   }
 
@@ -160,9 +200,9 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
               Padding(
                 padding: tecEdgeInsets,
                 child: TextField(
-                  controller: notes,
+                  controller: vehicleType,
                   decoration: const InputDecoration(
-                    label: Text('Notizen'),
+                    label: Text('Fahrzeugart'),
                     border: tecBorder,
                   ),
                 ),
@@ -184,9 +224,19 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
               Padding(
                 padding: tecEdgeInsets,
                 child: TextField(
-                  controller: notes,
+                  controller: engine,
                   decoration: const InputDecoration(
-                    label: Text('Notizen'),
+                    label: Text('Motorisierung'),
+                    border: tecBorder,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: tecEdgeInsets,
+                child: TextField(
+                  controller: firstLicense,
+                  decoration: const InputDecoration(
+                    label: Text('Erstzulassung'),
                     border: tecBorder,
                   ),
                 ),
@@ -201,12 +251,32 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                   ),
                 ),
               ),
+              const Padding(
+                padding: tecEdgeInsets,
+                child: Text('Fahrzeugeinheiten'),
+              ),
               Padding(
                 padding: tecEdgeInsets,
-                child: TextField(
-                  controller: notes,
+                child: DropdownButtonFormField(
+                  items: DistanceUnits.values
+                      .map((e) => DropdownMenuItem(
+                            value: e.name,
+                            child: Text(e.name),
+                          ))
+                      .toList(),
+                  onChanged: (value) {},
                   decoration: const InputDecoration(
-                    label: Text('Notizen'),
+                    label: Text('Entfernungseinheit'),
+                    border: tecBorder,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: tecEdgeInsets,
+                child: TextFormField(
+                  controller: currency,
+                  decoration: const InputDecoration(
+                    label: Text('Währung'),
                     border: tecBorder,
                   ),
                 ),
@@ -253,7 +323,7 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                               label: Text('Kraftstoffeinheit'),
                               border: tecBorder,
                             ),
-                            items: FuelUni.values
+                            items: FuelUnit.values
                                 .map(
                                   (e) => DropdownMenuItem(
                                     value: e.name,
@@ -287,9 +357,78 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
               Padding(
                 padding: tecEdgeInsets,
                 child: TextField(
-                  controller: notes,
+                  controller: primaryCapacity,
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     label: Text('Kapazität'),
+                    border: tecBorder,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: tecEdgeInsets,
+                child: Text('Fahrzeugkauf'),
+              ),
+              Padding(
+                padding: tecEdgeInsets,
+                child: TextField(
+                  controller: vehicleBuyDate,
+                  decoration: const InputDecoration(
+                    label: Text('Datum'),
+                    border: tecBorder,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: tecEdgeInsets,
+                child: TextField(
+                  controller: vehicleBuyPrice,
+                  decoration: const InputDecoration(
+                    label: Text('Preis'),
+                    border: tecBorder,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: tecEdgeInsets,
+                child: TextField(
+                  controller: vehicleBuyDistance,
+                  decoration: const InputDecoration(
+                    label: Text('Kilometerstand'),
+                    border: tecBorder,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: tecEdgeInsets,
+                child: Text('Fahrzeugverkauf'),
+              ),
+              Padding(
+                padding: tecEdgeInsets,
+                child: TextField(
+                  controller: vehicleSellDate,
+                  decoration: const InputDecoration(
+                    label: Text('Datum'),
+                    border: tecBorder,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: tecEdgeInsets,
+                child: TextField(
+                  controller: vehicleSellPrice,
+                  decoration: const InputDecoration(
+                    label: Text('Preis'),
+                    border: tecBorder,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: tecEdgeInsets,
+                child: TextField(
+                  controller: vehicleSellDistance,
+                  decoration: const InputDecoration(
+                    label: Text('Kilometerstand'),
                     border: tecBorder,
                   ),
                 ),
