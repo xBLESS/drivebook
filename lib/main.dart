@@ -20,10 +20,14 @@ void main() async {
           create: (context) => DBController(),
           dispose: (context, db) => db.close(),
         ),
-        ChangeNotifierProvider<VehiclesProvider>(create: (context) => VehiclesProvider(context)),
-        ChangeNotifierProvider<SettingsProvider>(create: (context) => SettingsProvider(context)),
-        ChangeNotifierProvider<FuelTypeProvider>(create: (context) => FuelTypeProvider(context)),
-        ChangeNotifierProvider<LogsProvider>(create: (context) => LogsProvider()),
+        ChangeNotifierProvider<VehiclesProvider>(
+            create: (context) => VehiclesProvider(context)),
+        ChangeNotifierProvider<SettingsProvider>(
+            create: (context) => SettingsProvider(context)),
+        ChangeNotifierProvider<FuelTypeProvider>(
+            create: (context) => FuelTypeProvider(context)),
+        ChangeNotifierProvider<LogsProvider>(
+            create: (context) => LogsProvider()),
       ],
       child: const MyApp(),
     ),

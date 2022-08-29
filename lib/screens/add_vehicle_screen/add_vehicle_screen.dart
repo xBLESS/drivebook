@@ -19,7 +19,9 @@ class AddVehicleScreen extends StatefulWidget {
 }
 
 class _AddVehicleScreenState extends State<AddVehicleScreen> {
-  final EdgeInsets tecEdgeInsets = const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0);
+  final _formKey = GlobalKey<FormState>();
+  final EdgeInsets tecEdgeInsets =
+      const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0);
 
   bool isBifuel = false;
 
@@ -68,7 +70,18 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
     super.initState();
   }
 
+  String? validateNotEmpty(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Field is required";
+    }
+    return null;
+  }
+
   void _onSaveAction(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      // TODO submit
+      print('Form valid');
+    }
     // Verify textEditingControllers
     bool requiredAreSet = true;
 
@@ -90,7 +103,8 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
     }
     // not so important
 
-    Provider.of<VehiclesProvider>(context, listen: false).addVehicle(VehicleCompanion(
+    Provider.of<VehiclesProvider>(context, listen: false)
+        .addVehicle(VehicleCompanion(
       manufacturer: drift.Value(make.text),
       model: drift.Value(modell.text),
       currency: drift.Value(currency.text),
@@ -99,7 +113,8 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
     Navigator.popAndPushNamed(context, VehicleListScreen.routename);
   }
 
-  static Route<Object?> _dialogDateTime(BuildContext context, Object? arguments) {
+  static Route<Object?> _dialogDateTime(
+      BuildContext context, Object? arguments) {
     return DialogRoute<Object?>(
       context: context,
       builder: (BuildContext context) => DatePickerDialog(
@@ -112,8 +127,10 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const EdgeInsets tecEdgeInsets = EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0);
-    const OutlineInputBorder tecBorder = OutlineInputBorder(borderSide: BorderSide(style: BorderStyle.solid));
+    const EdgeInsets tecEdgeInsets =
+        EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0);
+    const OutlineInputBorder tecBorder =
+        OutlineInputBorder(borderSide: BorderSide(style: BorderStyle.solid));
     _fuels = Provider.of<FuelTypeProvider>(context).getFuelType;
 
     return Scaffold(
@@ -128,312 +145,318 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.save),
-            onPressed: () => _onSaveAction,
+            onPressed: () => _onSaveAction(context),
           )
         ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: make,
-                  decoration: const InputDecoration(
-                    label: Text('Hersteller'),
-                    border: tecBorder,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: generation,
-                  decoration: const InputDecoration(
-                    label: Text('Generation'),
-                    border: tecBorder,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: modell,
-                  decoration: const InputDecoration(
-                    label: Text('Modell'),
-                    border: tecBorder,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: license,
-                  decoration: const InputDecoration(
-                    label: Text('Kennzeichen'),
-                    border: tecBorder,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: Column(
-                  children: [
-                    seasonLicenseRangeValues.start == 1.0 && seasonLicenseRangeValues.end == 12.0
-                        ? const Text('Ganzjählich')
-                        : Text('${months[seasonLicenseRangeValues.start.toInt() - 1]} bis ${months[seasonLicenseRangeValues.end.toInt() - 1]}'),
-                    RangeSlider(
-                      min: 1.0,
-                      max: 12.0,
-                      divisions: 11,
-                      values: seasonLicenseRangeValues,
-                      onChanged: (values) {
-                        setState(() {
-                          seasonLicenseRangeValues = values;
-                        });
-                      },
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextFormField(
+                    controller: make,
+                    decoration: const InputDecoration(
+                      label: Text('Hersteller'),
+                      border: tecBorder,
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: vehicleType,
-                  decoration: const InputDecoration(
-                    label: Text('Fahrzeugart'),
-                    border: tecBorder,
+                    validator: (text) => validateNotEmpty(text),
                   ),
                 ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextFormField(
-                  showCursor: true,
-                  readOnly: true,
-                  onTap: () {
-                    Navigator.of(context).restorablePush(_dialogDateTime);
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: generation,
+                    decoration: const InputDecoration(
+                      label: Text('Generation'),
+                      border: tecBorder,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: modell,
+                    decoration: const InputDecoration(
+                      label: Text('Modell'),
+                      border: tecBorder,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: license,
+                    decoration: const InputDecoration(
+                      label: Text('Kennzeichen'),
+                      border: tecBorder,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: Column(
+                    children: [
+                      seasonLicenseRangeValues.start == 1.0 &&
+                              seasonLicenseRangeValues.end == 12.0
+                          ? const Text('Ganzjählich')
+                          : Text(
+                              '${months[seasonLicenseRangeValues.start.toInt() - 1]} bis ${months[seasonLicenseRangeValues.end.toInt() - 1]}'),
+                      RangeSlider(
+                        min: 1.0,
+                        max: 12.0,
+                        divisions: 11,
+                        values: seasonLicenseRangeValues,
+                        onChanged: (values) {
+                          setState(() {
+                            seasonLicenseRangeValues = values;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: vehicleType,
+                    decoration: const InputDecoration(
+                      label: Text('Fahrzeugart'),
+                      border: tecBorder,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextFormField(
+                    showCursor: true,
+                    readOnly: true,
+                    onTap: () {
+                      Navigator.of(context).restorablePush(_dialogDateTime);
+                    },
+                    decoration: const InputDecoration(
+                      label: Text('Hergestellt am'),
+                      border: tecBorder,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: engine,
+                    decoration: const InputDecoration(
+                      label: Text('Motorisierung'),
+                      border: tecBorder,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: firstLicense,
+                    decoration: const InputDecoration(
+                      label: Text('Erstzulassung'),
+                      border: tecBorder,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: notes,
+                    decoration: const InputDecoration(
+                      label: Text('Notizen'),
+                      border: tecBorder,
+                    ),
+                  ),
+                ),
+                const Padding(
+                  padding: tecEdgeInsets,
+                  child: Text('Fahrzeugeinheiten'),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: DropdownButtonFormField(
+                    items: DistanceUnits.values
+                        .map((e) => DropdownMenuItem(
+                              value: e.name,
+                              child: Text(e.name),
+                            ))
+                        .toList(),
+                    onChanged: (value) {},
+                    decoration: const InputDecoration(
+                      label: Text('Entfernungseinheit'),
+                      border: tecBorder,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextFormField(
+                    controller: currency,
+                    decoration: const InputDecoration(
+                      label: Text('Währung'),
+                      border: tecBorder,
+                    ),
+                  ),
+                ),
+                SwitchListTile(
+                  value: isBifuel,
+                  title: const Text('Auto ist Bi-fuel'),
+                  subtitle: const Text('Fahrzeug hat zwei Treibstofftanks'),
+                  onChanged: (value) {
+                    setState(() {
+                      isBifuel = value;
+                    });
                   },
-                  decoration: const InputDecoration(
-                    label: Text('Hergestellt am'),
-                    border: tecBorder,
-                  ),
                 ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: engine,
-                  decoration: const InputDecoration(
-                    label: Text('Motorisierung'),
-                    border: tecBorder,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: firstLicense,
-                  decoration: const InputDecoration(
-                    label: Text('Erstzulassung'),
-                    border: tecBorder,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: notes,
-                  decoration: const InputDecoration(
-                    label: Text('Notizen'),
-                    border: tecBorder,
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: tecEdgeInsets,
-                child: Text('Fahrzeugeinheiten'),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: DropdownButtonFormField(
-                  items: DistanceUnits.values
-                      .map((e) => DropdownMenuItem(
-                            value: e.name,
-                            child: Text(e.name),
-                          ))
-                      .toList(),
-                  onChanged: (value) {},
-                  decoration: const InputDecoration(
-                    label: Text('Entfernungseinheit'),
-                    border: tecBorder,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextFormField(
-                  controller: currency,
-                  decoration: const InputDecoration(
-                    label: Text('Währung'),
-                    border: tecBorder,
-                  ),
-                ),
-              ),
-              SwitchListTile(
-                value: isBifuel,
-                title: const Text('Auto ist Bi-fuel'),
-                subtitle: const Text('Fahrzeug hat zwei Treibstofftanks'),
-                onChanged: (value) {
-                  setState(() {
-                    isBifuel = value;
-                  });
-                },
-              ),
-              isBifuel
-                  ? BiFuelTanks(
-                      tecOne: license,
-                      tecTwo: license,
-                    )
-                  : Column(
-                      children: [
-                        Padding(
-                          padding: tecEdgeInsets,
-                          child: DropdownButtonFormField(
-                            decoration: const InputDecoration(
-                              label: Text('Treibstoff'),
-                              border: tecBorder,
+                isBifuel
+                    ? BiFuelTanks(
+                        tecOne: license,
+                        tecTwo: license,
+                      )
+                    : Column(
+                        children: [
+                          Padding(
+                            padding: tecEdgeInsets,
+                            child: DropdownButtonFormField(
+                              decoration: const InputDecoration(
+                                label: Text('Treibstoff'),
+                                border: tecBorder,
+                              ),
+                              items: _fuels
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      value: e.fuel,
+                                      child: Text(e.fuel),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {},
                             ),
-                            items: _fuels
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e.fuel,
-                                    child: Text(e.fuel),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {},
                           ),
-                        ),
-                        Padding(
-                          padding: tecEdgeInsets,
-                          child: DropdownButtonFormField(
-                            decoration: const InputDecoration(
-                              label: Text('Kraftstoffeinheit'),
-                              border: tecBorder,
+                          Padding(
+                            padding: tecEdgeInsets,
+                            child: DropdownButtonFormField(
+                              decoration: const InputDecoration(
+                                label: Text('Kraftstoffeinheit'),
+                                border: tecBorder,
+                              ),
+                              items: FuelUnit.values
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      value: e.name,
+                                      child: Text(e.name),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {},
                             ),
-                            items: FuelUnit.values
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e.name,
-                                    child: Text(e.name),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {},
                           ),
-                        ),
-                        Padding(
-                          padding: tecEdgeInsets,
-                          child: DropdownButtonFormField(
-                            decoration: const InputDecoration(
-                              label: Text('Verbrauchseinheit'),
-                              border: tecBorder,
+                          Padding(
+                            padding: tecEdgeInsets,
+                            child: DropdownButtonFormField(
+                              decoration: const InputDecoration(
+                                label: Text('Verbrauchseinheit'),
+                                border: tecBorder,
+                              ),
+                              items: ConsumptionUnit.values
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      value: e.name,
+                                      child: Text(e.name),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {},
                             ),
-                            items: ConsumptionUnit.values
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e.name,
-                                    child: Text(e.name),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {},
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: primaryCapacity,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      label: Text('Kapazität'),
+                      border: tecBorder,
                     ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: primaryCapacity,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    label: Text('Kapazität'),
-                    border: tecBorder,
                   ),
                 ),
-              ),
-              const Padding(
-                padding: tecEdgeInsets,
-                child: Text('Fahrzeugkauf'),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: vehicleBuyDate,
-                  decoration: const InputDecoration(
-                    label: Text('Datum'),
-                    border: tecBorder,
+                const Padding(
+                  padding: tecEdgeInsets,
+                  child: Text('Fahrzeugkauf'),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: vehicleBuyDate,
+                    decoration: const InputDecoration(
+                      label: Text('Datum'),
+                      border: tecBorder,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: vehicleBuyPrice,
-                  decoration: const InputDecoration(
-                    label: Text('Preis'),
-                    border: tecBorder,
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: vehicleBuyPrice,
+                    decoration: const InputDecoration(
+                      label: Text('Preis'),
+                      border: tecBorder,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: vehicleBuyDistance,
-                  decoration: const InputDecoration(
-                    label: Text('Kilometerstand'),
-                    border: tecBorder,
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: vehicleBuyDistance,
+                    decoration: const InputDecoration(
+                      label: Text('Kilometerstand'),
+                      border: tecBorder,
+                    ),
                   ),
                 ),
-              ),
-              const Padding(
-                padding: tecEdgeInsets,
-                child: Text('Fahrzeugverkauf'),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: vehicleSellDate,
-                  decoration: const InputDecoration(
-                    label: Text('Datum'),
-                    border: tecBorder,
+                const Padding(
+                  padding: tecEdgeInsets,
+                  child: Text('Fahrzeugverkauf'),
+                ),
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: vehicleSellDate,
+                    decoration: const InputDecoration(
+                      label: Text('Datum'),
+                      border: tecBorder,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: vehicleSellPrice,
-                  decoration: const InputDecoration(
-                    label: Text('Preis'),
-                    border: tecBorder,
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: vehicleSellPrice,
+                    decoration: const InputDecoration(
+                      label: Text('Preis'),
+                      border: tecBorder,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: tecEdgeInsets,
-                child: TextField(
-                  controller: vehicleSellDistance,
-                  decoration: const InputDecoration(
-                    label: Text('Kilometerstand'),
-                    border: tecBorder,
+                Padding(
+                  padding: tecEdgeInsets,
+                  child: TextField(
+                    controller: vehicleSellDistance,
+                    decoration: const InputDecoration(
+                      label: Text('Kilometerstand'),
+                      border: tecBorder,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
